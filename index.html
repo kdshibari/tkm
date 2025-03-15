@@ -2320,168 +2320,173 @@
     </div>
  
     <script>
-        // Function to interpolate between two colors
-        function interpolateColor(color1, color2, factor) {
-            const result = color1.slice();
-            for (let i = 0; i < 3; i++) {
-                result[i] = Math.round(result[i] + factor * (color2[i] - color1[i]));
-            }
-            return result;
+document.addEventListener("DOMContentLoaded", function () {
+    // Function to interpolate between two colors
+    function interpolateColor(color1, color2, factor) {
+        const result = color1.slice();
+        for (let i = 0; i < 3; i++) {
+            result[i] = Math.round(result[i] + factor * (color2[i] - result[i]));
         }
+        return result;
+    }
 
-        // Function to convert hex to RGB
-        function hexToRgb(hex) {
-            const bigint = parseInt(hex.slice(1), 16);
-            return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
-        }
+    // Function to convert hex to RGB
+    function hexToRgb(hex) {
+        const bigint = parseInt(hex.slice(1), 16);
+        return [(bigint >> 16) & 255, (bigint >> 8) & 255, bigint & 255];
+    }
 
-        // Function to calculate the thumb color based on the slider's value
-        function getThumbColor(value) {
-            const colors = ["#FF4D4D", "#FF914D", "#FFD700", "#00CC66"];
-            const index = Math.floor(value);
-            const factor = value - index;
-            const color1 = hexToRgb(colors[index]);
-            const color2 = hexToRgb(colors[index + 1] || colors[index]);
-            const interpolatedColor = interpolateColor(color1, color2, factor);
-            return `rgb(${interpolatedColor.join(",")})`;
-        }
+    // Function to calculate the thumb color based on the slider's value
+    function getThumbColor(value) {
+        const colors = ["#FF4D4D", "#FF914D", "#FFD700", "#00CC66"];
+        const index = Math.floor(value);
+        const factor = value - index;
+        const color1 = hexToRgb(colors[index]);
+        const color2 = hexToRgb(colors[index + 1] || colors[index]);
+        const interpolatedColor = interpolateColor(color1, color2, factor);
+        return `rgb(${interpolatedColor.join(",")})`;
+    }
 
-        // Function to update the slider thumb color
-        function updateThumbColor(slider) {
-            const value = parseFloat(slider.value);
-            const thumbColor = getThumbColor(value);
-            slider.style.setProperty("--thumb-color", thumbColor);
-        }
+    // Function to update the slider thumb color
+    function updateThumbColor(slider) {
+        const value = parseFloat(slider.value);
+        const thumbColor = getThumbColor(value);
+        slider.style.setProperty("--thumb-color", thumbColor);
+    }
 
-        // Function to initialize slider thumb colors
-        function initializeSliderThumbs() {
-            const sliders = document.querySelectorAll(".slider");
-            sliders.forEach(slider => {
+    // Function to initialize slider thumb colors
+    function initializeSliderThumbs() {
+        const sliders = document.querySelectorAll(".slider");
+        sliders.forEach(slider => {
+            updateThumbColor(slider);
+            slider.addEventListener("input", () => {
                 updateThumbColor(slider);
-                slider.addEventListener("input", () => updateThumbColor(slider));
+                updatePreference(slider, slider.nextElementSibling); // Update label
             });
+        });
+    }
+
+    // Function to update the preference text and color
+    function updatePreference(slider, preferenceSpan) {
+        const value = parseInt(slider.value);
+        let preference = '';
+        let color = '';
+
+        switch (value) {
+            case 0:
+                preference = 'Hard Limit';
+                color = '#EF5350';
+                break;
+            case 1:
+                preference = 'Curious';
+                color = '#FF914D';
+                break;
+            case 2:
+                preference = 'Moderate';
+                color = '#FFCA28';
+                break;
+            case 3:
+                preference = 'Oh Yes';
+                color = '#26A69A';
+                break;
         }
 
-        // Function to update the preference text and color
-        function updatePreference(slider, preferenceSpan) {
-            const value = parseInt(slider.value);
-            let preference = '';
-            let color = '';
+        preferenceSpan.textContent = preference;
+        preferenceSpan.style.color = color;
 
-            switch (value) {
-                case 0:
-                    preference = 'Hard Limit';
-                    color = '#EF5350';
-                    break;
-                case 1:
-                    preference = 'Curious';
-                    color = '#FF914D';
-                    break;
-                case 2:
-                    preference = 'Moderate';
-                    color = '#FFCA28';
-                    break;
-                case 3:
-                    preference = 'Oh Yes';
-                    color = '#26A69A';
-                    break;
-            }
+        // Update the URL in real-time
+        updateUrl();
+    }
 
-            preferenceSpan.textContent = preference;
-            preferenceSpan.style.color = color;
+    // Function to serialize slider data into a JSON string
+    function serializeSliders() {
+        const sliders = document.querySelectorAll('.slider');
+        const data = {};
+        sliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = slider.value;
+            data[key] = value;
+        });
+        return JSON.stringify(data);
+    }
 
-            // Update the URL in real-time
-            updateUrl();
-        }
+    // Function to update the URL with Base64-encoded slider data
+    function updateUrl() {
+        const jsonString = serializeSliders();
+        const base64String = btoa(jsonString); // Encode to Base64
+        const newUrl = `${window.location.origin}${window.location.pathname}?data=${base64String}`;
+        window.history.replaceState({}, '', newUrl);
+    }
 
-        // Function to serialize slider data into a JSON string
-        function serializeSliders() {
+    // Function to load slider positions from Base64-encoded URL
+    function loadSliderPositionsFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const base64String = urlParams.get('data');
+        if (base64String) {
+            const jsonString = atob(base64String); // Decode from Base64
+            const data = JSON.parse(jsonString);
             const sliders = document.querySelectorAll('.slider');
-            const data = {};
             sliders.forEach(slider => {
                 const key = slider.getAttribute('data-key');
-                const value = slider.value;
-                data[key] = value;
-            });
-            return JSON.stringify(data);
-        }
-
-        // Function to update the URL with Base64-encoded slider data
-        function updateUrl() {
-            const jsonString = serializeSliders();
-            const base64String = btoa(jsonString); // Encode to Base64
-            const newUrl = `${window.location.origin}${window.location.pathname}?data=${base64String}`;
-            window.history.replaceState({}, '', newUrl);
-        }
-
-        // Function to load slider positions from Base64-encoded URL
-        function loadSliderPositionsFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const base64String = urlParams.get('data');
-            if (base64String) {
-                const jsonString = atob(base64String); // Decode from Base64
-                const data = JSON.parse(jsonString);
-                const sliders = document.querySelectorAll('.slider');
-                sliders.forEach(slider => {
-                    const key = slider.getAttribute('data-key');
-                    if (data[key] !== undefined) {
-                        slider.value = data[key];
-                        updatePreference(slider, slider.nextElementSibling);
-                        updateThumbColor(slider);
-                    }
-                });
-            }
-        }
-
-        // Function to share via Telegram
-        function shareViaTelegram() {
-            const url = generateUrl();
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-        }
-
-        // Function to share via WhatsApp
-        function shareViaWhatsApp() {
-            const url = generateUrl();
-            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-        }
-
-        // Function to share via Email
-        function shareViaEmail() {
-            const url = generateUrl();
-            window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
-        }
-
-        // Function to copy the URL to clipboard
-        function copyUrl() {
-            const url = generateUrl();
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy URL. Please try again.');
+                if (data[key] !== undefined) {
+                    slider.value = data[key];
+                    updatePreference(slider, slider.nextElementSibling);
+                    updateThumbColor(slider);
+                }
             });
         }
+    }
 
-        // Function to generate the URL with Base64-encoded slider data
-        function generateUrl() {
-            const jsonString = serializeSliders();
-            const base64String = btoa(jsonString); // Encode to Base64
-            return `${window.location.origin}${window.location.pathname}?data=${base64String}`;
-        }
+    // Function to share via Telegram
+    function shareViaTelegram() {
+        const url = generateUrl();
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+    }
 
-        // Function to open tabs
-        function openTab(tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+    // Function to share via WhatsApp
+    function shareViaWhatsApp() {
+        const url = generateUrl();
+        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
+    }
 
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
-            document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
-        }
+    // Function to share via Email
+    function shareViaEmail() {
+        const url = generateUrl();
+        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
+    }
 
-        // Initialize slider thumb colors and load positions from URL
-        initializeSliderThumbs();
-        loadSliderPositionsFromUrl();
+    // Function to copy the URL to clipboard
+    function copyUrl() {
+        const url = generateUrl();
+        navigator.clipboard.writeText(url).then(() => {
+            alert('URL copied to clipboard!');
+        }).catch(() => {
+            alert('Failed to copy URL. Please try again.');
+        });
+    }
+
+    // Function to generate the URL with Base64-encoded slider data
+    function generateUrl() {
+        const jsonString = serializeSliders();
+        const base64String = btoa(jsonString); // Encode to Base64
+        return `${window.location.origin}${window.location.pathname}?data=${base64String}`;
+    }
+
+    // Function to open tabs
+    function openTab(tabName) {
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
+
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => button.classList.remove('active'));
+        document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
+    }
+
+    // Initialize slider thumb colors and load positions from URL
+    initializeSliderThumbs();
+    loadSliderPositionsFromUrl();
+});
     </script>
     <!-- Footer -->
     <footer style="text-align: center; padding: 1rem; color: var(--text-secondary); font-size: 0.875rem; margin-top: 2rem;">
