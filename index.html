@@ -301,7 +301,7 @@
         <!-- Safe Words Section -->
         <div class="card">
             <h2>Safe Words</h2>
-            <p>Safe words are essential for maintaining consent and communication during BDSM activities. Some examples below:</p>
+            <p>Safe words are essential for maintaining consent and communication during BDSM activities:</p>
             <ul>
                 <li><span style="color: #26A69A;">Green</span> Everything is okay, continue.</li>
                 <li><span style="color: #FFCA28;">Yellow</span> Slow down or check-in.</li>
@@ -2362,6 +2362,7 @@ document.addEventListener("DOMContentLoaded", function () {
             slider.addEventListener("input", () => {
                 updateThumbColor(slider);
                 updatePreference(slider, slider.nextElementSibling); // Update label
+                updateUrl(); // Update the URL
             });
         });
     }
@@ -2393,9 +2394,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         preferenceSpan.textContent = preference;
         preferenceSpan.style.color = color;
-
-        // Update the URL in real-time
-        updateUrl();
     }
 
     // Function to serialize slider data into a JSON string
