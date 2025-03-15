@@ -1,23 +1,125 @@
-<!doctype html>
+<!DOCTYPE html>
+<html lang="en">
 
-<html>
-    <head>
-        <meta charset="utf-8">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Kinky Play List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
 
-        <title>Blank template</title>
+<body>
+    <div class="elegant-container">
+        <div class="card">
+            <h1>The Kinky Play List</h1>
+            <p>Use the sliders to express your preferences and consent for each kinky activity:</p><ul>
+                <li><strong>Me:</strong> Indicates what you enjoy doing</li>
+                <li><strong>Partner:</strong> Indicates what you enjoy receiving</li>
+            </ul>
+            <ul>
+                <li><span style="color: #EF5350;">Hard Limit</span> - Absolutely not</li>
+                <li><span style="color: #FF914D;">Curious</span> - Willing to explore</li>
+                <li><span style="color: #FFCA28;">Moderate</li>
+                <li><span style="color: #26A69A;">Oh Yes</span> - Enthusiastic consent</li>
+            </ul>
+        </div>
 
-        <!-- Load external CSS styles -->
-        <link rel="stylesheet" href="styles.css">
+        <!-- Safe Words Section -->
+        <div class="card">
+            <h2>Safe Words</h2>
+            <p><ul>
+                <li><span style="color: #26A69A;">Green</span> Everything is okay, continue.</li>
+                <li><span style="color: #FFCA28;">Yellow</span> Slow down or check-in.</li>
+                <li><span style="color: #EF5350;">Red</span> Stop immediately.</li>
+            </ul>
+            <p>Make sure both partners agree on safe words before starting.</p>
+        </div>
 
-    </head>
+        <!-- Aftercare Section -->
+        <div class="card">
+            <h2>Aftercare</h2>
+            <p>Aftercare ensures both partners feel supported post-scene:</p>
+            <ul>
+                <li>Water, snacks, or a blanket.</li><li>Cuddling or holding each other.</li>
+                <li>Discussing the scene and<ul>
+                <li>Discussing the scene and feelings.</li>
+                <li>Taking care of marks or injuries.</li>
+            </ul>
+            <p>Plan aftercare with your partner beforehand.</p>
+        </div>
 
-    <body>
+        <!-- Preferences Section -->
+        <div class="card">
+            <div class="tabs">
+                <button class="tab-button active" onclick="openTab('me')">Me</button>
+                <button class="tab-button" onclick="openTab('partner')">Partner</button>
+            </div>
+            <div id="me" class="tab-content active">
+                <div class="sub-section">
+                    <h2>Oral, Vaginal, Anal</h2>
+                    <div class="item">
+                        <span class="item-label">Kissing</span><input type="range" min="0" max="3" value="0" class="slider" data-key="kissing-me" onchange="updatePreference(this, this.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                    <div class="item">
+                        <span class="item-label">Masturbation</span>
+                        <input type="range" min="0" max="3" value="0" class="slider" data-key="masturbation-me" onchange="updatePreference(this, this.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                    <div class="item">
+                        <span class="item-label">Oral (Received)</span>
+                        <input type="range" min="0" max="3" value="0" class="slider" data-key="oral-received-me" onchange="updatePreference(this, this.nextElement.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                </div>
+            </div>
+            <div id="partner" class="tab-content">
+                <div class="sub-section">
+                    <h2>Oral, Vaginal, Anal</h2>
+                    <div class="item">
+                        <span class="item-label">Kissing</span>
+                        <input type="range" min="0" max="3" value="0" class="slider" data-key="kissing-partner" onchange="updatePreference(this, this.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                    <div class="item">
+                        <span class="item-label">Masturbation</span>
+                        <input type="range" min="0" max="3" value="0" class="slider" data-key="kissing-partner" onchange="updatePreference(this, this.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                    <div class="item">
+                        <span class="item-label">Oral (Received)</span>
+                        <input type="range" min="0" max="3" value="0" class="slider" data-key="oral-received-partner" onchange="updatePreference(this, this.nextElementSibling)">
+                        <span class="preference">Hard Limit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
 
-        <h1>My awesome space</h1>
-        
-        <!-- Load external JavaScript -->
-        <script src="scripts.js"></script>
-        
-    </body>
+        <!-- Note Section -->
+        <div class="note-section">
+            <h2>Notes</h2>
+            <textarea placeholder="Add any additional notes or comments here..." rows="4"></textarea>
+        </div>
+
+        <!-- Share Container -->
+        <div class="share-container">
+            <button class="share-button telegram" onclick="shareViaTelegram()">
+                <i class="fab fa-telegram"></i> Telegram
+            </button>
+            <button class="share-button whatsapp" onclick="shareViaWhatsApp()">
+                <i class="fab fa-whatsapp"></i> WhatsApp
+            </button>
+            <button class="share-button email" onclick="shareViaEmail()">
+                <i class="fas fa-envelope"></i> Email
+            </button>
+            <button class="share-button copy-link" onclick="copyUrl()">
+                <i class="fas fa-link"></i> Copy Link
+            </button>
+        </div>
+    </div>
+    <script src="scripts.js"></script>
+</body>
 
 </html>
