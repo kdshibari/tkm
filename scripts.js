@@ -1,3 +1,4 @@
+// Helper functions
 function interpolateColor(color1, color2, factor) {
     const result = color1.slice();
     for (let i = 0; i < 3; i++) {
@@ -89,16 +90,6 @@ function copyUrl() {
     }).catch(() => {
         alert('Failed to copy URL. Please try again.');
     });
-}
-
-function openTab(tabName) {
-    const tabContents = document.querySelectorAll('.tab-content');
-    tabContents.forEach(tab => tab.classList.remove('active'));
-    document.getElementById(tabName).classList.add('active');
-
-    const tabButtons = document.querySelectorAll('.tab-button');
-    tabButtons.forEach(button => button.classList.remove('active'));
-    document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
 }
 
 function loadSliderPositionsFromUrl() {
