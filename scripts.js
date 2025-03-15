@@ -1,4 +1,3 @@
-{{javascript}}
 function interpolateColor(color1, color2, factor) {
     const result = color1.slice();
     for (let i = 0; i < 3; i++) {
@@ -17,7 +16,7 @@ function getThumbColor(value) {
     const index = Math.floor(value);
     const factor = value - index;
     const color1 = hexToRgb(colors[index]);
-    constRgb(colors[index + 1] || colors[index]);
+    const color2 = hexToRgb(colors[index + 1] || colors[index]);
     const interpolatedColor = interpolateColor(color1, color2, factor);
     return `rgb(${interpolatedColor.join(",")})`;
 }
@@ -28,14 +27,6 @@ function updateThumbColor(slider) {
     slider.style.setProperty("--thumb-color", thumbColor);
 }
 
-function initializeSliderThumbs() {
-    const sliders = document.querySelectorAll(".slider");
-    sliders.forEach(slider => {
-        updateThumbColor(slider);
-        slider.addEventListener("input", () => updateThumbColor(slider));
-    });
-}
-
 function updatePreference(slider, preferenceSpan) {
     const value = parseInt(slider.value);
     let preference = '';
@@ -44,7 +35,7 @@ function updatePreference(slider, preferenceSpan) {
     switch (value) {
         case 0:
             preference = 'Hard Limit';
-            color = '#EF5350';// Red
+            color = '#EF5350'; // Red
             break;
         case 1:
             preference = 'Curious';
@@ -62,6 +53,7 @@ function updatePreference(slider, preferenceSpan) {
 
     preferenceSpan.textContent = preference;
     preferenceSpan.style.color = color; // Update text color
+    updateThumbColor(slider); // Ensure thumb color is updated
 }
 
 function generateUrl() {
@@ -118,9 +110,22 @@ function loadSliderPositionsFromUrl() {
         if (value !== null) {
             slider.value = value;
             updatePreference(slider, slider.nextElementSibling);
+            updateThumbColor(slider); // Ensure thumb color is updated
         }
     });
 }
 
+function initializeSliderThumbs() {
+    const sliders = document.querySelectorAll(".slider");
+    sliders.forEach(slider => {
+        updateThumbColor(slider);
+        slider.addEventListener("input", () => {
+            updateThumbColor(slider);
+            updatePreference(slider, slider.nextElementSibling);
+        });
+    });
+}
+
+// Initialize everything
 initializeSliderThumbs();
 loadSliderPositionsFromUrl();
