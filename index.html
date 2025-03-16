@@ -2282,110 +2282,154 @@
         </div>
     </div>
 
-    <script>
-        function openTab(tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+<script>
+    function openTab(tabName) {
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
 
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
-            document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => button.classList.remove('active'));
+        document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
+    }
+
+    function toggleSection(header) {
+        const section = header.nextElementSibling;
+        section.classList.toggle('active');
+    }
+
+    function updatePreference(slider, preferenceSpan) {
+        const value = parseInt(slider.value);
+        let preference = '';
+        let color = '';
+
+        switch (value) {
+            case 0:
+                preference = 'Hard Limit';
+                color = '#EF5350';
+                break;
+            case 1:
+                preference = 'Curious';
+                color = '#FF914D';
+                break;
+            case 2:
+                preference = 'Moderate';
+                color = '#FFCA28';
+                break;
+            case 3:
+                preference = 'Oh Yes';
+                color = '#26A69A';
+                break;
         }
 
-        function toggleSection(header) {
-            const section = header.nextElementSibling;
-            section.classList.toggle('active');
-        }
+        preferenceSpan.textContent = preference;
+        preferenceSpan.style.color = color;
+        updateUrl(); // Call this to update URL immediately after slider change
+    }
 
-        function updatePreference(slider, preferenceSpan) {
-            const value = parseInt(slider.value);
-            let preference = '';
-            let color = '';
+    function generateUrlParams() {
+        const meSliders = document.querySelectorAll('#me .slider');
+        const partnerSliders = document.querySelectorAll('#partner .slider');
+        const params = new URLSearchParams();
 
-            switch (value) {
-                case 0:
-                    preference = 'Hard Limit';
-                    color = '#EF5350';
-                    break;
-                case 1:
-                    preference = 'Curious';
-                    color = '#FF914D';
-                    break;
-                case 2:
-                    preference = 'Moderate';
-                    color = '#FFCA28';
-                    break;
-                case 3:
-                    preference = 'Oh Yes';
-                    color = '#26A69A';
-                    break;
-            }
+        // Store "Me" preferences
+        meSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = slider.value;
+            params.set(`me[${key}]`, value);
+        });
 
-            preferenceSpan.textContent = preference;
-            preferenceSpan.style.color = color;
-        }
+        // Store "Partner" preferences with a prefix to differentiate
+        partnerSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = slider.value;
+            params.set(`partner[${key}]`, value);
+        });
 
-        function generateUrl() {
-            const sliders = document.querySelectorAll('.slider');
-            const params = new URLSearchParams();
-            sliders.forEach(slider => {
-                const key = slider.getAttribute('data-key');
-                const value = slider.value;
-                params.set(key, value);
-            });
-            return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-        }
+        return params;
+    }
 
-        function shareViaTelegram() {
-            const url = generateUrl();
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-        }
+    function updateUrl() {
+        const params = generateUrlParams();
+        const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        window.history.pushState({}, document.title, newUrl); // Update URL without reloading
+    }
 
-        function shareViaWhatsApp() {
-            const url = generateUrl();
-            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-        }
+    function generateUrl() {
+        const params = generateUrlParams();
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    }
 
-        function shareViaEmail() {
-            const url = generateUrl();
-            window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
-        }
+    function shareViaTelegram() {
+        const url = generateUrl();
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+    }
 
-        function copyUrl() {
-            const url = generateUrl();
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy URL. Please try again.');
-            });
-        }
+    function shareViaWhatsApp() {
+        const url = generateUrl();
+        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
+    }
 
-        function loadSliderPositionsFromUrl() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const sliders = document.querySelectorAll('.slider');
-            sliders.forEach(slider => {
-                const key = slider.getAttribute('data-key');
-                const value = urlParams.get(key);
-                if (value !== null) {
-                    slider.value = value;
-                    updatePreference(slider, slider.nextElementSibling);
-                }
-            });
-        }
+    function shareViaEmail() {
+        const url = generateUrl();
+        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
+    }
 
-        function resetSliders() {
-            const sliders = document.querySelectorAll('.slider');
-            sliders.forEach(slider => {
-                slider.value = 0;
+    function copyUrl() {
+        const url = generateUrl();
+        navigator.clipboard.writeText(url).then(() => {
+            alert('URL copied to clipboard!');
+        }).catch(() => {
+            alert('Failed to copy URL. Please try again.');
+        });
+    }
+
+    function loadSliderPositionsFromUrl() {
+        const urlParams = new URLSearchParams(window.location.search);
+
+        // Load "Me" sliders
+        const meSliders = document.querySelectorAll('#me .slider');
+        meSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const paramKey = `me[${key}]`;
+            const value = urlParams.get(paramKey);
+            if (value !== null) {
+                slider.value = value;
                 updatePreference(slider, slider.nextElementSibling);
-            });
-        }
+            }
+        });
 
-        window.onload = function() {
-            loadSliderPositionsFromUrl();
-        };
-    </script>
+        // Load "Partner" sliders
+        const partnerSliders = document.querySelectorAll('#partner .slider');
+        partnerSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const paramKey = `partner[${key}]`;
+            const value = urlParams.get(paramKey);
+            if (value !== null) {
+                slider.value = value;
+                updatePreference(slider, slider.nextElementSibling);
+            }
+        });
+    }
+
+    function resetSliders() {
+        const sliders = document.querySelectorAll('.slider');
+        sliders.forEach(slider => {
+            slider.value = 0;
+            updatePreference(slider, slider.nextElementSibling);
+        });
+        updateUrl(); // Update URL after resetting
+    }
+
+    window.onload = function() {
+        loadSliderPositionsFromUrl();
+        // Add event listeners to all sliders to update URL on change
+        const sliders = document.querySelectorAll('.slider');
+        sliders.forEach(slider => {
+            slider.addEventListener('input', () => updatePreference(slider, slider.nextElementSibling));
+        });
+    };
+</script>
 </body>
 
 </html>
