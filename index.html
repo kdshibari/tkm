@@ -2413,6 +2413,15 @@
             preferenceSpan.style.color = colors[value];
         }
 
+        function updatePreference(slider, preferenceSpan) {
+            const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+            const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+
+            const value = parseInt(slider.value);
+            preferenceSpan.textContent = values[value];
+            preferenceSpan.style.color = colors[value];
+        }
+
         function generateUrl() {
             const sliders = document.querySelectorAll('.slider');
             const params = new URLSearchParams();
