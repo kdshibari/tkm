@@ -2497,43 +2497,65 @@
         });
     }
 
-    async function shortenUrl(longUrl) {
-        // Mock URL shortening function (replace with a real API call if needed)
-        return new Promise((resolve) => {
-            setTimeout(() => {
-                const shortUrl = longUrl.replace(window.location.origin, `${window.location.origin}/short`);
-                resolve(shortUrl);
-            }, 500); // Simulate network delay
+    // Function to shorten a URL using the TinyURL API
+async function shortenUrl(longUrl) {
+    try {
+        const response = await fetch('https://api.tinyurl.com/create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'Bearer YOUR_TINYURL_API_TOKEN', // Replace with your TinyURL API token
+            },
+            body: JSON.stringify({
+                url: longUrl,
+                domain: 'tiny.one', // Optional: You can specify a custom domain if needed
+            }),
         });
-    }
 
-    async function shareViaTelegram() {
-        const url = generateUrl();
-        const shortUrl = await shortenUrl(url);
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(shortUrl)}`, '_blank');
-    }
+        if (!response.ok) {
+            throw new Error('Failed to shorten URL');
+        }
 
-    async function shareViaWhatsApp() {
-        const url = generateUrl();
-        const shortUrl = await shortenUrl(url);
-        window.open(`https://wa.me/?text=${encodeURIComponent(shortUrl)}`, '_blank');
+        const data = await response.json();
+        return data.data.tiny_url; // Return the shortened URL from the API response
+    } catch (error) {
+        console.error('Error shortening URL:', error);
+        alert('Failed to shorten URL. Please try again later.');
+        return longUrl; // Fallback to the original URL if shortening fails
     }
+}
 
-    async function shareViaEmail() {
-        const url = generateUrl();
-        const shortUrl = await shortenUrl(url);
-        window.location.href = `mailto:?body=${encodeURIComponent(shortUrl)}`;
-    }
+// Function to share the URL via Telegram
+async function shareViaTelegram() {
+    const url = generateUrl();
+    const shortUrl = await shortenUrl(url);
+    window.open(`https://t.me/share/url?url=${encodeURIComponent(shortUrl)}`, '_blank');
+}
 
-    async function copyUrl() {
-        const url = generateUrl();
-        const shortUrl = await shortenUrl(url);
-        navigator.clipboard.writeText(shortUrl).then(() => {
-            alert('Shortened URL copied to clipboard!');
-        }).catch(() => {
-            alert('Failed to copy URL.');
-        });
-    }
+// Function to share the URL via WhatsApp
+async function shareViaWhatsApp() {
+    const url = generateUrl();
+    const shortUrl = await shortenUrl(url);
+    window.open(`https://wa.me/?text=${encodeURIComponent(shortUrl)}`, '_blank');
+}
+
+// Function to share the URL via Email
+async function shareViaEmail() {
+    const url = generateUrl();
+    const shortUrl = await shortenUrl(url);
+    window.location.href = `mailto:?body=${encodeURIComponent(shortUrl)}`;
+}
+
+// Function to copy the shortened URL to the clipboard
+async function copyUrl() {
+    const url = generateUrl();
+    const shortUrl = await shortenUrl(url);
+    navigator.clipboard.writeText(shortUrl).then(() => {
+        alert('Shortened URL copied to clipboard!');
+    }).catch(() => {
+        alert('Failed to copy URL.');
+    });
+}
 
     window.onload = function() {
         openTab('me');
