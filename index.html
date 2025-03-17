@@ -3,30 +3,37 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Kinky Play List</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #FF3B5C;
-            --secondary: #FF6B8B;
+            --primary: #B71C1C;
+            /* Deep Red */
+            --secondary: #6A1B9A;
+            /* Dark Purple */
             --surface: #1A1A1A;
+            /* Black */
             --background: #121212;
-            --text-primary: #F5F5F5;
-            --text-secondary: #A0A0A0;
-            --elevation-1: 0 4px 6px -1px rgba(0, 0, 0, 0.25);
-            --thumb-color: #E0E0E0;
+            /* Darker Black */
+            --text-primary: #EEEEFF;
+            /* White */
+            --text-secondary: #B0BEC5;
+            /* Metallic Silver */
+            --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         body {
             font-family: 'Inter', sans-serif;
+            /* Clean and modern font for body text */
             margin: 0;
             padding: 0;
             background: var(--background);
             color: var(--text-primary);
             line-height: 1.6;
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
 
         .elegant-container {
@@ -36,11 +43,13 @@
             background: var(--surface);
             border-radius: 20px;
             box-shadow: var(--elevation-1);
-            border: 1px solid rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
-            font-size: 2rem;
+            font-family: 'Roboto', sans-serif;
+            /* Modern font for headings */
+            font-size: 2.5rem;
             text-align: center;
             color: var(--primary);
             font-weight: 700;
@@ -48,25 +57,29 @@
         }
 
         h2 {
-            font-size: 1.5rem;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.25rem;
             cursor: pointer;
             padding: 10px;
-            background-color: rgba(255, 59, 92, 0.15);
+            background-color: rgba(183, 28, 28, 0.2);
+            /* Deep Red with transparency */
             border-radius: 8px;
-            transition: background-color 0.3s ease;
-            color: var(--primary);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
         }
 
         h2:hover {
-            background-color: rgba(255, 59, 92, 0.25);
+            background-color: rgba(183, 28, 28, 0.3);
+            transform: scale(1.02);
         }
 
         .section-content {
             display: none;
             padding: 10px;
-            border-left: 3px solid var(--primary);
+            border-left: 4px solid var(--primary);
             margin: 10px 0;
-            background-color: rgba(255, 59, 92, 0.05);
+            background-color: rgba(183, 28, 28, 0.1);
             border-radius: 8px;
         }
 
@@ -116,6 +129,7 @@
         .item-label {
             flex: 1;
             font-size: 14px;
+            color: var(--text-secondary);
         }
 
         .slider {
@@ -128,6 +142,9 @@
             outline: none;
             cursor: pointer;
             transition: opacity 0.2s ease;
+            touch-action: none;
+            /* Prevent scrolling when using slider */
+
         }
 
         .slider:hover {
@@ -144,11 +161,18 @@
             appearance: none;
             width: 10px;
             height: 24px;
-            background: var(--thumb-color);
+            background: rgba(255, 255, 255, 0.8);
+            /* White with 80% opacity */
             border-radius: 3px;
             border: 0;
             cursor: pointer;
             transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .slider:hover::-webkit-slider-thumb {
+            transform: scale(1.1);
+            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+            /* Subtle glow effect on hover */
         }
 
         .slider::-moz-range-thumb {
@@ -176,6 +200,7 @@
             text-align: center;
             font-size: 14px;
             font-weight: 600;
+            color: var(--text-primary);
         }
 
         .share-container {
@@ -219,84 +244,97 @@
             background: #6B7280;
             color: white;
         }
-        
+
         @media (max-width: 768px) {
             .slider {
                 width: 35%;
             }
+
             .slider::-webkit-slider-thumb {
                 width: 1.25rem;
                 height: 1.25rem;
             }
-            .item-label, .preference {
+
+            .item-label,
+            .preference {
                 font-size: 0.875rem;
             }
+
             .progress-container {
                 flex-direction: column;
                 gap: 0.75rem;
             }
+
             .progress-label {
                 font-size: 0.875rem;
             }
+
             .progress-percentage {
                 font-size: 0.75rem;
             }
+
             .tabs {
                 flex-wrap: wrap;
             }
-            .button-container, .share-container {
+
+            .button-container,
+            .share-container {
                 flex-wrap: wrap;
             }
-            .share-button, .edit-button, .reset-button {
+
+            .share-button,
+            .edit-button,
+            .reset-button {
                 padding: 0.5rem 1rem;
                 font-size: 0.875rem;
             }
         }
+
     </style>
 </head>
 
 <body>
-<div class="elegant-container">
-    <h1>The Kinky Play List</h1>
-    <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
-    <ul>
-        <li><strong>Me</strong> Indicates what you enjoy doing</li>
-        <li><strong>Partner:</strong> Indicates what you enjoy receiving</li>
-    </ul>
-    <ul>
-        <li><span style="color: #EF5350;">Hard Limit</span> - Absolutely not</li>
-        <li><span style="color: #FF914D;">Curious</span> - Willing to explore</li>
-        <li><span style="color: #FFCA28;">Moderate</span> - Enjoy moderately</li>
-        <li><span style="color: #26A69A;">Oh Yes</span> - Enthusiastic consent</li>
-    </ul>
-
-    <div class="card">
-        <h2>Safe Words</h2>
-        <p>Safe words are essential for maintaining consent and communication during BDSM activities:</p>
+    <div class="elegant-container">
+        <h1>The Kinky Play List</h1>
+        <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
         <ul>
-            <li><span style="color: #26A69A;">Green</span> - Everything is okay, continue.</li>
-            <li><span style="color: #FFCA28;">Yellow</span> - Slow down or check-in.</li>
-            <li><span style="color: #EF5350;">Red</span> - Stop immediately.</li>
+            <li><strong>Me</strong> Indicates what you enjoy doing</li>
+            <li><strong>Partner:</strong> Indicates what you enjoy receiving</li>
         </ul>
-        <p>Make sure both partners agree on safe words before starting.</p>
-    </div>
-
-    <div class="card">
-        <h2>Aftercare</h2>
-        <p>Aftercare ensures both partners feel supported post-scene:</p>
         <ul>
-            <li>Water, snacks, or a blanket.</li>
-            <li>Cuddling or holding each other.</li>
-            <li>Discussing the scene and feelings.</li>
-            <li>Taking care of marks or injuries.</li>
+            <li><span style="color: #EF5350;">Hard Limit</span> - Absolutely not</li>
+            <li><span style="color: #FF914D;">Curious</span> - Willing to explore</li>
+            <li><span style="color: #FFCA28;">Moderate</span> - Enjoy moderately</li>
+            <li><span style="color: #26A69A;">Oh Yes</span> - Enthusiastic consent</li>
         </ul>
-        <p>Plan aftercare with your partner beforehand.</p>
-    </div>
 
-    <div class="tabs">
-        <button class="tab-button active" onclick="openTab('me')">Me</button>
-        <button class="tab-button" onclick="openTab('partner')">Partner</button>
-    </div>
+        <div class="card">
+            <h2>Safe Words</h2>
+            <p>Safe words are essential for maintaining consent and communication during BDSM activities:</p>
+            <ul>
+                <li><span style="color: #26A69A;">Green</span> - Everything is okay, continue.</li>
+                <li><span style="color: #FFCA28;">Yellow</span> - Slow down or check-in.</li>
+                <li><span style="color: #EF5350;">Red</span> - Stop immediately.</li>
+            </ul>
+            <p>Make sure both partners agree on safe words before starting.</p>
+        </div>
+
+        <div class="card">
+            <h2>Aftercare</h2>
+            <p>Aftercare ensures both partners feel supported post-scene:</p>
+            <ul>
+                <li>Water, snacks, or a blanket.</li>
+                <li>Cuddling or holding each other.</li>
+                <li>Discussing the scene and feelings.</li>
+                <li>Taking care of marks or injuries.</li>
+            </ul>
+            <p>Plan aftercare with your partner beforehand.</p>
+        </div>
+
+        <div class="tabs">
+            <button class="tab-button active" onclick="openTab('me')">Me</button>
+            <button class="tab-button" onclick="openTab('partner')">Partner</button>
+        </div>
         <div id="me" class="tab-content active">
             <h2 onclick="toggleSection(this)">Oral, Vaginal, Anal</h2>
             <div class="section-content">
@@ -1284,9 +1322,9 @@
                 </div>
             </div>
         </div>
-       
+
         <div id="partner" class="tab-content">
-                        <h2 onclick="toggleSection(this)">Oral, Vaginal, Anal</h2>
+            <h2 onclick="toggleSection(this)">Oral, Vaginal, Anal</h2>
             <div class="section-content">
                 <div class="item">
                     <span class="item-label">Kissing</span>
@@ -2272,7 +2310,7 @@
                 </div>
             </div>
         </div>
-            
+
         <div class="share-container">
             <button class="share-button telegram" onclick="shareViaTelegram()">Share via Telegram</button>
             <button class="share-button whatsapp" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
@@ -2282,154 +2320,70 @@
         </div>
     </div>
 
-<script>
-    function openTab(tabName) {
-        const tabContents = document.querySelectorAll('.tab-content');
-        tabContents.forEach(tab => tab.classList.remove('active'));
-        document.getElementById(tabName).classList.add('active');
+    <script>
+        function openTab(tabName) {
+            const tabContents = document.querySelectorAll('.tab-content');
+            tabContents.forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName).classList.add('active');
 
-        const tabButtons = document.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => button.classList.remove('active'));
-        document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
-    }
-
-    function toggleSection(header) {
-        const section = header.nextElementSibling;
-        section.classList.toggle('active');
-    }
-
-    function updatePreference(slider, preferenceSpan) {
-        const value = parseInt(slider.value);
-        let preference = '';
-        let color = '';
-
-        switch (value) {
-            case 0:
-                preference = 'Hard Limit';
-                color = '#EF5350';
-                break;
-            case 1:
-                preference = 'Curious';
-                color = '#FF914D';
-                break;
-            case 2:
-                preference = 'Moderate';
-                color = '#FFCA28';
-                break;
-            case 3:
-                preference = 'Oh Yes';
-                color = '#26A69A';
-                break;
+            const tabButtons = document.querySelectorAll('.tab-button');
+            tabButtons.forEach(button => button.classList.remove('active'));
+            document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
         }
 
-        preferenceSpan.textContent = preference;
-        preferenceSpan.style.color = color;
-        updateUrl(); // Call this to update URL immediately after slider change
-    }
+        function toggleSection(header) {
+            const sectionContent = header.nextElementSibling;
+            sectionContent.classList.toggle('active');
+        }
 
-    function generateUrlParams() {
-        const meSliders = document.querySelectorAll('#me .slider');
-        const partnerSliders = document.querySelectorAll('#partner .slider');
-        const params = new URLSearchParams();
+        function updatePreference(slider, preferenceSpan) {
+            const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+            const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-        // Store "Me" preferences
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const value = slider.value;
-            params.set(`me[${key}]`, value);
-        });
+            const value = parseInt(slider.value);
+            preferenceSpan.textContent = values[value];
+            preferenceSpan.style.color = colors[value];
+        }
 
-        // Store "Partner" preferences with a prefix to differentiate
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const value = slider.value;
-            params.set(`partner[${key}]`, value);
-        });
+        function generateUrl() {
+            const sliders = document.querySelectorAll('.slider');
+            const params = new URLSearchParams();
+            sliders.forEach(slider => {
+                const key = slider.getAttribute('data-key');
+                const value = slider.value;
+                params.set(key, value);
+            });
+            return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+        }
 
-        return params;
-    }
+        function shareViaTelegram() {
+            const url = generateUrl();
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+        }
 
-    function updateUrl() {
-        const params = generateUrlParams();
-        const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-        window.history.pushState({}, document.title, newUrl); // Update URL without reloading
-    }
+        function shareViaWhatsApp() {
+            const url = generateUrl();
+            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
+        }
 
-    function generateUrl() {
-        const params = generateUrlParams();
-        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-    }
+        function shareViaEmail() {
+            const url = generateUrl();
+            window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
+        }
 
-    function shareViaTelegram() {
-        const url = generateUrl();
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-    }
+        function copyUrl() {
+            const url = generateUrl();
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy URL.');
+            });
+        }
 
-    function shareViaWhatsApp() {
-        const url = generateUrl();
-        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-    }
-
-    function shareViaEmail() {
-        const url = generateUrl();
-        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
-    }
-
-    function copyUrl() {
-        const url = generateUrl();
-        navigator.clipboard.writeText(url).then(() => {
-            alert('URL copied to clipboard!');
-        }).catch(() => {
-            alert('Failed to copy URL. Please try again.');
-        });
-    }
-
-    function loadSliderPositionsFromUrl() {
-        const urlParams = new URLSearchParams(window.location.search);
-
-        // Load "Me" sliders
-        const meSliders = document.querySelectorAll('#me .slider');
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const paramKey = `me[${key}]`;
-            const value = urlParams.get(paramKey);
-            if (value !== null) {
-                slider.value = value;
-                updatePreference(slider, slider.nextElementSibling);
-            }
-        });
-
-        // Load "Partner" sliders
-        const partnerSliders = document.querySelectorAll('#partner .slider');
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const paramKey = `partner[${key}]`;
-            const value = urlParams.get(paramKey);
-            if (value !== null) {
-                slider.value = value;
-                updatePreference(slider, slider.nextElementSibling);
-            }
-        });
-    }
-
-    function resetSliders() {
-        const sliders = document.querySelectorAll('.slider');
-        sliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, slider.nextElementSibling);
-        });
-        updateUrl(); // Update URL after resetting
-    }
-
-    window.onload = function() {
-        loadSliderPositionsFromUrl();
-        // Add event listeners to all sliders to update URL on change
-        const sliders = document.querySelectorAll('.slider');
-        sliders.forEach(slider => {
-            slider.addEventListener('input', () => updatePreference(slider, slider.nextElementSibling));
-        });
-    };
-</script>
+        window.onload = function() {
+            openTab('me');
+        };
+    </script>
 </body>
 
 </html>
