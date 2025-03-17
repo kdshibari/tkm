@@ -9,7 +9,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #B71C1C;
+            --primary: #B71C12;
             /* Deep Red */
             --secondary: #6A1B9A;
             /* Dark Purple */
@@ -74,6 +74,23 @@
             transform: scale(1.02);
         }
 
+        footer {
+            margin-top: 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer span {
+            color: #6A1B9A;
+            /* Your specific color for emphasis */
+            font-weight: 500;
+        }
+
         .section-content {
             display: none;
             padding: 10px;
@@ -85,6 +102,26 @@
 
         .section-content.active {
             display: block;
+        }
+
+        .separator {
+            margin: 2rem 0;
+            border-top: 2px solid #121212;
+            text-align: center;
+            position: relative;
+        }
+
+        .separator span {
+            position: absolute;
+            top: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            padding: 0 1rem;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: #6A1B9A;
+            font-weight: 500;
         }
 
         .tabs {
@@ -245,6 +282,23 @@
             color: white;
         }
 
+        .footer {
+            margin-top: 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .footer span {
+            color: #121212;
+            font-weight: 500;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
             .slider {
                 width: 35%;
@@ -289,7 +343,6 @@
                 font-size: 0.875rem;
             }
         }
-
     </style>
 </head>
 
@@ -331,10 +384,17 @@
             <p>Plan aftercare with your partner beforehand.</p>
         </div>
 
+        <div class="separator">
+        </div>
+
         <div class="tabs">
             <button class="tab-button active" onclick="openTab('me')">Me</button>
             <button class="tab-button" onclick="openTab('partner')">Partner</button>
         </div>
+
+        <div class="separator">
+        </div>
+
         <div id="me" class="tab-content active">
             <h2 onclick="toggleSection(this)">Oral, Vaginal, Anal</h2>
             <div class="section-content">
@@ -2311,6 +2371,9 @@
             </div>
         </div>
 
+        <div class="separator">
+        </div>
+
         <div class="share-container">
             <button class="share-button telegram" onclick="shareViaTelegram()">Share via Telegram</button>
             <button class="share-button whatsapp" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
@@ -2318,6 +2381,11 @@
             <button class="share-button copy-link" onclick="copyUrl()">Copy URL</button>
             <button class="share-button reset-button" onclick="resetSliders()">Reset All</button>
         </div>
+
+        <footer>
+            Created with care and love for consensual and safe play.
+        </footer>
+
     </div>
 
     <script>
