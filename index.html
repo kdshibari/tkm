@@ -2293,6 +2293,11 @@
             document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
         }
 
+        function toggleSection(header) {
+            const section = header.nextElementSibling;
+            section.classList.toggle('active');
+        }
+
         function updatePreference(slider, preferenceSpan) {
             const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
             const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
@@ -2365,6 +2370,6 @@
             openTab('me');
         };
     </script>
-<script src="/e8392c1ca15a3affd946ad6f13a77e2dd5bc1cf5288832762b2b0c21e8f444f6/ns.js"></script><script src="/e8392c1ca15a3affd946ad6f13a77e2dd5bc1cf5288832762b2b0c21e8f444f6/ns.js"></script></body>
+<script src="/e8392c1ca15a3affd946ad6f13a77e2dd5bc1cf5288832762b2b0c21e8f444f6/ns.js"></script><script src="/e8392c1ca15a3affd946ad6f13a77e2dd5bc1cf5288832762b2b0c21e8f444f6/ns.js"></script><script src="/e8392c1ca15a3affd946ad6f13a77e2dd5bc1cf5288832762b2b0c21e8f444f6/ns.js"></script></body>
 
 </html>
