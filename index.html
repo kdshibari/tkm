@@ -298,7 +298,40 @@
             font-weight: 500;
             text-align: center;
         }
+        
+        .reset-button-container {
+        display: flex;
+        justify-content: center; /* Centers the button horizontally */
+        margin-top: 1.5rem; /* Adds some spacing above the button */
+    }
 
+    .reset-button {
+        background-color: #EF5350; /* Bright red for a reset action */
+        color: white; /* White text for contrast */
+        border: none; /* Remove default button borders */
+        padding: 0.75rem 1.5rem; /* Add padding for a comfortable click area */
+        border-radius: 8px; /* Rounded corners for a modern look */
+        font-size: 1rem; /* Medium font size */
+        font-family: 'Inter', sans-serif; /* Consistent font with the rest of the page */
+        cursor: pointer; /* Pointer cursor to indicate interactivity */
+        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
+    }
+
+    .reset-button:hover {
+        background-color: #D32F2F; 
+        transform: translateY(-2px); 
+    }
+
+    .reset-button:active {
+        background-color: #C62828; 
+        transform: translateY(0); 
+    }
+
+    .reset-button:focus {
+        outline: 2px solid #FFCDD2; 
+        outline-offset: 2px;
+    }
         @media (max-width: 768px) {
             .slider {
                 width: 35%;
@@ -2370,7 +2403,12 @@
                 </div>
             </div>
         </div>
-
+        
+        <div class="separator"> </div>
+        
+        <div class="reset-button-container">
+    <button class="reset-button" onclick="resetSliders()">Reset All</button>
+</div>
         <div class="separator">
         </div>
 
@@ -2379,7 +2417,7 @@
             <button class="share-button whatsapp" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
             <button class="share-button email" onclick="shareViaEmail()">Share via Email</button>
             <button class="share-button copy-link" onclick="copyUrl()">Copy URL</button>
-            <button class="share-button reset-button" onclick="resetSliders()">Reset All</button>
+            
         </div>
 
         <footer>
@@ -2388,79 +2426,120 @@
 
     </div>
 
-    <script>
-        function openTab(tabName) {
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName).classList.add('active');
+<script>
+    
+    function resetSliders() {
+    const sliders = document.querySelectorAll('.slider');
+    sliders.forEach(slider => {
+        slider.value = 0;
+        const preferenceSpan = slider.nextElementSibling;
+        updatePreference(slider, preferenceSpan);
+    });
+    updateUrl();
+    }
+    function openTab(tabName) {
+        const tabContents = document.querySelectorAll('.tab-content');
+        tabContents.forEach(tab => tab.classList.remove('active'));
+        document.getElementById(tabName).classList.add('active');
 
-            const tabButtons = document.querySelectorAll('.tab-button');
-            tabButtons.forEach(button => button.classList.remove('active'));
-            document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
-        }
+        const tabButtons = document.querySelectorAll('.tab-button');
+        tabButtons.forEach(button => button.classList.remove('active'));
+        document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
+    }
 
-        function toggleSection(header) {
-            const sectionContent = header.nextElementSibling;
-            sectionContent.classList.toggle('active');
-        }
+    function toggleSection(header) {
+        const sectionContent = header.nextElementSibling;
+        sectionContent.classList.toggle('active');
+    }
 
-        function updatePreference(slider, preferenceSpan) {
-            const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-            const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+    function updatePreference(slider, preferenceSpan) {
+        const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+        const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-            const value = parseInt(slider.value);
-            preferenceSpan.textContent = values[value];
-            preferenceSpan.style.color = colors[value];
-        }
+        const value = parseInt(slider.value);
+        preferenceSpan.textContent = values[value];
+        preferenceSpan.style.color = colors[value];
 
-        function updatePreference(slider, preferenceSpan) {
-            const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-            const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+        // Update the URL dynamically whenever the slider is moved
+        updateUrl();
+    }
 
-            const value = parseInt(slider.value);
-            preferenceSpan.textContent = values[value];
-            preferenceSpan.style.color = colors[value];
-        }
+    function generateUrl() {
+        const sliders = document.querySelectorAll('.slider');
+        const params = new URLSearchParams();
+        sliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = slider.value;
+            params.set(key, value);
+        });
+        return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    }
 
-        function generateUrl() {
-            const sliders = document.querySelectorAll('.slider');
-            const params = new URLSearchParams();
-            sliders.forEach(slider => {
-                const key = slider.getAttribute('data-key');
-                const value = slider.value;
-                params.set(key, value);
-            });
-            return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
-        }
+    function updateUrl() {
+        const url = generateUrl();
+        window.history.replaceState(null, '', url); // Update the URL without reloading the page
+    }
 
-        function shareViaTelegram() {
-            const url = generateUrl();
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-        }
+    function restoreSlidersFromUrl() {
+        const params = new URLSearchParams(window.location.search);
+        const sliders = document.querySelectorAll('.slider');
 
-        function shareViaWhatsApp() {
-            const url = generateUrl();
-            window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-        }
+        sliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            if (params.has(key)) {
+                const value = params.get(key);
+                slider.value = value;
 
-        function shareViaEmail() {
-            const url = generateUrl();
-            window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
-        }
+                // Update the preference display based on the restored value
+                const preferenceSpan = slider.nextElementSibling;
+                updatePreference(slider, preferenceSpan);
+            }
+        });
+    }
 
-        function copyUrl() {
-            const url = generateUrl();
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(() => {
-                alert('Failed to copy URL.');
-            });
-        }
+    async function shortenUrl(longUrl) {
+        // Mock URL shortening function (replace with a real API call if needed)
+        return new Promise((resolve) => {
+            setTimeout(() => {
+                const shortUrl = longUrl.replace(window.location.origin, `${window.location.origin}/short`);
+                resolve(shortUrl);
+            }, 500); // Simulate network delay
+        });
+    }
 
-        window.onload = function() {
-            openTab('me');
-        };
-    </script>
+    async function shareViaTelegram() {
+        const url = generateUrl();
+        const shortUrl = await shortenUrl(url);
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(shortUrl)}`, '_blank');
+    }
+
+    async function shareViaWhatsApp() {
+        const url = generateUrl();
+        const shortUrl = await shortenUrl(url);
+        window.open(`https://wa.me/?text=${encodeURIComponent(shortUrl)}`, '_blank');
+    }
+
+    async function shareViaEmail() {
+        const url = generateUrl();
+        const shortUrl = await shortenUrl(url);
+        window.location.href = `mailto:?body=${encodeURIComponent(shortUrl)}`;
+    }
+
+    async function copyUrl() {
+        const url = generateUrl();
+        const shortUrl = await shortenUrl(url);
+        navigator.clipboard.writeText(shortUrl).then(() => {
+            alert('Shortened URL copied to clipboard!');
+        }).catch(() => {
+            alert('Failed to copy URL.');
+        });
+    }
+
+    window.onload = function() {
+        openTab('me');
+        restoreSlidersFromUrl(); // Restore slider positions from the URL when the page loads
+    };
+</script>
 </body>
 
 </html>
