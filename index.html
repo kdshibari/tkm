@@ -2521,7 +2521,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script>
-    // Function to reset all sliders
+    // Reset all sliders to their default value
     function resetSliders() {
         const sliders = document.querySelectorAll('.slider');
         sliders.forEach(slider => {
@@ -2532,7 +2532,7 @@
         updateUrl();
     }
 
-    // Function to open a specific tab
+    // Open a specific tab
     function openTab(tabName) {
         const tabContents = document.querySelectorAll('.tab-content');
         tabContents.forEach(tab => tab.classList.remove('active'));
@@ -2543,13 +2543,13 @@
         document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
     }
 
-    // Function to toggle section visibility
+    // Expand or collapse a section
     function toggleSection(header) {
         const sectionContent = header.nextElementSibling;
         sectionContent.classList.toggle('active');
     }
 
-    // Function to update preference text and color for a slider
+    // Update preference text and color for a slider
     function updatePreference(slider, preferenceSpan) {
         const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
         const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
@@ -2561,7 +2561,7 @@
         updateUrl();
     }
 
-    // Function to generate parameters for a specific tab (e.g., "me" or "partner")
+    // Generate parameters for a specific tab (e.g., "me" or "partner")
     function generateTabParams(tabId) {
         const sliders = document.querySelectorAll(`#${tabId} .slider`);
         const params = {};
@@ -2604,17 +2604,6 @@
 
         const newUrl = `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
         window.history.pushState({}, document.title, newUrl); // Update the URL
-    }
-
-    // Generate the compressed and encoded URL for sharing
-    function generateUrl() {
-        const meParams = generateTabParams('me'); // Get "me" sliders
-        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
-
-        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
-        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
-
-        return `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
     }
 
     // Load slider positions from the URL hash
@@ -2660,6 +2649,73 @@
     window.onload = function () {
         loadSliderPositionsFromUrl();
     };
+
+    // Generate a URL for sharing
+    function generateUrl() {
+        const meParams = generateTabParams('me'); // Get "me" sliders
+        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
+
+        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
+        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
+
+        return `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
+    }
+
+    // Share via Telegram
+    function shareViaTelegram() {
+        const url = generateUrl();
+        const message = `This is My Kinky Map! Check it out here: ${url}`;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // Share via WhatsApp
+    function shareViaWhatsApp() {
+        const url = generateUrl();
+        const message = `This is My Kinky Map! Check it out here: ${url}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+    }
+
+    // Share via Email
+    function shareViaEmail() {
+        const url = generateUrl();
+        const subject = "Check Out My Kinky Map!";
+        const body = `This is My Kinky Map! Check it out here:\n\n${url}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    }
+
+    // Copy the generated URL to the clipboard
+    function copyUrl() {
+        const url = generateUrl();
+
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(() => {
+                alert('URL copied to clipboard!');
+            }).catch(err => {
+                console.error('Clipboard copy failed:', err);
+                fallbackCopyText(url);
+            });
+        } else {
+            fallbackCopyText(url);
+        }
+    }
+
+    // Fallback for copying text to clipboard
+    function fallbackCopyText(text) {
+        const textArea = document.createElement("textarea");
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+
+        try {
+            document.execCommand('copy');
+            alert('URL copied');
+        } catch (err) {
+            console.error('Fallback copy failed:', err);
+            alert('⚠️ Copy failed. Please copy manually.');
+        }
+
+        document.body.removeChild(textArea);
+    }
 </script>
        
         <script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js">
