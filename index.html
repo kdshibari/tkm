@@ -2521,6 +2521,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script>
+    // Function to reset all sliders
     function resetSliders() {
         const sliders = document.querySelectorAll('.slider');
         sliders.forEach(slider => {
@@ -2531,6 +2532,7 @@
         updateUrl();
     }
 
+    // Function to open a specific tab
     function openTab(tabName) {
         const tabContents = document.querySelectorAll('.tab-content');
         tabContents.forEach(tab => tab.classList.remove('active'));
@@ -2541,11 +2543,13 @@
         document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
     }
 
+    // Function to toggle section visibility
     function toggleSection(header) {
         const sectionContent = header.nextElementSibling;
         sectionContent.classList.toggle('active');
     }
 
+    // Function to update preference text and color for a slider
     function updatePreference(slider, preferenceSpan) {
         const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
         const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
@@ -2557,6 +2561,7 @@
         updateUrl();
     }
 
+    // Function to generate parameters for a specific tab (e.g., "me" or "partner")
     function generateTabParams(tabId) {
         const sliders = document.querySelectorAll(`#${tabId} .slider`);
         const params = {};
@@ -2570,14 +2575,14 @@
         return params;
     }
 
-    // ✅ Compress and Encode Parameters using Deflate (pako.js)
+    // Compress and encode parameters using Deflate (pako.js)
     function encodeParams(params) {
         const jsonString = JSON.stringify(params); // Convert object to JSON
         const compressed = pako.deflate(jsonString, { to: 'string' }); // Compress using pako.js
         return btoa(compressed); // Base64 encode for URL safety
     }
 
-    // ✅ Decode and Decompress Parameters using Deflate (pako.js)
+    // Decode and decompress parameters using Deflate (pako.js)
     function decodeParams(encodedParams) {
         try {
             const compressed = atob(encodedParams); // Base64 decode
@@ -2589,7 +2594,7 @@
         }
     }
 
-    // ✅ Update URL with compressed and encoded parameters for both tabs
+    // Update the URL with compressed and encoded parameters for both tabs
     function updateUrl() {
         const meParams = generateTabParams('me'); // Get "me" sliders
         const partnerParams = generateTabParams('partner'); // Get "partner" sliders
@@ -2601,7 +2606,7 @@
         window.history.pushState({}, document.title, newUrl); // Update the URL
     }
 
-    // ✅ Generate compressed and encoded URL for sharing
+    // Generate the compressed and encoded URL for sharing
     function generateUrl() {
         const meParams = generateTabParams('me'); // Get "me" sliders
         const partnerParams = generateTabParams('partner'); // Get "partner" sliders
@@ -2612,71 +2617,16 @@
         return `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
     }
 
-    // ✅ Share via Telegram with Custom Message
-    function shareViaTelegram() {
-        const url = generateUrl();
-        const message = `This is My Kinky Map! Check it out here: ${url}`;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`, '_blank');
-    }
-
-    // ✅ Share via WhatsApp with Custom Message
-    function shareViaWhatsApp() {
-        const url = generateUrl();
-        const message = `This is My Kinky Map! Check it out here: ${url}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
-    }
-
-    // ✅ Share via Email with Custom Message
-    function shareViaEmail() {
-        const url = generateUrl();
-        const subject = "Check Out My Kinky Map!";
-        const body = `This is My Kinky Map! Check it out here:\n\n${url}`;
-        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-    }
-
-    // ✅ Updated Copy URL Function with Compression
-    function copyUrl() {
-        const url = generateUrl();
-
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(err => {
-                console.error('Clipboard copy failed:', err);
-                fallbackCopyText(url);
-            });
-        } else {
-            fallbackCopyText(url);
-        }
-    }
-
-    // ✅ Fallback method for older browsers
-    function fallbackCopyText(text) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-
-        try {
-            document.execCommand('copy');
-            alert('URL copied');
-        } catch (err) {
-            console.error('Fallback copy failed:', err);
-            alert('⚠️ Copy failed. Please copy manually.');
-        }
-
-        document.body.removeChild(textArea);
-    }
-
-    // ✅ Load slider positions from compressed and encoded URL
+    // Load slider positions from the URL hash
     function loadSliderPositionsFromUrl() {
         const hash = window.location.hash.slice(1); // Get the hash part of the URL (after #)
 
         if (hash) {
-            const hashParams = new URLSearchParams(hash.replace(/&/g, '&')); // Parse the hash as query parameters
+            const hashParams = new URLSearchParams(hash); // Parse the hash as query parameters
             const encodedMe = hashParams.get('me'); // Get "me" encoded data
             const encodedPartner = hashParams.get('partner'); // Get "partner" encoded data
 
+            // Decode and apply "me" slider positions
             if (encodedMe) {
                 const meParams = decodeParams(encodedMe); // Decode "me" params
                 const meSliders = document.querySelectorAll('#me .slider');
@@ -2690,6 +2640,7 @@
                 });
             }
 
+            // Decode and apply "partner" slider positions
             if (encodedPartner) {
                 const partnerParams = decodeParams(encodedPartner); // Decode "partner" params
                 const partnerSliders = document.querySelectorAll('#partner .slider');
@@ -2705,6 +2656,7 @@
         }
     }
 
+    // Load slider positions when the page loads
     window.onload = function () {
         loadSliderPositionsFromUrl();
     };
