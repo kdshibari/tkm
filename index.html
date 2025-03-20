@@ -2519,7 +2519,7 @@
 
 
 
-<script src="https://cdn.jsdelivr.net/npm/lz-string/libs/lz-string.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
 <script>
     function resetSliders() {
         const sliders = document.querySelectorAll('.slider');
@@ -2557,66 +2557,76 @@
         updateUrl();
     }
 
-    function generateUrlParams() {
-        const meSliders = document.querySelectorAll('#me .slider');
-        const partnerSliders = document.querySelectorAll('#partner .slider');
+    function generateTabParams(tabId) {
+        const sliders = document.querySelectorAll(`#${tabId} .slider`);
         const params = {};
 
-        meSliders.forEach(slider => {
+        sliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
             const value = slider.value;
-            params[`me[${key}]`] = value;
-        });
-
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const value = slider.value;
-            params[`partner[${key}]`] = value;
+            params[key] = value;
         });
 
         return params;
     }
 
-    // ✅ Compress and Encode Parameters
-    function encodeUrlParams(params) {
+    // ✅ Compress and Encode Parameters using Deflate (pako.js)
+    function encodeParams(params) {
         const jsonString = JSON.stringify(params); // Convert object to JSON
-        return LZString.compressToEncodedURIComponent(jsonString); // Compress and encode
+        const compressed = pako.deflate(jsonString, { to: 'string' }); // Compress using pako.js
+        return btoa(compressed); // Base64 encode for URL safety
     }
 
-    // ✅ Decode and Decompress Parameters
-    function decodeUrlParams(encodedParams) {
-        const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams); // Decompress
+    // ✅ Decode and Decompress Parameters using Deflate (pako.js)
+    function decodeParams(encodedParams) {
+        const compressed = atob(encodedParams); // Base64 decode
+        const decompressed = pako.inflate(compressed, { to: 'string' }); // Decompress using pako.js
         return JSON.parse(decompressed); // Parse JSON back to an object
     }
 
-    // ✅ Update URL with compressed and encoded parameters
+    // ✅ Update URL with compressed and encoded parameters for both tabs
     function updateUrl() {
-        const params = generateUrlParams(); // Generate the slider parameters
-        const encodedParams = encodeUrlParams(params); // Compress and encode
-        const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        const meParams = generateTabParams('me'); // Get "me" sliders
+        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
+
+        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
+        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
+
+        const newUrl = `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
         window.history.pushState({}, document.title, newUrl); // Update the URL
     }
 
     // ✅ Generate compressed and encoded URL for sharing
     function generateUrl() {
-        const params = generateUrlParams(); // Generate parameters
-        const encodedParams = encodeUrlParams(params); // Compress and encode
-        return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        const meParams = generateTabParams('me'); // Get "me" sliders
+        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
+
+        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
+        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
+
+        return `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
     }
 
+    // ✅ Share via Telegram with Custom Message
     function shareViaTelegram() {
         const url = generateUrl();
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
+        const message = `This is My Kinky Map! Check it out here: ${url}`;
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`, '_blank');
     }
 
+    // ✅ Share via WhatsApp with Custom Message
     function shareViaWhatsApp() {
         const url = generateUrl();
-        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
+        const message = `This is My Kinky Map! Check it out here: ${url}`;
+        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
     }
 
+    // ✅ Share via Email with Custom Message
     function shareViaEmail() {
         const url = generateUrl();
-        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
+        const subject = "Check Out My Kinky Map!";
+        const body = `This is My Kinky Map! Check it out here:\n\n${url}`;
+        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
 
     // ✅ Updated Copy URL Function with Compression
@@ -2656,30 +2666,37 @@
     // ✅ Load slider positions from compressed and encoded URL
     function loadSliderPositionsFromUrl() {
         const hash = window.location.hash.slice(1); // Get the hash part of the URL (after #)
+
         if (hash) {
-            const params = decodeUrlParams(hash); // Decode and decompress
+            const hashParams = new URLSearchParams(hash.replace(/&/g, '&')); // Parse the hash as query parameters
+            const encodedMe = hashParams.get('me'); // Get "me" encoded data
+            const encodedPartner = hashParams.get('partner'); // Get "partner" encoded data
 
-            const meSliders = document.querySelectorAll('#me .slider');
-            meSliders.forEach(slider => {
-                const key = slider.getAttribute('data-key');
-                const paramKey = `me[${key}]`;
-                const value = params[paramKey];
-                if (value !== undefined) {
-                    slider.value = value;
-                    updatePreference(slider, slider.nextElementSibling);
-                }
-            });
+            if (encodedMe) {
+                const meParams = decodeParams(encodedMe); // Decode "me" params
+                const meSliders = document.querySelectorAll('#me .slider');
+                meSliders.forEach(slider => {
+                    const key = slider.getAttribute('data-key');
+                    const value = meParams[key];
+                    if (value !== undefined) {
+                        slider.value = value;
+                        updatePreference(slider, slider.nextElementSibling);
+                    }
+                });
+            }
 
-            const partnerSliders = document.querySelectorAll('#partner .slider');
-            partnerSliders.forEach(slider => {
-                const key = slider.getAttribute('data-key');
-                const paramKey = `partner[${key}]`;
-                const value = params[paramKey];
-                if (value !== undefined) {
-                    slider.value = value;
-                    updatePreference(slider, slider.nextElementSibling);
-                }
-            });
+            if (encodedPartner) {
+                const partnerParams = decodeParams(encodedPartner); // Decode "partner" params
+                const partnerSliders = document.querySelectorAll('#partner .slider');
+                partnerSliders.forEach(slider => {
+                    const key = slider.getAttribute('data-key');
+                    const value = partnerParams[key];
+                    if (value !== undefined) {
+                        slider.value = value;
+                        updatePreference(slider, slider.nextElementSibling);
+                    }
+                });
+            }
         }
     }
 
