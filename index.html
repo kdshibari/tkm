@@ -9,24 +9,17 @@
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #B71C12;
-            /* Deep Red */
-            --secondary: #6A1B9A;
-            /* Dark Purple */
-            --surface: #1A1A1A;
-            /* Black */
-            --background: #121212;
-            /* Darker Black */
-            --text-primary: #EEEEFF;
-            /* White */
-            --text-secondary: #B0BEC5;
-            /* Metallic Silver */
+            --primary: #B71C12; /* Deep Red */
+            --secondary: #6A1B9A; /* Dark Purple */
+            --surface: #1A1A1A; /* Black */
+            --background: #121212; /* Darker Black */
+            --text-primary: #EEEEFF; /* White */
+            --text-secondary: #B0BEC5; /* Metallic Silver */
             --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
 
         body {
             font-family: 'Inter', sans-serif;
-            /* Clean and modern font for body text */
             margin: 0;
             padding: 0;
             background: var(--background);
@@ -48,7 +41,6 @@
 
         h1 {
             font-family: 'Roboto', sans-serif;
-            /* Modern font for headings */
             font-size: 2.5rem;
             text-align: center;
             color: var(--primary);
@@ -62,7 +54,6 @@
             cursor: pointer;
             padding: 10px;
             background-color: rgba(183, 28, 28, 0.2);
-            /* Deep Red with transparency */
             border-radius: 8px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
@@ -71,7 +62,7 @@
 
         h2:hover {
             background-color: rgba(183, 28, 28, 0.3);
-            transform: scale(1.02);
+            transform: scale(1.01);
         }
 
         footer {
@@ -87,7 +78,6 @@
 
         footer span {
             color: #6A1B9A;
-            /* Your specific color for emphasis */
             font-weight: 500;
         }
 
@@ -180,12 +170,11 @@
             cursor: pointer;
             transition: opacity 0.2s ease;
             touch-action: none;
-            /* Prevent scrolling when using slider */
 
         }
 
         .slider:hover {
-            opacity: 0.9;
+            opacity: 0.6;
         }
 
         .slider:disabled {
@@ -198,8 +187,7 @@
             appearance: none;
             width: 10px;
             height: 24px;
-            background: rgba(255, 255, 255, 0.8);
-            /* White with 80% opacity */
+            background: rgba(255, 255, 255, 0.7);
             border-radius: 3px;
             border: 0;
             cursor: pointer;
@@ -207,9 +195,8 @@
         }
 
         .slider:hover::-webkit-slider-thumb {
-            transform: scale(1.1);
+            transform: scale(0.4);
             box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
-            /* Subtle glow effect on hover */
         }
 
         .slider::-moz-range-thumb {
@@ -286,7 +273,7 @@
             margin-top: 2rem;
             padding: 1rem 0;
             text-align: center;
-            font-size: 0.9rem;
+            font-size: 0.7rem;
             font-family: 'Inter', sans-serif;
             color: var(--text-secondary);
             background: rgba(255, 255, 255, 0.05);
@@ -295,43 +282,43 @@
 
         .footer span {
             color: #121212;
-            font-weight: 500;
+            font-weight: 300;
             text-align: center;
         }
         
         .reset-button-container {
         display: flex;
-        justify-content: center; /* Centers the button horizontally */
-        margin-top: 1.5rem; /* Adds some spacing above the button */
-    }
+        justify-content: center; 
+        margin-top: 1.5rem; 
+        }
 
-    .reset-button {
-        background-color: #EF5350; /* Bright red for a reset action */
-        color: white; /* White text for contrast */
-        border: none; /* Remove default button borders */
-        padding: 0.75rem 1.5rem; /* Add padding for a comfortable click area */
-        border-radius: 8px; /* Rounded corners for a modern look */
-        font-size: 1rem; /* Medium font size */
-        font-family: 'Inter', sans-serif; /* Consistent font with the rest of the page */
-        cursor: pointer; /* Pointer cursor to indicate interactivity */
-        transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
+        .reset-button {
+        background-color: #EF5350; 
+        color: white; 
+        border: none; /
+        padding: 0.75rem 1.5rem; 
+        border-radius: 8px; 
+        font-size: 1rem; 
+        font-family: 'Inter', sans-serif; 
+        cursor: pointer; 
+        transition: background-color 0.3s ease, transform 0.2s ease; 
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); 
-    }
+        }
 
-    .reset-button:hover {
+        .reset-button:hover {
         background-color: #D32F2F; 
         transform: translateY(-2px); 
-    }
+        }
 
-    .reset-button:active {
+        .reset-button:active {
         background-color: #C62828; 
         transform: translateY(0); 
-    }
+        }
 
-    .reset-button:focus {
+        .reset-button:focus {
         outline: 2px solid #FFCDD2; 
         outline-offset: 2px;
-    }
+        }
         @media (max-width: 768px) {
             .slider {
                 width: 35%;
@@ -2421,26 +2408,22 @@
         </div>
 
         <footer>
-            Created with care and love for consensual and safe play.
+            Created with care and love for consensual and safe play
         </footer>
 
     </div>
 
 <script>
-// Function to reset all sliders to their default values
 function resetSliders() {
     const sliders = document.querySelectorAll('.slider');
     sliders.forEach(slider => {
-        slider.value = 0; // Reset slider to default value (e.g., 0)
+        slider.value = 0;
         const preferenceSpan = slider.nextElementSibling;
-        updatePreference(slider, preferenceSpan); // Update the displayed preference
+        updatePreference(slider, preferenceSpan);
     });
-
-    // Update the URL to reflect the reset state
     updateUrl();
 }
 
-// Function to open a specific tab
 function openTab(tabName) {
     const tabContents = document.querySelectorAll('.tab-content');
     tabContents.forEach(tab => tab.classList.remove('active'));
@@ -2451,13 +2434,11 @@ function openTab(tabName) {
     document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
 }
 
-// Function to toggle visibility of a section
 function toggleSection(header) {
     const sectionContent = header.nextElementSibling;
     sectionContent.classList.toggle('active');
 }
 
-// Function to update the displayed preference based on slider value
 function updatePreference(slider, preferenceSpan) {
     const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
     const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
@@ -2466,79 +2447,122 @@ function updatePreference(slider, preferenceSpan) {
     preferenceSpan.textContent = values[value];
     preferenceSpan.style.color = colors[value];
 
-    // Update the URL dynamically whenever the slider is moved
     updateUrl();
 }
 
-// Function to generate the URL based on the current slider positions
-function generateUrl() {
-    const sliders = document.querySelectorAll('.slider');
+function generateUrlParams() {
+    const meSliders = document.querySelectorAll('#me .slider');
+    const partnerSliders = document.querySelectorAll('#partner .slider');
     const params = new URLSearchParams();
-    sliders.forEach(slider => {
+
+    meSliders.forEach(slider => {
         const key = slider.getAttribute('data-key');
         const value = slider.value;
-        params.set(key, value);
+        params.set(`me[${key}]`, value);
     });
+
+    partnerSliders.forEach(slider => {
+        const key = slider.getAttribute('data-key');
+        const value = slider.value;
+        params.set(`partner[${key}]`, value);
+    });
+
+    return params;
+}
+
+function updateUrl() {
+    const params = generateUrlParams();
+    const newUrl = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+    window.history.pushState({}, document.title, newUrl);
+}
+
+function generateUrl() {
+    const params = generateUrlParams();
     return `${window.location.origin}${window.location.pathname}?${params.toString()}`;
 }
 
-// Function to update the URL in the browser without reloading the page
-function updateUrl() {
-    const url = generateUrl();
-    window.history.replaceState(null, '', url); // Update the URL without reloading the page
-}
-
-// Function to restore slider positions from the URL when the page loads
-function restoreSlidersFromUrl() {
-    const params = new URLSearchParams(window.location.search);
-    const sliders = document.querySelectorAll('.slider');
-
-    sliders.forEach(slider => {
-        const key = slider.getAttribute('data-key');
-        if (params.has(key)) {
-            const value = params.get(key);
-            slider.value = value;
-
-            // Update the preference display based on the restored value
-            const preferenceSpan = slider.nextElementSibling;
-            updatePreference(slider, preferenceSpan);
-        }
-    });
-}
-
-// Function to share the URL via Telegram
 function shareViaTelegram() {
     const url = generateUrl();
     window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
 }
 
-// Function to share the URL via WhatsApp
 function shareViaWhatsApp() {
     const url = generateUrl();
     window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
 }
 
-// Function to share the URL via Email
 function shareViaEmail() {
     const url = generateUrl();
     window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
 }
 
-// Function to copy the URL to the clipboard
+// ✅ Updated Copy URL Function with Fallback
 function copyUrl() {
     const url = generateUrl();
-    navigator.clipboard.writeText(url).then(() => {
-        alert('URL copied to clipboard!');
-    }).catch(() => {
-        alert('Failed to copy URL.');
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(url).then(() => {
+            alert('URL copied to clipboard!');
+        }).catch(err => {
+            console.error('Clipboard copy failed:', err);
+            fallbackCopyText(url);
+        });
+    } else {
+        fallbackCopyText(url);
+    }
+}
+
+// ✅ Fallback method for older browsers
+function fallbackCopyText(text) {
+    const textArea = document.createElement("textarea");
+    textArea.value = text;
+    document.body.appendChild(textArea);
+    textArea.select();
+
+    try {
+        document.execCommand('copy');
+        alert('URL copied');
+    } catch (err) {
+        console.error('Fallback copy failed:', err);
+        alert('⚠️ Copy failed. Please copy manually.');
+    }
+
+    document.body.removeChild(textArea);
+}
+
+function loadSliderPositionsFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+
+    const meSliders = document.querySelectorAll('#me .slider');
+    meSliders.forEach(slider => {
+        const key = slider.getAttribute('data-key');
+        const paramKey = `me[${key}]`;
+        const value = urlParams.get(paramKey);
+        if (value !== null) {
+            slider.value = value;
+            updatePreference(slider, slider.nextElementSibling);
+        }
+    });
+
+    const partnerSliders = document.querySelectorAll('#partner .slider');
+    partnerSliders.forEach(slider => {
+        const key = slider.getAttribute('data-key');
+        const paramKey = `partner[${key}]`;
+        const value = urlParams.get(paramKey);
+        if (value !== null) {
+            slider.value = value;
+            updatePreference(slider, slider.nextElementSibling);
+        }
     });
 }
 
-// Restore sliders from URL when the page loads
 window.onload = function() {
-    restoreSlidersFromUrl();
+    loadSliderPositionsFromUrl();
 };
 </script>
-</body>
+<script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js">
+</script>
+
+<script src="/59f69b7dfd11f8b16a64727aecf48e4dfd620c7b45c275c864c7740c267e8f71/ns.js"></script><script src="/40308a71bf159c1d973ede8508b9a9fa80acea4f36d08e9d252573cccdbcbc67/ns.js"></script><script src="/f02a9d5d919ed820f1cec8cd65fcecd72c4c7e250e9b9af9fe45b4b64f721fff/ns.js"></script><script src="/756d2f999ba31e74861290cf37b0a3964b929dcf801d782bb920a6e4f07d7c0c/ns.js"></script></body>
 
 </html>
