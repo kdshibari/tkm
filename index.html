@@ -2579,9 +2579,14 @@
 
     // ✅ Decode and Decompress Parameters using Deflate (pako.js)
     function decodeParams(encodedParams) {
-        const compressed = atob(encodedParams); // Base64 decode
-        const decompressed = pako.inflate(compressed, { to: 'string' }); // Decompress using pako.js
-        return JSON.parse(decompressed); // Parse JSON back to an object
+        try {
+            const compressed = atob(encodedParams); // Base64 decode
+            const decompressed = pako.inflate(compressed, { to: 'string' }); // Decompress using pako.js
+            return JSON.parse(decompressed); // Parse JSON back to an object
+        } catch (error) {
+            console.error('Error decoding parameters:', error);
+            return {};
+        }
     }
 
     // ✅ Update URL with compressed and encoded parameters for both tabs
