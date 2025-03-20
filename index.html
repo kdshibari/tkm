@@ -2543,12 +2543,6 @@
         document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
     }
 
-    // Expand or collapse a section
-    function toggleSection(header) {
-        const sectionContent = header.nextElementSibling;
-        sectionContent.classList.toggle('active');
-    }
-
     // Update preference text and color for a slider
     function updatePreference(slider, preferenceSpan) {
         const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
@@ -2624,7 +2618,8 @@
                     const value = meParams[key];
                     if (value !== undefined) {
                         slider.value = value;
-                        updatePreference(slider, slider.nextElementSibling);
+                        const preferenceSpan = slider.nextElementSibling;
+                        updatePreference(slider, preferenceSpan);
                     }
                 });
             }
@@ -2638,17 +2633,13 @@
                     const value = partnerParams[key];
                     if (value !== undefined) {
                         slider.value = value;
-                        updatePreference(slider, slider.nextElementSibling);
+                        const preferenceSpan = slider.nextElementSibling;
+                        updatePreference(slider, preferenceSpan);
                     }
                 });
             }
         }
     }
-
-    // Load slider positions when the page loads
-    window.onload = function () {
-        loadSliderPositionsFromUrl();
-    };
 
     // Generate a URL for sharing
     function generateUrl() {
@@ -2716,6 +2707,11 @@
 
         document.body.removeChild(textArea);
     }
+
+    // Load slider positions when the page loads
+    window.onload = function () {
+        loadSliderPositionsFromUrl();
+    };
 </script>
        
         <script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js">
