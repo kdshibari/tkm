@@ -37,12 +37,12 @@
 
         .elegant-container {
             max-width: 700px;
-            margin: 2rem auto;
+            margin: 1rem auto;
             padding: 1.5rem;
             background: var(--surface);
             border-radius: 20px;
             box-shadow: var(--elevation-1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 0px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
@@ -74,17 +74,16 @@
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
             cursor: pointer;
-            padding: 1px;
+            padding: 6px;
             background-color: rgba(0, 0, 0, 0.2);
-            /* Fixed invalid rgba */
             border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: background-color 0.1s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
 
         footer {
-            margin-top: 2rem;
+            margin-top: 0rem;
             padding: 0rem 0;
             text-align: center;
             font-size: 0.7rem;
@@ -2519,7 +2518,7 @@
 <script>
     const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
     const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
-    let meSliders, partnerSliders; // Cached sliders
+    let meSliders, partnerSliders, notesTextarea; // Cached elements
     const STORAGE_KEY = 'kinkyMapState'; // Key for localStorage
 
     function showToast(message) {
@@ -2543,9 +2542,10 @@
             slider.value = 0;
             updatePreference(slider);
         });
-        saveState(); // Save reset state
+        notesTextarea.value = ''; // Reset notes too
+        saveState();
         updateUrl();
-        showToast('Sliders reset');
+        showToast('Sliders and notes reset');
     }
 
     function openTab(tabName) {
@@ -2573,7 +2573,7 @@
             preferenceSpan.textContent = VALUES[value];
             preferenceSpan.style.color = COLORS[value];
         }
-        saveState(); // Save immediately on move
+        saveState(); // Save immediately on slider move
         updateUrl();
     }
 
@@ -2596,18 +2596,22 @@
             const key = slider.getAttribute('data-key');
             if (key) partnerPrefs[key] = slider.value;
         });
-        return { me: mePrefs, partner: partnerPrefs };
+        const notes = notesTextarea.value; // Include notes in state
+        return { me: mePrefs, partner: partnerPrefs, notes: notes };
     }
 
     function saveState() {
         const state = generateState();
         localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); // Store in localStorage
+        const saveMessage = document.getElementById('saveMessage');
+        saveMessage.style.opacity = '1'; // Show "Saved!" message
+        setTimeout(() => saveMessage.style.opacity = '0', 2000); // Fade out after 2s
         return state;
     }
 
     function loadStateFromStorage() {
         const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : { me: {}, partner: {} };
+        return stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
     }
 
     function encodeUrlParams(params) {
@@ -2616,7 +2620,7 @@
 
     function decodeUrlParams(encodedParams) {
         const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-        return decompressed ? JSON.parse(decompressed) : { me: {}, partner: {} };
+        return decompressed ? JSON.parse(decompressed) : { me: {}, partner: {}, notes: '' };
     }
 
     function updateUrl() {
@@ -2673,7 +2677,7 @@
         document.body.removeChild(textArea);
     }
 
-    function loadSliderPositions() {
+    function loadSliderPositionsAndNotes() {
         const hash = window.location.hash.slice(1);
         let state = hash ? decodeUrlParams(hash) : loadStateFromStorage(); // URL first, then localStorage
 
@@ -2693,35 +2697,27 @@
                 updatePreference(slider);
             }
         });
+        notesTextarea.value = state.notes || ''; // Load notes
     }
 
     window.onload = function () {
         meSliders = document.querySelectorAll('#me .slider');
         partnerSliders = document.querySelectorAll('#partner .slider');
+        notesTextarea = document.getElementById('personalNotes'); // Cache textarea
         if (!meSliders.length && !partnerSliders.length) return;
 
         // Default expand first section in each tab
         document.querySelector('#me .section-content')?.classList.add('active');
         document.querySelector('#partner .section-content')?.classList.add('active');
 
-        loadSliderPositions(); // Load initial state
+        loadSliderPositionsAndNotes(); // Load initial state including notes
 
-        // Add search bars to each tab
-        ['me', 'partner'].forEach(tabId => {
-            const tab = document.getElementById(tabId);
-            const search = document.createElement('input');
-            search.type = 'text';
-            search.className = 'search-bar';
-            search.placeholder = `Search ${tabId} activities...`;
-            search.addEventListener('input', (e) => filterItems(tabId, e.target.value));
-            tab.insertBefore(search, tab.firstChild);
-        });
 
         // Slider event listeners
         [meSliders, partnerSliders].forEach(sliderGroup => {
             sliderGroup.forEach(slider => {
                 slider.setAttribute('aria-label', slider.previousElementSibling.textContent);
-                slider.addEventListener('input', () => updatePreference(slider)); // Immediate save on move
+                slider.addEventListener('input', () => updatePreference(slider));
                 slider.addEventListener('keydown', (e) => {
                     if (e.key === 'ArrowLeft' && slider.value > 0) slider.value--;
                     if (e.key === 'ArrowRight' && slider.value < 3) slider.value++;
@@ -2737,6 +2733,12 @@
                     updatePreference(slider);
                 }, { passive: false });
             });
+        });
+
+        // Notes event listener
+        notesTextarea.addEventListener('input', () => {
+            saveState(); // Save on every change
+            updateUrl();
         });
     };
 </script>
