@@ -4,451 +4,406 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Kinky Map</title>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-    :root {
-        --primary: #B71C12;
-        --secondary: #6A1B9A;
-        --surface: #1A1A1A;
-        --background: #121212;
-        --text-primary: #FAF9F6;
-        --text-secondary: #B0BEC5;
-        --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
-    }
-
-    body {
-        font-family: 'Inter', sans-serif;
-        margin: 0;
-        padding: 0;
-        background: var(--background);
-        color: var(--text-primary);
-        line-height: 1.6;
-        -webkit-font-smoothing: antialiased;
-        overflow-x: hidden;
-    }
-
-    .elegant-container {
-        max-width: 700px;
-        margin: 2rem auto;
-        padding: 1.5rem;
-        background: var(--surface);
-        border-radius: 20px;
-        box-shadow: var(--elevation-1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    h1 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 2.5rem;
-        text-align: center;
-        color: var(--primary);
-        font-weight: 700;
-        margin: 1rem 0;
-    }
-
-    h2 {
-        font-family: 'Roboto', sans-serif;
-        font-size: 1.25rem;
-        cursor: pointer;
-        padding: 10px;
-        background-color: rgba(183, 28, 28, 0.2);
-        border-radius: 8px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-    }
-
-    h2:hover {
-        background-color: rgba(183, 28, 28, 0.3);
-        transform: scale(1.01);
-    }
-
-    h5 {
-        font-family: 'Inter', sans-serif;
-        font-size: 0.8rem;
-        cursor: pointer;
-        padding: 1px;
-        background-color: rgba(0, 0, 0, 0.2); /* Fixed syntax error */
-        border-radius: 8px;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        color: var(--text-primary);
-        margin-bottom: 0.5rem;
-    }
-
-    footer {
-        margin-top: 2rem;
-        padding: 1rem 0;
-        text-align: center;
-        font-size: 0.9rem;
-        font-family: 'Inter', sans-serif;
-        color: var(--text-secondary);
-        background: rgba(0, 0, 0, 0.05);
-        border-top: 0px solid rgba(255, 255, 255, 0.1);
-    }
-
-    footer span {
-        color: #6A1B9A;
-        font-weight: 500;
-    }
-
-    .section-content {
-        display: none;
-        padding: 10px;
-        border-left: 4px solid var(--primary);
-        margin: 10px 0;
-        background-color: rgba(183, 28, 28, 0.1);
-        border-radius: 8px;
-    }
-
-    .section-content.active {
-        display: block;
-    }
-
-    .separator {
-        margin: 2rem 0;
-        border-top: 2px solid #121212;
-        text-align: center;
-        position: relative;
-    }
-
-    .separator span {
-        position: absolute;
-        top: -0.8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        background: var(--surface);
-        padding: 0 1rem;
-        font-family: 'Roboto', sans-serif;
-        font-size: 1rem;
-        color: #6A1B9A;
-        font-weight: 500;
-    }
-
-    .tabs {
-        display: flex;
-        justify-content: center;
-        gap: 1rem;
-        margin: 1rem 0;
-    }
-
-    .tab-button {
-        padding: 0.75rem 1.5rem;
-        border: 1px solid var(--primary);
-        border-radius: 8px;
-        background: transparent;
-        color: var(--primary);
-        cursor: pointer;
-        transition: all 0.2s ease;
-        font-weight: 500;
-    }
-
-    .tab-button.active {
-        background: var(--primary);
-        color: white;
-    }
-
-    .tab-content {
-        display: none;
-    }
-
-    .tab-content.active {
-        display: block;
-    }
-
-    .item {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 0.75rem;
-        padding: 0.3rem 0;
-    }
-
-    .item-label {
-        flex: 1;
-        font-size: 14px;
-        color: var(--text-secondary);
-    }
-
-    .slider {
-        -webkit-appearance: none;
-        appearance: none;
-        width: 160px;
-        height: 6px;
-        background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
-        border-radius: 3px;
-        outline: none;
-        cursor: pointer;
-        transition: opacity 0.2s ease;
-        touch-action: none;
-        -ms-touch-action: none;
-        -webkit-tap-highlight-color: transparent; /* Remove iOS tap highlight */
-    }
-
-    .slider::-webkit-slider-runnable-track {
-        width: 100%;
-        height: 6px;
-        background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
-        border-radius: 3px;
-    }
-
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 16px; /* Adjusted for consistency */
-        height: 24px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 3px;
-        margin-top: -9px; /* Center thumb on track */
-        cursor: pointer;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5); /* Crisp on Retina */
-    }
-
-    .slider:hover {
-        opacity: 0.6;
-    }
-
-    .slider:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-    }
-
-    .slider::-moz-range-track {
-        width: 100%;
-        height: 6px;
-        background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
-        border-radius: 3px;
-    }
-
-    .slider::-moz-range-thumb {
-        width: 16px;
-        height: 24px;
-        background: rgba(255, 255, 255, 0.9);
-        border-radius: 3px;
-        border: none;
-        cursor: pointer;
-        box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
-    }
-
-    .preference {
-        width: 90px;
-        text-align: center;
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--text-primary);
-    }
-
-    .share-container {
-        text-align: center;
-        margin-top: 2rem;
-    }
-
-    .share-button {
-        padding: 0.75rem 1.5rem;
-        border: none;
-        border-radius: 8px;
-        cursor: pointer;
-        font-size: 14px;
-        color: white;
-        transition: background 0.2s ease, transform 0.2s ease;
-        margin: 0.5rem;
-    }
-
-    .share-button:hover {
-        transform: scale(1.05);
-    }
-
-    .telegram {
-        background: #0088CC;
-    }
-
-    .whatsapp {
-        background: #25D366;
-    }
-
-    .email {
-        background: #D32F2F;
-    }
-
-    .copy-link {
-        background: #FFB300;
-        color: var(--background);
-    }
-
-    .toast-container {
-        position: fixed;
-        bottom: 1rem;
-        right: 1rem;
-        z-index: 9999;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-
-    .toast {
-        background-color: #333333;
-        color: white;
-        padding: 10px 15px;
-        border-radius: 5px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.3s ease, transform 0.3s ease;
-    }
-
-    .toast.show {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-    .reset-button {
-        background: #6B7280;
-        color: white;
-    }
-
-    .footer {
-        margin-top: 2rem;
-        padding: 1rem 0;
-        text-align: center;
-        font-size: 0.7rem;
-        font-family: 'Inter', sans-serif;
-        color: var(--text-secondary);
-        background: rgba(255, 255, 255, 0.05);
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .footer span {
-        color: #121212;
-        font-weight: 500;
-        text-align: center;
-    }
-
-    .reset-button-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 1.5rem;
-    }
-
-    .reset-button {
-        background-color: #EF5350;
-        color: white;
-        border: none;
-        padding: 0.75rem 1.5rem; /* Fixed syntax */
-        border-radius: 8px;
-        font-size: 1rem;
-        font-family: 'Inter', sans-serif;
-        cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.2s ease;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-    }
-
-    .reset-button:hover {
-        background-color: #D32F2F;
-        transform: translateY(-2px);
-    }
-
-    .reset-button:active {
-        background-color: #C62828;
-        transform: translateY(0);
-    }
-
-    .reset-button:focus {
-        outline: 2px solid #FFCDD2;
-        outline-offset: 2px;
-    }
-
-    textarea {
-        width: 100%;
-        height: 6rem;
-        padding: 0.75rem;
-        border-radius: 8px;
-        border: 1px solid #FFCA28;
-        background: #333333;
-        color: #CFD8DC;
-        resize: vertical;
-        font-family: inherit;
-        font-size: 1rem;
-        box-sizing: border-box;
-        transition: border-color 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    textarea:focus {
-        outline: none;
-        border-color: #FFCA28;
-        box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
-    }
-
-    #saveMessage {
-        font-size: 0.875rem;
-        color: #26A69A;
-        margin-top: 0.5rem;
-        text-align: right;
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    #saveMessage.active {
-        opacity: 1;
-    }
-
-    @media (max-width: 768px) {
-        .slider {
-            width: 35%;
+    <meta name="description" content="Set and share your preferences with sliders">
+    <meta name="robots" content="index, follow">
+    <title>Preference Sliders</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
+    <style>
+        :root {
+            --primary: #B71C12;
+            --secondary: #6A1B9A;
+            --surface: #1A1A1A;
+            --background: #121212;
+            --text-primary: #FAF9F6;
+            --text-secondary: #B0BEC5;
+            --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
         }
-        .slider::-webkit-slider-thumb {
-            width: 20px; /* Larger for touch */
-            height: 28px;
-        }
-        .slider::-moz-range-thumb {
-            width: 20px;
-            height: 28px;
-        }
-        .item-label,
-        .preference {
-            font-size: 0.875rem;
-        }
-        .progress-container {
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-        .progress-label {
-            font-size: 0.875rem;
-        }
-        .progress-percentage {
-            font-size: 0.75rem;
-        }
-        .tabs {
-            flex-wrap: wrap;
-        }
-        .button-container,
-        .share-container {
-            flex-wrap: wrap;
-        }
-        .share-button,
-        .edit-button,
-        .reset-button {
-            padding: 0.5rem 1rem;
-            font-size: 0.875rem;
-        }
-        .toast-container {
-            bottom: 0.5rem;
-            right: 0.5rem;
-        }
-    }
 
-    @media (max-width: 480px) {
-        .slider {
-            width: 100%;
+        * {
+            box-sizing: border-box;
         }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: var(--background);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
         .elegant-container {
-            margin: 1rem;
-            padding: 1rem;
+            max-width: 700px;
+            margin: 2rem auto;
+            padding: 1.5rem;
+            background: var(--surface);
+            border-radius: 20px;
+            box-shadow: var(--elevation-1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+
         h1 {
-            font-size: 2rem;
+            font-family: 'Roboto', sans-serif;
+            font-size: 2.5rem;
+            text-align: center;
+            color: var(--primary);
+            font-weight: 700;
+            margin: 1rem 0;
         }
-    }
-</style>
+
+        h2 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 10px;
+            background-color: rgba(183, 28, 28, 0.2);
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        h2:hover h5 {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 1px;
+            background-color: rgba(0, 0, , 0.2);
+            border-radius: 8px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            margin-top: 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: rgba(0, 0, 0, 0.05);
+            border-top: 0px solid rgba(255, 255, 255, 0.1);
+        }
+
+        footer span {
+            color: #6A1B9A;
+            font-weight: 500;
+        }
+
+
+        .section-content {
+            display: none;
+            padding: 10px;
+            border-left: 4px solid var(--primary);
+            margin: 10px 0;
+            background-color: rgba(183, 28, 28, 0.1);
+            border-radius: 8px;
+        }
+
+        .section-content.active {
+            display: block;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+
+        .tab-button {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            background: transparent;
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+        }
+
+        .tab-button.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.75rem;
+            padding: 0.3rem 0;
+        }
+
+        .item-label {
+            flex: 1;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 160px;
+            height: 6px;
+            background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            touch-action: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .slider::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
+            border-radius: 3px;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 3px;
+            margin-top: -9px;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .slider::-moz-range-track {
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
+            border-radius: 3px;
+        }
+
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 3px;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .preference {
+            width: 90px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .share-container {
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .share-button {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            color: white;
+            transition: background 0.2s ease, transform 0.2s ease;
+            margin: 0.5rem;
+        }
+
+        .share-button:hover {
+            transform: scale(1.05);
+        }
+
+        .telegram {
+            background: #0088CC;
+        }
+
+        .whatsapp {
+            background: #25D366;
+        }
+
+        .email {
+            background: #D32F2F;
+        }
+
+        .copy-link {
+            background: #FFB300;
+            color: var(--background);
+        }
+
+        .toast-container {
+            position: fixed;
+            bottom: 1rem;
+            right: 1rem;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .toast {
+            background-color: #333333;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reset-button-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .reset-button {
+            background-color: #EF5350;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .reset-button:hover {
+            background-color: #D32F2F;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            margin-top: 2rem;
+            padding: 1rem 0;
+            text-align: center;
+            font-size: 0.7rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            background: rgba(255, 255, 255, 0.05);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        textarea {
+            width: 100%;
+            height: 6rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            border: 1px solid #FFCA28;
+            background: #333333;
+            color: #CFD8DC;
+            resize: vertical;
+            font-family: inherit;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #FFCA28;
+            box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
+        }
+
+        .separator {
+            margin: 2rem 0;
+            border-top: 2px solid #121212;
+            text-align: center;
+            position: relative;
+        }
+
+        .separator span {
+            position: absolute;
+            top: -0.8rem;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface);
+            padding: 0 1rem;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1rem;
+            color: #6A1B9A;
+            font-weight: 500;
+        }
+
+        #saveMessage {
+            font-size: 0.875rem;
+            color: #26A69A;
+            margin-top: 0.5rem;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #saveMessage.active {
+            opacity: 1;
+        }
+
+        @media (max-width: 768px) {
+            .slider {
+                width: 35%;
+            }
+
+            .slider::-webkit-slider-thumb {
+                width: 20px;
+                height: 28px;
+            }
+
+            .slider::-moz-range-thumb {
+                width: 20px;
+                height: 28px;
+            }
+
+            .item-label,
+            .preference {
+                font-size: 0.875rem;
+            }
+
+            .tabs,
+            .share-container {
+                flex-wrap: wrap;
+            }
+
+            .share-button,
+            .reset-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+
+            .toast-container {
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .elegant-container {
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .slider {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -2514,187 +2469,179 @@
                     <p>&copy; 2025 <span>The Kinky Map</span>. All rights reserved.</p>
             </footer>
 
+            <div class="toast-container" id="toastContainer"></div>
 
+            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+            <script>
+                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-<script src="https://cdn.jsdelivr.net/npm/lz-string/libs/lz-string.min.js"></script>
-<script>
-    function resetSliders() {
-        const sliders = document.querySelectorAll('.slider');
-        sliders.forEach(slider => {
-            slider.value = 0;
-            const preferenceSpan = slider.nextElementSibling;
-            updatePreference(slider, preferenceSpan);
-        });
-        updateUrl();
-    }
+                function showToast(message) {
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    toast.textContent = message;
+                    document.getElementById('toastContainer').appendChild(toast);
+                    requestAnimationFrame(() => toast.classList.add('show'));
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        toast.addEventListener('transitionend', () => toast.remove());
+                    }, 2000);
+                }
 
-    function openTab(tabName) {
-        const tabContents = document.querySelectorAll('.tab-content');
-        tabContents.forEach(tab => tab.classList.remove('active'));
-        document.getElementById(tabName)?.classList.add('active');
+                function resetSliders() {
+                    document.querySelectorAll('.slider').forEach(slider => {
+                        slider.value = 0;
+                        updatePreference(slider);
+                    });
+                    updateUrl();
+                    showToast('Sliders reset');
+                }
 
-        const tabButtons = document.querySelectorAll('.tab-button');
-        tabButtons.forEach(button => button.classList.remove('active'));
-        document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-    }
+                function openTab(tabName) {
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                    document.getElementById(tabName)?.classList.add('active');
+                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+                }
 
-    function toggleSection(header) {
-        const sectionContent = header.nextElementSibling;
-        sectionContent?.classList.toggle('active');
-    }
+                function toggleSection(header) {
+                    const sectionContent = header.nextElementSibling;
+                    sectionContent?.classList.toggle('active');
+                }
 
-    function updatePreference(slider, preferenceSpan) {
-        const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-        const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+                function updatePreference(slider) {
+                    const preferenceSpan = slider.nextElementSibling;
+                    const value = parseInt(slider.value);
+                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                        preferenceSpan.textContent = VALUES[value];
+                        preferenceSpan.style.color = COLORS[value];
+                    }
+                    updateUrl();
+                }
 
-        const value = parseInt(slider.value);
-        preferenceSpan.textContent = values[value];
-        preferenceSpan.style.color = colors[value];
+                function generateUrlParams() {
+                    const params = {};
+                    document.querySelectorAll('#me .slider').forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) params[`me[${key}]`] = slider.value;
+                    });
+                    document.querySelectorAll('#partner .slider').forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) params[`partner[${key}]`] = slider.value;
+                    });
+                    return params;
+                }
 
-        updateUrl();
-    }
+                function encodeUrlParams(params) {
+                    return LZString.compressToEncodedURIComponent(JSON.stringify(params));
+                }
 
-    function generateUrlParams() {
-        const meSliders = document.querySelectorAll('#me .slider');
-        const partnerSliders = document.querySelectorAll('#partner .slider');
-        const params = {};
+                function decodeUrlParams(encodedParams) {
+                    const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+                    return decompressed ? JSON.parse(decompressed) : {};
+                }
 
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) params[`me[${key}]`] = slider.value;
-        });
+                function updateUrl() {
+                    const params = generateUrlParams();
+                    const encodedParams = encodeUrlParams(params);
+                    const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+                    window.history.pushState({}, document.title, newUrl);
+                }
 
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) params[`partner[${key}]`] = slider.value;
-        });
+                function generateUrl() {
+                    const params = generateUrlParams();
+                    const encodedParams = encodeUrlParams(params);
+                    return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+                }
 
-        return params;
-    }
+                function shareViaTelegram() {
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via Telegram');
+                }
 
-    function encodeUrlParams(params) {
-        const jsonString = JSON.stringify(params);
-        return LZString.compressToEncodedURIComponent(jsonString);
-    }
+                function shareViaWhatsApp() {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via WhatsApp');
+                }
 
-    function decodeUrlParams(encodedParams) {
-        const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-        return JSON.parse(decompressed);
-    }
+                function shareViaEmail() {
+                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+                    showToast('Email opened');
+                }
 
-    function updateUrl() {
-        const params = generateUrlParams();
-        const encodedParams = encodeUrlParams(params);
-        const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-        window.history.pushState({}, document.title, newUrl);
-    }
+                function copyUrl() {
+                    const url = generateUrl();
+                    if (navigator.clipboard?.writeText) {
+                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                            console.error('Clipboard failed:', err);
+                            fallbackCopyText(url);
+                        });
+                    } else {
+                        fallbackCopyText(url);
+                    }
+                }
 
-    function generateUrl() {
-        const params = generateUrlParams();
-        const encodedParams = encodeUrlParams(params);
-        return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-    }
+                function fallbackCopyText(text) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('URL copied');
+                    } catch (err) {
+                        showToast('⚠️ Copy failed. Please copy manually.');
+                    }
+                    document.body.removeChild(textArea);
+                }
 
-    function shareViaTelegram() {
-        const url = generateUrl();
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
-    }
+                function loadSliderPositionsFromUrl() {
+                    const hash = window.location.hash.slice(1);
+                    if (!hash) return;
 
-    function shareViaWhatsApp() {
-        const url = generateUrl();
-        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
-    }
+                    const params = decodeUrlParams(hash);
+                    document.querySelectorAll('#me .slider').forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        const value = params[`me[${key}]`];
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider);
+                        }
+                    });
+                    document.querySelectorAll('#partner .slider').forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        const value = params[`partner[${key}]`];
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider);
+                        }
+                    });
+                }
 
-    function shareViaEmail() {
-        const url = generateUrl();
-        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
-    }
+                window.onload = function() {
+                    const sliders = document.querySelectorAll('.slider');
+                    if (!sliders.length) return;
 
-    function copyUrl() {
-        const url = generateUrl();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-            navigator.clipboard.writeText(url).then(() => {
-                alert('URL copied to clipboard!');
-            }).catch(err => {
-                console.error('Clipboard copy failed:', err);
-                fallbackCopyText(url);
-            });
-        } else {
-            fallbackCopyText(url);
-        }
-    }
+                    loadSliderPositionsFromUrl();
 
-    function fallbackCopyText(text) {
-        const textArea = document.createElement("textarea");
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            alert('URL copied');
-        } catch (err) {
-            console.error('Fallback copy failed:', err);
-            alert('⚠️ Copy failed. Please copy manually.');
-        }
-        document.body.removeChild(textArea);
-    }
-
-    function loadSliderPositionsFromUrl() {
-        const hash = window.location.hash.slice(1);
-        if (!hash) return;
-
-        const params = decodeUrlParams(hash);
-        const meSliders = document.querySelectorAll('#me .slider');
-        const partnerSliders = document.querySelectorAll('#partner .slider');
-
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const paramKey = `me[${key}]`;
-            const value = params[paramKey];
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, slider.nextElementSibling);
-            }
-        });
-
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const paramKey = `partner[${key}]`;
-            const value = params[paramKey];
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, slider.nextElementSibling);
-            }
-        });
-    }
-
-    window.onload = function () {
-        const sliders = document.querySelectorAll('.slider');
-        if (sliders.length === 0) return;
-
-        loadSliderPositionsFromUrl();
-
-        // Add touch event listeners for mobile
-        sliders.forEach(slider => {
-            slider.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-            }, { passive: false });
-            slider.addEventListener('touchmove', (e) => {
-                e.preventDefault();
-                const touch = e.touches[0];
-                const rect = slider.getBoundingClientRect();
-                const value = Math.round((touch.clientX - rect.left) / rect.width * 3);
-                slider.value = Math.min(3, Math.max(0, value));
-                updatePreference(slider, slider.nextElementSibling);
-            }, { passive: false });
-        });
-    };
-</script>
-
-<script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js"></script>
-<script src="/59f69b7dfd11f8b16a64727aecf48e4dfd620c7b45c275c864c7740c267e8f71/ns.js"></script>
-<script src="/40308a71bf159c1d973ede8508b9a9fa80acea4f36d08e9d252573cccdbcbc67/ns.js"></script>
-<script src="/f02a9d5d919ed820f1cec8cd65fcecd72c4c7e250e9b9af9fe45b4b64f721fff/ns.js"></script>
-<script src="/756d2f999ba31e74861290cf37b0a3964b929dcf801d782bb920a6e4f07d7c0c/ns.js"></script>
+                    sliders.forEach(slider => {
+                        slider.addEventListener('input', () => updatePreference(slider));
+                        slider.addEventListener('touchstart', e => e.preventDefault(), {
+                            passive: false
+                        });
+                        slider.addEventListener('touchmove', e => {
+                            e.preventDefault();
+                            const touch = e.touches[0];
+                            const rect = slider.getBoundingClientRect();
+                            const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                            slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                            updatePreference(slider);
+                        }, {
+                            passive: false
+                        });
+                    });
+                };
+            </script>
+</body>
 
 </html>
