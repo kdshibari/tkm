@@ -2515,218 +2515,230 @@
 
             <div class="toast-container" id="toastContainer"></div>
 
-            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-            <script>
-                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
-                let meSliders, partnerSliders; // Cached sliders
+<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+<script>
+    const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+    const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+    let meSliders, partnerSliders; // Cached sliders
+    const STORAGE_KEY = 'kinkyMapState'; // Key for localStorage
 
-                function showToast(message) {
-                    const toast = document.createElement('div');
-                    toast.className = 'toast';
-                    toast.textContent = message;
-                    document.getElementById('toastContainer').appendChild(toast);
-                    requestAnimationFrame(() => toast.classList.add('show'));
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        toast.addEventListener('transitionend', () => toast.remove());
-                    }, 2000);
-                }
+    function showToast(message) {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = message;
+        document.getElementById('toastContainer').appendChild(toast);
+        requestAnimationFrame(() => toast.classList.add('show'));
+        setTimeout(() => {
+            toast.classList.remove('show');
+            toast.addEventListener('transitionend', () => toast.remove());
+        }, 2000);
+    }
 
-                function resetSliders() {
-                    meSliders.forEach(slider => {
-                        slider.value = 0;
-                        updatePreference(slider);
-                    });
-                    partnerSliders.forEach(slider => {
-                        slider.value = 0;
-                        updatePreference(slider);
-                    });
-                    updateUrl();
-                    showToast('Sliders reset');
-                }
+    function resetSliders() {
+        meSliders.forEach(slider => {
+            slider.value = 0;
+            updatePreference(slider);
+        });
+        partnerSliders.forEach(slider => {
+            slider.value = 0;
+            updatePreference(slider);
+        });
+        saveState(); // Save reset state
+        updateUrl();
+        showToast('Sliders reset');
+    }
 
-                function openTab(tabName) {
-                    const tabs = document.querySelectorAll('.tab-content');
-                    tabs.forEach(tab => {
-                        tab.classList.remove('active', 'fade-in');
-                        if (tab.id === tabName) {
-                            tab.classList.add('active');
-                            requestAnimationFrame(() => tab.classList.add('fade-in'));
-                        }
-                    });
-                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-                }
+    function openTab(tabName) {
+        const tabs = document.querySelectorAll('.tab-content');
+        tabs.forEach(tab => {
+            tab.classList.remove('active', 'fade-in');
+            if (tab.id === tabName) {
+                tab.classList.add('active');
+                requestAnimationFrame(() => tab.classList.add('fade-in'));
+            }
+        });
+        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+        document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+    }
 
-                function toggleSection(header) {
-                    const sectionContent = header.nextElementSibling;
-                    sectionContent?.classList.toggle('active');
-                }
+    function toggleSection(header) {
+        const sectionContent = header.nextElementSibling;
+        sectionContent?.classList.toggle('active');
+    }
 
-                function updatePreference(slider) {
-                    const preferenceSpan = slider.nextElementSibling;
-                    const value = parseInt(slider.value);
-                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-                        preferenceSpan.textContent = VALUES[value];
-                        preferenceSpan.style.color = COLORS[value];
-                    }
-                    updateUrl(); // Ensure URL updates on every change
-                }
+    function updatePreference(slider) {
+        const preferenceSpan = slider.nextElementSibling;
+        const value = parseInt(slider.value);
+        if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+            preferenceSpan.textContent = VALUES[value];
+            preferenceSpan.style.color = COLORS[value];
+        }
+        saveState(); // Save immediately on move
+        updateUrl();
+    }
 
-                function filterItems(tabId, query) {
-                    const items = document.querySelectorAll(`#${tabId} .item`);
-                    items.forEach(item => {
-                        const label = item.querySelector('.item-label').textContent.toLowerCase();
-                        item.style.display = label.includes(query.toLowerCase()) ? '' : 'none';
-                    });
-                }
+    function filterItems(tabId, query) {
+        const items = document.querySelectorAll(`#${tabId} .item`);
+        items.forEach(item => {
+            const label = item.querySelector('.item-label').textContent.toLowerCase();
+            item.style.display = label.includes(query.toLowerCase()) ? '' : 'none';
+        });
+    }
 
-                function generateUrlParams() {
-                    const mePrefs = {};
-                    const partnerPrefs = {};
-                    meSliders.forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        if (key) mePrefs[key] = slider.value;
-                    });
-                    partnerSliders.forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        if (key) partnerPrefs[key] = slider.value;
-                    });
-                    return {
-                        me: mePrefs,
-                        partner: partnerPrefs
-                    };
-                }
+    function generateState() {
+        const mePrefs = {};
+        const partnerPrefs = {};
+        meSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            if (key) mePrefs[key] = slider.value;
+        });
+        partnerSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            if (key) partnerPrefs[key] = slider.value;
+        });
+        return { me: mePrefs, partner: partnerPrefs };
+    }
 
-                function encodeUrlParams(params) {
-                    return LZString.compressToEncodedURIComponent(JSON.stringify(params));
-                }
+    function saveState() {
+        const state = generateState();
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); // Store in localStorage
+        return state;
+    }
 
-                function decodeUrlParams(encodedParams) {
-                    const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-                    return decompressed ? JSON.parse(decompressed) : {
-                        me: {},
-                        partner: {}
-                    };
-                }
+    function loadStateFromStorage() {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        return stored ? JSON.parse(stored) : { me: {}, partner: {} };
+    }
 
-                function updateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                    window.history.replaceState({}, document.title, newUrl); // replaceState for instant updates
-                }
+    function encodeUrlParams(params) {
+        return LZString.compressToEncodedURIComponent(JSON.stringify(params));
+    }
 
-                function generateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                }
+    function decodeUrlParams(encodedParams) {
+        const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+        return decompressed ? JSON.parse(decompressed) : { me: {}, partner: {} };
+    }
 
-                function shareViaTelegram() {
-                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via Telegram');
-                }
+    function updateUrl() {
+        const params = generateState();
+        const encodedParams = encodeUrlParams(params);
+        const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        window.history.replaceState({}, document.title, newUrl); // Immediate URL update
+    }
 
-                function shareViaWhatsApp() {
-                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via WhatsApp');
-                }
+    function generateUrl() {
+        const params = generateState();
+        const encodedParams = encodeUrlParams(params);
+        return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+    }
 
-                function shareViaEmail() {
-                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-                    showToast('Email opened');
-                }
+    function shareViaTelegram() {
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+        showToast('Shared via Telegram');
+    }
 
-                function copyUrl() {
-                    const url = generateUrl();
-                    if (navigator.clipboard?.writeText) {
-                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                            console.error('Clipboard failed:', err);
-                            fallbackCopyText(url);
-                        });
-                    } else {
-                        fallbackCopyText(url);
-                    }
-                }
+    function shareViaWhatsApp() {
+        window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+        showToast('Shared via WhatsApp');
+    }
 
-                function fallbackCopyText(text) {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('URL copied');
-                    } catch (err) {
-                        showToast('⚠️ Copy failed. Please copy manually.');
-                    }
-                    document.body.removeChild(textArea);
-                }
+    function shareViaEmail() {
+        window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+        showToast('Email opened');
+    }
 
-                function loadSliderPositionsFromUrl() {
-                    const hash = window.location.hash.slice(1);
-                    if (!hash) return;
+    function copyUrl() {
+        const url = generateUrl();
+        if (navigator.clipboard?.writeText) {
+            navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                console.error('Clipboard failed:', err);
+                fallbackCopyText(url);
+            });
+        } else {
+            fallbackCopyText(url);
+        }
+    }
 
-                    const params = decodeUrlParams(hash);
-                    meSliders.forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        const value = params.me?.[key];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                    partnerSliders.forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        const value = params.partner?.[key];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                }
+    function fallbackCopyText(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            showToast('URL copied');
+        } catch (err) {
+            showToast('⚠️ Copy failed. Please copy manually.');
+        }
+        document.body.removeChild(textArea);
+    }
 
-                window.onload = function() {
-                    meSliders = document.querySelectorAll('#me .slider');
-                    partnerSliders = document.querySelectorAll('#partner .slider');
-                    if (!meSliders.length && !partnerSliders.length) return;
+    function loadSliderPositions() {
+        const hash = window.location.hash.slice(1);
+        let state = hash ? decodeUrlParams(hash) : loadStateFromStorage(); // URL first, then localStorage
 
-                    // Default expand first section in each tab
-                    document.querySelector('#me .section-content')?.classList.add('active');
-                    document.querySelector('#partner .section-content')?.classList.add('active');
+        meSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = state.me?.[key];
+            if (value !== undefined) {
+                slider.value = value;
+                updatePreference(slider);
+            }
+        });
+        partnerSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            const value = state.partner?.[key];
+            if (value !== undefined) {
+                slider.value = value;
+                updatePreference(slider);
+            }
+        });
+    }
 
-                    loadSliderPositionsFromUrl();
+    window.onload = function () {
+        meSliders = document.querySelectorAll('#me .slider');
+        partnerSliders = document.querySelectorAll('#partner .slider');
+        if (!meSliders.length && !partnerSliders.length) return;
 
-                    // Slider event listeners
-                    [meSliders, partnerSliders].forEach(sliderGroup => {
-                        sliderGroup.forEach(slider => {
-                            slider.setAttribute('aria-label', slider.previousElementSibling.textContent);
-                            slider.addEventListener('input', () => updatePreference(slider));
-                            slider.addEventListener('keydown', (e) => {
-                                if (e.key === 'ArrowLeft' && slider.value > 0) slider.value--;
-                                if (e.key === 'ArrowRight' && slider.value < 3) slider.value++;
-                                updatePreference(slider);
-                            });
-                            slider.addEventListener('touchstart', e => e.preventDefault(), {
-                                passive: false
-                            });
-                            slider.addEventListener('touchmove', e => {
-                                e.preventDefault();
-                                const touch = e.touches[0];
-                                const rect = slider.getBoundingClientRect();
-                                const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
-                                slider.value = Math.min(slider.max, Math.max(slider.min, value));
-                                updatePreference(slider);
-                            }, {
-                                passive: false
-                            });
-                        });
-                    });
-                };
-            </script>
+        // Default expand first section in each tab
+        document.querySelector('#me .section-content')?.classList.add('active');
+        document.querySelector('#partner .section-content')?.classList.add('active');
 
-            <body>
+        loadSliderPositions(); // Load initial state
 
+        // Add search bars to each tab
+        ['me', 'partner'].forEach(tabId => {
+            const tab = document.getElementById(tabId);
+            const search = document.createElement('input');
+            search.type = 'text';
+            search.className = 'search-bar';
+            search.placeholder = `Search ${tabId} activities...`;
+            search.addEventListener('input', (e) => filterItems(tabId, e.target.value));
+            tab.insertBefore(search, tab.firstChild);
+        });
+
+        // Slider event listeners
+        [meSliders, partnerSliders].forEach(sliderGroup => {
+            sliderGroup.forEach(slider => {
+                slider.setAttribute('aria-label', slider.previousElementSibling.textContent);
+                slider.addEventListener('input', () => updatePreference(slider)); // Immediate save on move
+                slider.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowLeft' && slider.value > 0) slider.value--;
+                    if (e.key === 'ArrowRight' && slider.value < 3) slider.value++;
+                    updatePreference(slider);
+                });
+                slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+                slider.addEventListener('touchmove', e => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const rect = slider.getBoundingClientRect();
+                    const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                    slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                    updatePreference(slider);
+                }, { passive: false });
+            });
+        });
+    };
+</script>
+<body>
 </html>
