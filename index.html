@@ -8,6 +8,7 @@
     <meta name="robots" content="index, follow">
     <title>Preference Sliders</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
+
     <style>
         :root {
             --primary: #B71C12;
@@ -65,7 +66,11 @@
             margin-bottom: 0.5rem;
         }
 
-        h2:hover h5 {
+        h2:hover {
+            background-color: rgba(183, 28, 28, 0.3);
+        }
+
+        h5 {
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
             cursor: pointer;
@@ -92,7 +97,6 @@
             color: #6A1B9A;
             font-weight: 500;
         }
-
 
         .section-content {
             display: none;
@@ -130,12 +134,21 @@
             color: white;
         }
 
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
         .item {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 0.75rem;
             padding: 0.3rem 0;
+            gap: 10px;
         }
 
         .item-label {
@@ -147,7 +160,7 @@
         .slider {
             -webkit-appearance: none;
             appearance: none;
-            width: 160px;
+            width: 120px;
             height: 6px;
             background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
             border-radius: 3px;
@@ -193,7 +206,7 @@
         }
 
         .preference {
-            width: 90px;
+            width: 80px;
             text-align: center;
             font-size: 14px;
             font-weight: 600;
@@ -220,22 +233,10 @@
             transform: scale(1.05);
         }
 
-        .telegram {
-            background: #0088CC;
-        }
-
-        .whatsapp {
-            background: #25D366;
-        }
-
-        .email {
-            background: #D32F2F;
-        }
-
-        .copy-link {
-            background: #FFB300;
-            color: var(--background);
-        }
+        .telegram { background: #0088CC; }
+        .whatsapp { background: #25D366; }
+        .email { background: #D32F2F; }
+        .copy-link { background: #FFB300; color: var(--background); }
 
         .toast-container {
             position: fixed;
@@ -339,6 +340,37 @@
             font-weight: 500;
         }
 
+        @media (max-width: 768px) {
+            .slider {
+                width: 100px;
+            }
+            .slider::-webkit-slider-thumb {
+                width: 20px;
+                height: 28px;
+            }
+            .slider::-moz-range-thumb {
+                width: 20px;
+                height: 28px;
+            }
+            .item-label, .preference {
+                font-size: 0.875rem;
+            }
+            .tabs, .share-container {
+                flex-wrap: wrap;
+            }
+            .share-button, .reset-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+            .toast-container {
+                bottom: 0.5rem;
+                right: 0.5rem;
+            }
+            .item {
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+        }
         #saveMessage {
             font-size: 0.875rem;
             color: #26A69A;
@@ -348,59 +380,19 @@
             transition: opacity 0.3s ease;
         }
 
-        #saveMessage.active {
-            opacity: 1;
-        }
-
-        @media (max-width: 768px) {
-            .slider {
-                width: 35%;
-            }
-
-            .slider::-webkit-slider-thumb {
-                width: 20px;
-                height: 28px;
-            }
-
-            .slider::-moz-range-thumb {
-                width: 20px;
-                height: 28px;
-            }
-
-            .item-label,
-            .preference {
-                font-size: 0.875rem;
-            }
-
-            .tabs,
-            .share-container {
-                flex-wrap: wrap;
-            }
-
-            .share-button,
-            .reset-button {
-                padding: 0.5rem 1rem;
-                font-size: 0.875rem;
-            }
-
-            .toast-container {
-                bottom: 0.5rem;
-                right: 0.5rem;
-            }
-        }
-
         @media (max-width: 480px) {
             .elegant-container {
                 margin: 1rem;
                 padding: 1rem;
             }
-
             h1 {
                 font-size: 2rem;
             }
-
             .slider {
-                width: 100%;
+                width: 90px;
+            }
+            .preference {
+                width: 70px;
             }
         }
     </style>
@@ -2446,9 +2438,9 @@
 
         <!-- Notes Section -->
         <div class="card">
-            <h3>Notes</h3>
+            <h3>Notes, Comments, Thoughts</h3>
             <div class="notes-container">
-                <textarea id="personalNotes" placeholder="Jot down your vibes..."></textarea>
+                <textarea id="personalNotes" placeholder="Type your thoughts..."></textarea>
                 <p id="saveMessage">Saved!</p>
             </div>
 
@@ -2471,177 +2463,173 @@
 
             <div class="toast-container" id="toastContainer"></div>
 
-            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-            <script>
-                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script>
+        const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+        const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-                function showToast(message) {
-                    const toast = document.createElement('div');
-                    toast.className = 'toast';
-                    toast.textContent = message;
-                    document.getElementById('toastContainer').appendChild(toast);
-                    requestAnimationFrame(() => toast.classList.add('show'));
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        toast.addEventListener('transitionend', () => toast.remove());
-                    }, 2000);
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.getElementById('toastContainer').appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 2000);
+        }
+
+        function resetSliders() {
+            document.querySelectorAll('.slider').forEach(slider => {
+                slider.value = 0;
+                updatePreference(slider);
+            });
+            updateUrl();
+            showToast('Sliders reset');
+        }
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName)?.classList.add('active');
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+        }
+
+        function toggleSection(header) {
+            const sectionContent = header.nextElementSibling;
+            sectionContent?.classList.toggle('active');
+        }
+
+        function updatePreference(slider) {
+            const preferenceSpan = slider.nextElementSibling;
+            const value = parseInt(slider.value);
+            if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                preferenceSpan.textContent = VALUES[value];
+                preferenceSpan.style.color = COLORS[value];
+            }
+            updateUrl();
+        }
+
+        function generateUrlParams() {
+            const meValues = [];
+            const partnerValues = [];
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                meValues[index] = slider.value;
+            });
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                partnerValues[index] = slider.value;
+            });
+            return [meValues, partnerValues];
+        }
+
+        function encodeUrlParams(params) {
+            return LZString.compressToEncodedURIComponent(JSON.stringify(params));
+        }
+
+        function decodeUrlParams(encodedParams) {
+            const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+            return decompressed ? JSON.parse(decompressed) : [[], []];
+        }
+
+        function updateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+            window.history.pushState({}, document.title, newUrl);
+        }
+
+        function generateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        }
+
+        function shareViaTelegram() {
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via Telegram');
+        }
+
+        function shareViaWhatsApp() {
+            window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via WhatsApp');
+        }
+
+        function shareViaEmail() {
+            window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+            showToast('Email opened');
+        }
+
+        function copyUrl() {
+            const url = generateUrl();
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                    console.error('Clipboard failed:', err);
+                    fallbackCopyText(url);
+                });
+            } else {
+                fallbackCopyText(url);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('URL copied');
+            } catch (err) {
+                showToast('⚠️ Copy failed. Please copy manually.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function loadSliderPositionsFromUrl() {
+            const hash = window.location.hash.slice(1);
+            if (!hash) return;
+
+            const [meValues, partnerValues] = decodeUrlParams(hash);
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = meValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
                 }
-
-                function resetSliders() {
-                    document.querySelectorAll('.slider').forEach(slider => {
-                        slider.value = 0;
-                        updatePreference(slider);
-                    });
-                    updateUrl();
-                    showToast('Sliders reset');
+            });
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = partnerValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
                 }
+            });
+        }
 
-                function openTab(tabName) {
-                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                    document.getElementById(tabName)?.classList.add('active');
-                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-                }
+        window.onload = function () {
+            const sliders = document.querySelectorAll('.slider');
+            if (!sliders.length) return;
 
-                function toggleSection(header) {
-                    const sectionContent = header.nextElementSibling;
-                    sectionContent?.classList.toggle('active');
-                }
+            loadSliderPositionsFromUrl();
 
-                function updatePreference(slider) {
-                    const preferenceSpan = slider.nextElementSibling;
-                    const value = parseInt(slider.value);
-                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-                        preferenceSpan.textContent = VALUES[value];
-                        preferenceSpan.style.color = COLORS[value];
-                    }
-                    updateUrl();
-                }
-
-                function generateUrlParams() {
-                    const params = {};
-                    document.querySelectorAll('#me .slider').forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        if (key) params[`me[${key}]`] = slider.value;
-                    });
-                    document.querySelectorAll('#partner .slider').forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        if (key) params[`partner[${key}]`] = slider.value;
-                    });
-                    return params;
-                }
-
-                function encodeUrlParams(params) {
-                    return LZString.compressToEncodedURIComponent(JSON.stringify(params));
-                }
-
-                function decodeUrlParams(encodedParams) {
-                    const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-                    return decompressed ? JSON.parse(decompressed) : {};
-                }
-
-                function updateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                    window.history.pushState({}, document.title, newUrl);
-                }
-
-                function generateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                }
-
-                function shareViaTelegram() {
-                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via Telegram');
-                }
-
-                function shareViaWhatsApp() {
-                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via WhatsApp');
-                }
-
-                function shareViaEmail() {
-                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-                    showToast('Email opened');
-                }
-
-                function copyUrl() {
-                    const url = generateUrl();
-                    if (navigator.clipboard?.writeText) {
-                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                            console.error('Clipboard failed:', err);
-                            fallbackCopyText(url);
-                        });
-                    } else {
-                        fallbackCopyText(url);
-                    }
-                }
-
-                function fallbackCopyText(text) {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('URL copied');
-                    } catch (err) {
-                        showToast('⚠️ Copy failed. Please copy manually.');
-                    }
-                    document.body.removeChild(textArea);
-                }
-
-                function loadSliderPositionsFromUrl() {
-                    const hash = window.location.hash.slice(1);
-                    if (!hash) return;
-
-                    const params = decodeUrlParams(hash);
-                    document.querySelectorAll('#me .slider').forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        const value = params[`me[${key}]`];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                    document.querySelectorAll('#partner .slider').forEach(slider => {
-                        const key = slider.getAttribute('data-key');
-                        const value = params[`partner[${key}]`];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                }
-
-                window.onload = function() {
-                    const sliders = document.querySelectorAll('.slider');
-                    if (!sliders.length) return;
-
-                    loadSliderPositionsFromUrl();
-
-                    sliders.forEach(slider => {
-                        slider.addEventListener('input', () => updatePreference(slider));
-                        slider.addEventListener('touchstart', e => e.preventDefault(), {
-                            passive: false
-                        });
-                        slider.addEventListener('touchmove', e => {
-                            e.preventDefault();
-                            const touch = e.touches[0];
-                            const rect = slider.getBoundingClientRect();
-                            const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
-                            slider.value = Math.min(slider.max, Math.max(slider.min, value));
-                            updatePreference(slider);
-                        }, {
-                            passive: false
-                        });
-                    });
-                };
-            </script>
+            sliders.forEach(slider => {
+                slider.addEventListener('input', () => updatePreference(slider));
+                slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+                slider.addEventListener('touchmove', e => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const rect = slider.getBoundingClientRect();
+                    const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                    slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                    updatePreference(slider);
+                }, { passive: false });
+            });
+        };
+    </script>
 </body>
-
 </html>
