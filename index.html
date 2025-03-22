@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -454,7 +453,7 @@
 </head>
 
 <body>
-    <div class="elegant-container">
+<div class="elegant-container">
         <h1>The Kinky Map</h1>
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
         <ul>
@@ -2493,17 +2492,17 @@
 
         <!-- Notes Section -->
         <div class="card">
-            <h3>Notes, Comments, Thoughts</h3>
-            <div class="notes-container">
-                <textarea id="personalNotes" placeholder="Type your thoughts..."></textarea>
-                <p id="saveMessage">Saved!</p>
-            </div>
+        <h3>Notes, Comments, Thoughts</h3>
+        <div class="notes-container">
+        <textarea id="personalNotes" placeholder="Type your thoughts..."></textarea>
+        <p id="saveMessage">Saved!</p>
+        </div>
 
-            <div class="share-container">
-                <button class="share-button telegram" onclick="shareViaTelegram()">Share via Telegram</button>
-                <button class="share-button whatsapp" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
-                <button class="share-button email" onclick="shareViaEmail()">Share via Email</button>
-                <button class="share-button copy-link" onclick="copyUrl()">Copy URL</button>
+        <div class="share-container">
+        <button class="share-button telegram" onclick="shareViaTelegram()">Telegram</button>
+        <button class="share-button whatsapp" onclick="shareViaWhatsApp()">WhatsApp</button>
+        <button class="share-button email" onclick="shareViaEmail()">Email</button>
+        <button class="share-button copy-link" onclick="copyUrl()">Copy URL</button>
 
             </div>
 
@@ -2517,13 +2516,14 @@
             </footer>
 
             <div class="toast-container" id="toastContainer"></div>
+</body>        
 
 <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
 <script>
     const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
     const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
-    let meSliders, partnerSliders, notesTextarea; // Cached elements
-    const STORAGE_KEY = 'kinkyMapState'; // Key for localStorage
+    let meSliders, partnerSliders, notesTextarea;
+    const STORAGE_KEY = 'kinkyMapState';
 
     function showToast(message) {
         const toast = document.createElement('div');
@@ -2540,13 +2540,13 @@
     function resetSliders() {
         meSliders.forEach(slider => {
             slider.value = 0;
-            updatePreference(slider);
+            updatePreference(slider, false); // Don’t save
         });
         partnerSliders.forEach(slider => {
             slider.value = 0;
-            updatePreference(slider);
+            updatePreference(slider, false);
         });
-        notesTextarea.value = ''; // Reset notes too
+        notesTextarea.value = '';
         saveState();
         updateUrl();
         showToast('Sliders and notes reset');
@@ -2570,15 +2570,17 @@
         sectionContent?.classList.toggle('active');
     }
 
-    function updatePreference(slider) {
+    function updatePreference(slider, save = true) {
         const preferenceSpan = slider.nextElementSibling;
         const value = parseInt(slider.value);
         if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
             preferenceSpan.textContent = VALUES[value];
             preferenceSpan.style.color = COLORS[value];
         }
-        saveState(); // Save immediately on slider move
-        updateUrl();
+        if (save) {
+            saveState();
+            updateUrl();
+        }
     }
 
     function filterItems(tabId, query) {
@@ -2600,18 +2602,18 @@
             const key = slider.getAttribute('data-key');
             if (key) partnerPrefs[key] = slider.value;
         });
-        const notes = notesTextarea.value || ''; // Ensure notes is always a string
+        const notes = notesTextarea.value || '';
         const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
-        console.log('Generated State:', state); // Debug log
+        console.log('Generated State:', state);
         return state;
     }
 
     function saveState() {
         const state = generateState();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); // Store in localStorage
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
         const saveMessage = document.getElementById('saveMessage');
-        saveMessage.style.opacity = '1'; // Show "Saved!" message
-        setTimeout(() => saveMessage.style.opacity = '0', 2000); // Fade out after 2s
+        saveMessage.style.opacity = '1';
+        setTimeout(() => saveMessage.style.opacity = '0', 2000);
         return state;
     }
 
@@ -2622,14 +2624,14 @@
 
     function encodeUrlParams(params) {
         const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(params));
-        console.log('Encoded URL Params:', encoded); // Debug log
+        console.log('Encoded URL Params:', encoded);
         return encoded;
     }
 
     function decodeUrlParams(encodedParams) {
         const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
         const state = decompressed ? JSON.parse(decompressed) : { me: {}, partner: {}, notes: '' };
-        console.log('Decoded State:', state); // Debug log
+        console.log('Decoded State:', state);
         return state;
     }
 
@@ -2637,7 +2639,7 @@
         const params = generateState();
         const encodedParams = encodeUrlParams(params);
         const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-        window.history.replaceState({}, document.title, newUrl); // Immediate URL update
+        window.history.replaceState({}, document.title, newUrl);
     }
 
     function generateUrl() {
@@ -2689,29 +2691,26 @@
 
     function loadSliderPositionsAndNotes() {
         const hash = window.location.hash.slice(1);
-        let state = hash ? decodeUrlParams(hash) : loadStateFromStorage(); // URL first, then localStorage
+        let state = hash ? decodeUrlParams(hash) : loadStateFromStorage();
 
-        // Load Me sliders
         meSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
             const value = state.me?.[key];
             if (value !== undefined) {
                 slider.value = value;
-                updatePreference(slider); // Update UI without saving again
+                updatePreference(slider, false); // Don’t save during load
             }
         });
 
-        // Load Partner sliders
         partnerSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
             const value = state.partner?.[key];
             if (value !== undefined) {
                 slider.value = value;
-                updatePreference(slider); // Update UI without saving again
+                updatePreference(slider, false); // Don’t save during load
             }
         });
 
-        // Load Notes
         if (state.notes !== undefined) {
             notesTextarea.value = state.notes || '';
         }
@@ -2720,17 +2719,17 @@
     window.onload = function () {
         meSliders = document.querySelectorAll('#me .slider');
         partnerSliders = document.querySelectorAll('#partner .slider');
-        notesTextarea = document.getElementById('personalNotes'); // Cache textarea
+        notesTextarea = document.getElementById('personalNotes');
+        console.log('meSliders count:', meSliders.length);
+        console.log('partnerSliders count:', partnerSliders.length);
+        console.log('notesTextarea:', notesTextarea);
         if (!meSliders.length && !partnerSliders.length) return;
 
-        // Default expand first section in each tab
         document.querySelector('#me .section-content')?.classList.add('active');
         document.querySelector('#partner .section-content')?.classList.add('active');
 
-        loadSliderPositionsAndNotes(); // Load initial state including notes
+        loadSliderPositionsAndNotes();
 
-
-        // Slider event listeners
         [meSliders, partnerSliders].forEach(sliderGroup => {
             sliderGroup.forEach(slider => {
                 slider.setAttribute('aria-label', slider.previousElementSibling.textContent);
@@ -2752,12 +2751,12 @@
             });
         });
 
-        // Notes event listener
         notesTextarea.addEventListener('input', () => {
-            saveState(); // Save on every change
+            saveState();
             updateUrl();
         });
     };
 </script>
-<body>
+
+</body>
 </html>
