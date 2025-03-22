@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Set and share your preferences with sliders">
     <meta name="robots" content="index, follow">
-    <title>Preference Sliders</title>
+    <title>The Kiny Map</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
 
     <style>
@@ -2485,7 +2485,7 @@
     function resetSliders() {
         meSliders.forEach(slider => {
             slider.value = 0;
-            updatePreference(slider, false); // Don’t save
+            updatePreference(slider, false);
         });
         partnerSliders.forEach(slider => {
             slider.value = 0;
@@ -2522,6 +2522,23 @@
         }
     }
 
+    function generateCompactState() {
+        // Each slider value is 0-3 (2 bits), so ~150 sliders = 300 bits = ~38 bytes
+        const meValues = Array.from(meSliders).map(slider => slider.value).join('');
+        const partnerValues = Array.from(partnerSliders).map(slider => slider.value).join('');
+        const compact = meValues + '|' + partnerValues; // e.g., "0301...|0210..."
+        return LZString.compressToBase64(compact); // Compress to base64
+    }
+
+    function decodeCompactState(encoded) {
+        const decompressed = LZString.decompressFromBase64(encoded) || '';
+        const [meValues = '', partnerValues = ''] = decompressed.split('|');
+        return {
+            me: meValues.split('').map(Number),
+            partner: partnerValues.split('').map(Number)
+        };
+    }
+
     function generateState() {
         const mePrefs = {};
         const partnerPrefs = {};
@@ -2535,7 +2552,7 @@
         });
         const notes = notesTextarea.value || '';
         const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
-        console.log('Generated State:', state); // Debug
+        console.log('Full State:', state); // Debug full state
         return state;
     }
 
@@ -2547,7 +2564,6 @@
             saveMessage.style.opacity = '1';
             setTimeout(() => saveMessage.style.opacity = '0', 2000);
         }
-        return state;
     }
 
     function loadStateFromStorage() {
@@ -2555,30 +2571,27 @@
         return stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
     }
 
-    function encodeUrlParams(params) {
-        const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(params));
-        console.log('Encoded URL Params:', encoded); // Debug
-        return encoded;
+    function encodeUrlParams() {
+        const compact = generateCompactState();
+        console.log('Compact Encoded:', compact); // Debug
+        return compact; // Short base64 string
     }
 
-    function decodeUrlParams(encodedParams) {
-        const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-        const state = decompressed ? JSON.parse(decompressed) : { me: {}, partner: {}, notes: '' };
-        console.log('Decoded State:', state); // Debug
-        return state;
+    function decodeUrlParams(encoded) {
+        const { me, partner } = decodeCompactState(encoded);
+        console.log('Decoded Compact:', { me, partner }); // Debug
+        return { me, partner, notes: '' }; // Notes not in URL
     }
 
     function updateUrl() {
-        const params = generateState();
-        const encodedParams = encodeUrlParams(params);
-        const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-        window.history.replaceState({}, document.title, newUrl); // Replace, not push
+        const encoded = encodeUrlParams();
+        const newUrl = `${window.location.origin}${window.location.pathname}#${encoded}`;
+        window.history.replaceState({}, document.title, newUrl);
     }
 
     function generateUrl() {
-        const params = generateState();
-        const encodedParams = encodeUrlParams(params);
-        return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        const encoded = encodeUrlParams();
+        return `${window.location.origin}${window.location.pathname}#${encoded}`;
     }
 
     function shareViaTelegram() {
@@ -2624,29 +2637,32 @@
 
     function loadSliderPositionsAndNotes() {
         const hash = window.location.hash.slice(1);
-        let state = hash ? decodeUrlParams(hash) : loadStateFromStorage();
+        const urlState = hash ? decodeUrlParams(hash) : {};
+        const storedState = loadStateFromStorage();
 
-        meSliders.forEach(slider => {
+        meSliders.forEach((slider, index) => {
             const key = slider.getAttribute('data-key');
-            const value = state.me?.[key];
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, false); // Don’t save during load
-            }
-        });
-
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const value = state.partner?.[key];
+            const urlValue = urlState.me?.[index];
+            const storedValue = storedState.me?.[key];
+            const value = urlValue !== undefined ? urlValue : storedValue;
             if (value !== undefined) {
                 slider.value = value;
                 updatePreference(slider, false);
             }
         });
 
-        if (state.notes !== undefined) {
-            notesTextarea.value = state.notes || '';
-        }
+        partnerSliders.forEach((slider, index) => {
+            const key = slider.getAttribute('data-key');
+            const urlValue = urlState.partner?.[index];
+            const storedValue = storedState.partner?.[key];
+            const value = urlValue !== undefined ? urlValue : storedValue;
+            if (value !== undefined) {
+                slider.value = value;
+                updatePreference(slider, false);
+            }
+        });
+
+        notesTextarea.value = storedState.notes || ''; // Notes from localStorage only
     }
 
     window.onload = function () {
