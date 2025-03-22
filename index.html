@@ -83,16 +83,20 @@
         }
 
         footer {
-            margin-top: 0rem;
-            padding: 0rem 0;
+            margin-top: 2rem;
+            padding: 1rem 0;
             text-align: center;
-            font-size: 0.7rem;
+            font-size: 0.9rem;
             font-family: 'Inter', sans-serif;
             color: var(--text-secondary);
             background: rgba(0, 0, 0, 0.05);
             border-top: 0px solid rgba(255, 255, 255, 0.1);
         }
 
+        footer span {
+            color: #6A1B9A;
+            font-weight: 500;
+        }
 
         .section-content {
             display: none;
@@ -2596,8 +2600,10 @@
             const key = slider.getAttribute('data-key');
             if (key) partnerPrefs[key] = slider.value;
         });
-        const notes = notesTextarea.value; // Include notes in state
-        return { me: mePrefs, partner: partnerPrefs, notes: notes };
+        const notes = notesTextarea.value || ''; // Ensure notes is always a string
+        const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
+        console.log('Generated State:', state); // Debug log
+        return state;
     }
 
     function saveState() {
@@ -2615,12 +2621,16 @@
     }
 
     function encodeUrlParams(params) {
-        return LZString.compressToEncodedURIComponent(JSON.stringify(params));
+        const encoded = LZString.compressToEncodedURIComponent(JSON.stringify(params));
+        console.log('Encoded URL Params:', encoded); // Debug log
+        return encoded;
     }
 
     function decodeUrlParams(encodedParams) {
         const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-        return decompressed ? JSON.parse(decompressed) : { me: {}, partner: {}, notes: '' };
+        const state = decompressed ? JSON.parse(decompressed) : { me: {}, partner: {}, notes: '' };
+        console.log('Decoded State:', state); // Debug log
+        return state;
     }
 
     function updateUrl() {
@@ -2681,23 +2691,30 @@
         const hash = window.location.hash.slice(1);
         let state = hash ? decodeUrlParams(hash) : loadStateFromStorage(); // URL first, then localStorage
 
+        // Load Me sliders
         meSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
             const value = state.me?.[key];
             if (value !== undefined) {
                 slider.value = value;
-                updatePreference(slider);
+                updatePreference(slider); // Update UI without saving again
             }
         });
+
+        // Load Partner sliders
         partnerSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
             const value = state.partner?.[key];
             if (value !== undefined) {
                 slider.value = value;
-                updatePreference(slider);
+                updatePreference(slider); // Update UI without saving again
             }
         });
-        notesTextarea.value = state.notes || ''; // Load notes
+
+        // Load Notes
+        if (state.notes !== undefined) {
+            notesTextarea.value = state.notes || '';
+        }
     }
 
     window.onload = function () {
