@@ -7,451 +7,436 @@
     <title>The Kinky Map</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #B71C12;
-            /* Deep Red */
-            --secondary: #6A1B9A;
-            /* Dark Purple */
-            --surface: #1A1A1A;
-            --background: #121212;
-            /* Darker Black */
-            --text-primary: #FAF9F6;
-            /* White */
-            --text-secondary: #B0BEC5;
-            /* Metallic Silver */
-            --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
-        }
+<style>
+    :root {
+        --primary: #B71C12;
+        --secondary: #6A1B9A;
+        --surface: #1A1A1A;
+        --background: #121212;
+        --text-primary: #FAF9F6;
+        --text-secondary: #B0BEC5;
+        --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
+    }
 
-        body {
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            padding: 0;
-            background: var(--background);
-            color: var(--text-primary);
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            overflow-x: hidden;
-        }
+    body {
+        font-family: 'Inter', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: var(--background);
+        color: var(--text-primary);
+        line-height: 1.6;
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+    }
 
-        .elegant-container {
-            max-width: 700px;
-            margin: 2rem auto;
-            padding: 1.5rem;
-            background: var(--surface);
-            border-radius: 20px;
-            box-shadow: var(--elevation-1);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+    .elegant-container {
+        max-width: 700px;
+        margin: 2rem auto;
+        padding: 1.5rem;
+        background: var(--surface);
+        border-radius: 20px;
+        box-shadow: var(--elevation-1);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
 
-        h1 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 2.5rem;
-            text-align: center;
-            color: var(--primary);
-            font-weight: 700;
-            margin: 1rem 0;
-        }
+    h1 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 2.5rem;
+        text-align: center;
+        color: var(--primary);
+        font-weight: 700;
+        margin: 1rem 0;
+    }
 
-        h2 {
-            font-family: 'Roboto', sans-serif;
-            font-size: 1.25rem;
-            cursor: pointer;
-            padding: 10px;
-            background-color: rgba(183, 28, 28, 0.2);
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
+    h2 {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1.25rem;
+        cursor: pointer;
+        padding: 10px;
+        background-color: rgba(183, 28, 28, 0.2);
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
 
-        h2:hover {
-            background-color: rgba(183, 28, 28, 0.3);
-            transform: scale(1.01);
-        }
+    h2:hover {
+        background-color: rgba(183, 28, 28, 0.3);
+        transform: scale(1.01);
+    }
 
-        h5 {
-            font-family: 'Inter', sans-serif;
-            font-size: 0.8rem;
-            cursor: pointer;
-            padding: 1px;
-            background-color: rgba(0, 0, , 0.2);
-            border-radius: 8px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
+    h5 {
+        font-family: 'Inter', sans-serif;
+        font-size: 0.8rem;
+        cursor: pointer;
+        padding: 1px;
+        background-color: rgba(0, 0, 0, 0.2); /* Fixed */
+        border-radius: 8px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
 
-        footer {
-            margin-top: 2rem;
-            padding: 1rem 0;
-            text-align: center;
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-secondary);
-            background: rgba(0, 0, 0, 0.05);
-            border-top: 0px solid rgba(255, 255, 255, 0.1);
-        }
+    footer {
+        margin-top: 1rem;
+        padding: 0rem 0;
+        text-align: center;
+        font-size: 0.9rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-secondary);
+        background: rgba(0, 0, 0, 0.05);
+        border-top: 0px solid rgba(255, 255, 255, 0.1);
+    }
 
-        footer span {
-            color: #6A1B9A;
-            font-weight: 500;
-        }
+    footer span {
+        color: #6A1B9A;
+        font-weight: 500;
+    }
 
-        .section-content {
-            display: none;
-            padding: 10px;
-            border-left: 4px solid var(--primary);
-            margin: 10px 0;
-            background-color: rgba(183, 28, 28, 0.1);
-            border-radius: 8px;
-        }
+    .section-content {
+        display: none;
+        padding: 10px;
+        border-left: 4px solid var(--primary);
+        margin: 10px 0;
+        background-color: rgba(183, 28, 28, 0.1);
+        border-radius: 8px;
+    }
 
-        .section-content.active {
-            display: block;
-        }
+    .section-content.active {
+        display: block;
+    }
 
-        .separator {
-            margin: 2rem 0;
-            border-top: 2px solid #121212;
-            text-align: center;
-            position: relative;
-        }
+    .separator {
+        margin: 2rem 0;
+        border-top: 2px solid #121212;
+        text-align: center;
+        position: relative;
+    }
 
-        .separator span {
-            position: absolute;
-            top: -0.8rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--surface);
-            padding: 0 1rem;
-            font-family: 'Roboto', sans-serif;
-            font-size: 1rem;
-            color: #6A1B9A;
-            font-weight: 500;
-        }
+    .separator span {
+        position: absolute;
+        top: -0.8rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface);
+        padding: 0 1rem;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: #6A1B9A;
+        font-weight: 500;
+    }
 
-        .tabs {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
+    .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        margin: 1rem 0;
+    }
 
-        .tab-button {
-            padding: 0.75rem 1.5rem;
-            border: 1px solid var(--primary);
-            border-radius: 8px;
-            background: transparent;
-            color: var(--primary);
-            cursor: pointer;
-            transition: all 0.2s ease;
-            font-weight: 500;
-        }
+    .tab-button {
+        padding: 0.75rem 1.5rem;
+        border: 1px solid var(--primary);
+        border-radius: 8px;
+        background: transparent;
+        color: var(--primary);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        font-weight: 500;
+    }
 
-        .tab-button.active {
-            background: var(--primary);
-            color: white;
-        }
+    .tab-button.active {
+        background: var(--primary);
+        color: white;
+    }
 
-        .tab-content {
-            display: none;
-        }
+    .tab-content {
+        display: none;
+    }
 
-        .tab-content.active {
-            display: block;
-        }
+    .tab-content.active {
+        display: block;
+    }
 
-        .item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 0.75rem;
-            padding: 0.3rem 0;
-        }
+    .item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0.75rem;
+        padding: 0.3rem 0;
+    }
 
-        .item-label {
-            flex: 1;
-            font-size: 14px;
-            color: var(--text-secondary);
-        }
+    .item-label {
+        flex: 1;
+        font-size: 14px;
+        color: var(--text-secondary);
+    }
 
+    .slider {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 160px;
+        height: 6px;
+        background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
+        border-radius: 3px;
+        outline: none;
+        cursor: pointer;
+        transition: opacity 0.2s ease;
+        touch-action: none;
+        -ms-touch-action: none; /* Added for IE/Edge */
+    }
+
+    .slider:hover {
+        opacity: 0.6;
+    }
+
+    .slider:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+    }
+
+    .slider::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 16px; /* Consistent size */
+        height: 24px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 3px;
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.2s ease;
+    }
+
+    .slider:hover::-webkit-slider-thumb {
+        box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
+    }
+
+    .slider::-moz-range-thumb {
+        width: 16px;
+        height: 24px;
+        background: rgba(255, 255, 255, 0.7);
+        border-radius: 3px;
+        border: none; /* Consistent with Webkit */
+        cursor: pointer;
+        transition: background 0.3s ease, box-shadow 0.2s ease;
+    }
+
+    .slider:hover::-moz-range-thumb {
+        box-shadow: 0 0 6px rgba(211, 47, 47, 0.5);
+    }
+
+    .preference {
+        width: 90px;
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .share-container {
+        text-align: center;
+        margin-top: 2rem;
+    }
+
+    .share-button {
+        padding: 0.75rem 1.5rem;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: white;
+        transition: background 0.2s ease, transform 0.2s ease;
+        margin: 0.5rem;
+    }
+
+    .share-button:hover {
+        transform: scale(1.05);
+    }
+
+    .telegram {
+        background: #0088CC;
+    }
+
+    .whatsapp {
+        background: #25D366;
+    }
+
+    .email {
+        background: #D32F2F;
+    }
+
+    .copy-link {
+        background: #FFB300;
+        color: var(--background);
+    }
+
+    .toast-container {
+        position: fixed;
+        bottom: 1rem;
+        right: 1rem;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .toast {
+        background-color: #333333;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        opacity: 0;
+        transform: translateY(20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+
+    .toast.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .reset-button {
+        background: #6B7280;
+        color: white;
+    }
+
+    .footer {
+        margin-top: 2rem;
+        padding: 1rem 0;
+        text-align: center;
+        font-size: 0.7rem;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-secondary);
+        background: rgba(255, 255, 255, 0.05);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer span {
+        color: #121212;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .reset-button-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
+    }
+
+    .reset-button {
+        background-color: #EF5350;
+        color: white;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-family: 'Inter', sans-serif;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .reset-button:hover {
+        background-color: #D32F2F;
+        transform: translateY(-2px);
+    }
+
+    .reset-button:active {
+        background-color: #C62828;
+        transform: translateY(0);
+    }
+
+    .reset-button:focus {
+        outline: 2px solid #FFCDD2;
+        outline-offset: 2px;
+    }
+
+    textarea {
+        width: 100%;
+        height: 6rem;
+        padding: 0.75rem;
+        border-radius: 8px;
+        border: 1px solid #FFCA28;
+        background: #333333;
+        color: #CFD8DC;
+        resize: vertical;
+        font-family: inherit;
+        font-size: 1rem;
+        box-sizing: border-box;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    textarea:focus {
+        outline: none;
+        border-color: #FFCA28;
+        box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
+    }
+
+    #saveMessage {
+        font-size: 0.875rem;
+        color: #26A69A;
+        margin-top: 0.5rem;
+        text-align: right;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    #saveMessage.active {
+        opacity: 1;
+    }
+
+    @media (max-width: 768px) {
         .slider {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 160px;
-            height: 6px;
-            background: linear-gradient(to right, #FF4D4D, #FF914D, #FFD700, #00CC66);
-            border-radius: 3px;
-            outline: none;
-            cursor: pointer;
-            transition: opacity 0.2s ease;
-            touch-action: none;
-
+            width: 35%;
         }
-
-        .slider:hover {
-            opacity: 0.6;
-        }
-
-        .slider:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
-
         .slider::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 10px;
-            height: 24px;
-            background: rgba(255, 255, 255, 0.7);
-            border-radius: 3px;
-            border: 0;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+            width: 1.25rem;
+            height: 1.25rem;
         }
-
-        .slider:hover::-webkit-slider-thumb {
-            transform: scale(0.4);
-            box-shadow: 0 0 6px rgba(255, 255, 255, 0.5);
-        }
-
-        .slider::-moz-range-thumb {
-            width: 16px;
-            height: 24px;
-            background: var(--thumb-color);
-            border-radius: 6px;
-            border: 2px solid var(--primary);
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        .slider:hover::-webkit-slider-thumb {
-            transform: scale(1.1);
-            box-shadow: 0 0 6px rgba(211, 47, 47, 0.5);
-        }
-
-        .slider:hover::-moz-range-thumb {
-            transform: scale(1.1);
-            box-shadow: 0 0 6px rgba(211, 47, 47, 0.5);
-        }
-
+        .item-label,
         .preference {
-            width: 90px;
-            text-align: center;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-primary);
-        }
-
-        .share-container {
-            text-align: center;
-            margin-top: 2rem;
-        }
-
-        .share-button {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 14px;
-            color: white;
-            transition: background 0.2s ease, transform 0.2s ease;
-            margin: 0.5rem;
-        }
-
-        .share-button:hover {
-            transform: scale(1.05);
-        }
-
-        .telegram {
-            background: #0088CC;
-        }
-
-        .whatsapp {
-            background: #25D366;
-        }
-
-        .email {
-            background: #D32F2F;
-        }
-
-        .copy-link {
-            background: #FFB300;
-            color: var(--background);
-        }
-
-        .toast-container {
-            position: fixed;
-            bottom: 1rem;
-            right: 1rem;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-
-        .toast {
-            background-color: #333333;
-            color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.3s ease, transform 0.3s ease;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .reset-button {
-            background: #6B7280;
-            color: white;
-        }
-
-        .footer {
-            margin-top: 2rem;
-            padding: 1rem 0;
-            text-align: center;
-            font-size: 0.7rem;
-            font-family: 'Inter', sans-serif;
-            color: var(--text-secondary);
-            background: rgba(255, 255, 255, 0.05);
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .footer span {
-            color: #121212;
-            font-weight: 500;
-            text-align: center;
-        }
-
-        .reset-button-container {
-            display: flex;
-            justify-content: center;
-            margin-top: 1.5rem;
-        }
-
-        .reset-button {
-            background-color: #EF5350;
-            color: white;
-            border: none;/ padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            font-size: 1rem;
-            font-family: 'Inter', sans-serif;
-            cursor: pointer;
-            transition: background-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-        }
-
-        .reset-button:hover {
-            background-color: #D32F2F;
-            transform: translateY(-2px);
-        }
-
-        .reset-button:active {
-            background-color: #C62828;
-            transform: translateY(0);
-        }
-
-        .reset-button:focus {
-            outline: 2px solid #FFCDD2;
-            outline-offset: 2px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 6rem;
-            padding: 0.75rem;
-            border-radius: 8px;
-            border: 1px solid #FFCA28;
-            background: #333333;
-            color: #CFD8DC;
-            resize: vertical;
-            font-family: inherit;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: border-color 0.2s ease, box-shadow 0.2s ease;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #FFCA28;
-            box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
-        }
-
-        #saveMessage {
             font-size: 0.875rem;
-            color: #26A69A;
-            margin-top: 0.5rem;
-            text-align: right;
-            opacity: 0;
-            transition: opacity 0.3s ease;
         }
-
-        #saveMessage.active {
-            opacity: 1;
+        .progress-container {
+            flex-direction: column;
+            gap: 0.75rem;
         }
+        .progress-label {
+            font-size: 0.875rem;
+        }
+        .progress-percentage {
+            font-size: 0.75rem;
+        }
+        .tabs {
+            flex-wrap: wrap;
+        }
+        .button-container,
+        .share-container {
+            flex-wrap: wrap;
+        }
+        .share-button,
+        .edit-button,
+        .reset-button {
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+        }
+        .toast-container {
+            bottom: 0.5rem;
+            right: 0.5rem;
+        }
+    }
 
-        @media (max-width: 768px) {
-            .slider {
-                width: 35%;
-            }
-
-            .slider::-webkit-slider-thumb {
-                width: 1.25rem;
-                height: 1.25rem;
-            }
-
-            .item-label,
-            .preference {
-                font-size: 0.875rem;
-            }
-
-            .progress-container {
-                flex-direction: column;
-                gap: 0.75rem;
-            }
-
-            .progress-label {
-                font-size: 0.875rem;
-            }
-
-            .progress-percentage {
-                font-size: 0.75rem;
-            }
-
-            .tabs {
-                flex-wrap: wrap;
-            }
-
-            .button-container,
-            .share-container {
-                flex-wrap: wrap;
-            }
-
-            .share-button,
-            .edit-button,
-            .reset-button {
-                padding: 0.5rem 1rem;
-                font-size: 0.875rem;
-            }
-
-            @media (max-width: 768px) {
-                .share-button {
-                    padding: 0.5rem 1rem;
-                    font-size: 0.875rem;
-                }
-
-                .toast-container {
-                    bottom: 0.5rem;
-                    right: 0.5rem;
-                }
-            }
-    </style>
+    @media (max-width: 480px) {
+        .elegant-container {
+            margin: 1rem;
+            padding: 1rem;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+        .slider {
+            width: 100%;
+        }
+    }
+</style>
 </head>
 
 <body>
@@ -2519,9 +2504,8 @@
 
 
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/2.0.4/pako.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lz-string/libs/lz-string.min.js"></script>
 <script>
-    // Reset all sliders to their default value
     function resetSliders() {
         const sliders = document.querySelectorAll('.slider');
         sliders.forEach(slider => {
@@ -2532,7 +2516,6 @@
         updateUrl();
     }
 
-    // Open a specific tab
     function openTab(tabName) {
         const tabContents = document.querySelectorAll('.tab-content');
         tabContents.forEach(tab => tab.classList.remove('active'));
@@ -2543,7 +2526,11 @@
         document.querySelector(`button[onclick="openTab('${tabName}')"]`).classList.add('active');
     }
 
-    // Update preference text and color for a slider
+    function toggleSection(header) {
+        const sectionContent = header.nextElementSibling;
+        sectionContent.classList.toggle('active');
+    }
+
     function updatePreference(slider, preferenceSpan) {
         const values = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
         const colors = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
@@ -2555,129 +2542,61 @@
         updateUrl();
     }
 
-    // Generate parameters for a specific tab (e.g., "me" or "partner")
-    function generateTabParams(tabId) {
-        const sliders = document.querySelectorAll(`#${tabId} .slider`);
+    function generateUrlParams() {
+        const meSliders = document.querySelectorAll('#me .slider');
+        const partnerSliders = document.querySelectorAll('#partner .slider');
         const params = {};
 
-        sliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const value = slider.value;
-            params[key] = value;
+        meSliders.forEach((slider, index) => {
+            params[`m${index}`] = slider.value;
+        });
+        partnerSliders.forEach((slider, index) => {
+            params[`p${index}`] = slider.value;
         });
 
         return params;
     }
 
-    // Compress and encode parameters using Deflate (pako.js)
-    function encodeParams(params) {
-        const jsonString = JSON.stringify(params); // Convert object to JSON
-        const compressed = pako.deflate(jsonString, { to: 'string' }); // Compress using pako.js
-        return btoa(compressed); // Base64 encode for URL safety
+    function encodeUrlParams(params) {
+        const jsonString = JSON.stringify(params);
+        return LZString.compressToEncodedURIComponent(jsonString);
     }
 
-    // Decode and decompress parameters using Deflate (pako.js)
-    function decodeParams(encodedParams) {
-        try {
-            const compressed = atob(encodedParams); // Base64 decode
-            const decompressed = pako.inflate(compressed, { to: 'string' }); // Decompress using pako.js
-            return JSON.parse(decompressed); // Parse JSON back to an object
-        } catch (error) {
-            console.error('Error decoding parameters:', error);
-            return {};
-        }
+    function decodeUrlParams(encodedParams) {
+        const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+        return JSON.parse(decompressed);
     }
 
-    // Update the URL with compressed and encoded parameters for both tabs
     function updateUrl() {
-        const meParams = generateTabParams('me'); // Get "me" sliders
-        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
-
-        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
-        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
-
-        const newUrl = `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
-        window.history.pushState({}, document.title, newUrl); // Update the URL
+        const params = generateUrlParams();
+        const encodedParams = encodeUrlParams(params);
+        const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        window.history.pushState({}, document.title, newUrl);
     }
 
-    // Load slider positions from the URL hash
-    function loadSliderPositionsFromUrl() {
-        const hash = window.location.hash.slice(1); // Get the hash part of the URL (after #)
-
-        if (hash) {
-            const hashParams = new URLSearchParams(hash); // Parse the hash as query parameters
-            const encodedMe = hashParams.get('me'); // Get "me" encoded data
-            const encodedPartner = hashParams.get('partner'); // Get "partner" encoded data
-
-            // Decode and apply "me" slider positions
-            if (encodedMe) {
-                const meParams = decodeParams(encodedMe); // Decode "me" params
-                const meSliders = document.querySelectorAll('#me .slider');
-                meSliders.forEach(slider => {
-                    const key = slider.getAttribute('data-key');
-                    const value = meParams[key];
-                    if (value !== undefined) {
-                        slider.value = value;
-                        const preferenceSpan = slider.nextElementSibling;
-                        updatePreference(slider, preferenceSpan);
-                    }
-                });
-            }
-
-            // Decode and apply "partner" slider positions
-            if (encodedPartner) {
-                const partnerParams = decodeParams(encodedPartner); // Decode "partner" params
-                const partnerSliders = document.querySelectorAll('#partner .slider');
-                partnerSliders.forEach(slider => {
-                    const key = slider.getAttribute('data-key');
-                    const value = partnerParams[key];
-                    if (value !== undefined) {
-                        slider.value = value;
-                        const preferenceSpan = slider.nextElementSibling;
-                        updatePreference(slider, preferenceSpan);
-                    }
-                });
-            }
-        }
-    }
-
-    // Generate a URL for sharing
     function generateUrl() {
-        const meParams = generateTabParams('me'); // Get "me" sliders
-        const partnerParams = generateTabParams('partner'); // Get "partner" sliders
-
-        const encodedMe = encodeParams(meParams); // Compress and encode "me" params
-        const encodedPartner = encodeParams(partnerParams); // Compress and encode "partner" params
-
-        return `${window.location.origin}${window.location.pathname}#me=${encodedMe}&partner=${encodedPartner}`;
+        const params = generateUrlParams();
+        const encodedParams = encodeUrlParams(params);
+        return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
     }
 
-    // Share via Telegram
     function shareViaTelegram() {
         const url = generateUrl();
-        const message = `This is My Kinky Map! Check it out here: ${url}`;
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}&text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`https://t.me/share/url?url=${encodeURIComponent(url)}`, '_blank');
     }
 
-    // Share via WhatsApp
     function shareViaWhatsApp() {
         const url = generateUrl();
-        const message = `This is My Kinky Map! Check it out here: ${url}`;
-        window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, '_blank');
+        window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank');
     }
 
-    // Share via Email
     function shareViaEmail() {
         const url = generateUrl();
-        const subject = "Check Out My Kinky Map!";
-        const body = `This is My Kinky Map! Check it out here:\n\n${url}`;
-        window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+        window.location.href = `mailto:?body=${encodeURIComponent(url)}`;
     }
 
-    // Copy the generated URL to the clipboard
     function copyUrl() {
         const url = generateUrl();
-
         if (navigator.clipboard && navigator.clipboard.writeText) {
             navigator.clipboard.writeText(url).then(() => {
                 alert('URL copied to clipboard!');
@@ -2690,13 +2609,11 @@
         }
     }
 
-    // Fallback for copying text to clipboard
     function fallbackCopyText(text) {
         const textArea = document.createElement("textarea");
         textArea.value = text;
         document.body.appendChild(textArea);
         textArea.select();
-
         try {
             document.execCommand('copy');
             alert('URL copied');
@@ -2704,24 +2621,46 @@
             console.error('Fallback copy failed:', err);
             alert('⚠️ Copy failed. Please copy manually.');
         }
-
         document.body.removeChild(textArea);
     }
 
-    // Load slider positions when the page loads
-    window.onload = function () {
-        loadSliderPositionsFromUrl();
-    };
-</script>
-       
-        <script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js">
-        </script>
+    function loadSliderPositionsFromUrl() {
+        const hash = window.location.hash.slice(1);
+        if (!hash) return;
 
-        <!-- Scripts-->
-        <script src="/59f69b7dfd11f8b16a64727aecf48e4dfd620c7b45c275c864c7740c267e8f71/ns.js"></script>
-        <script src="/40308a71bf159c1d973ede8508b9a9fa80acea4f36d08e9d252573cccdbcbc67/ns.js"></script>
-        <script src="/f02a9d5d919ed820f1cec8cd65fcecd72c4c7e250e9b9af9fe45b4b64f721fff/ns.js"></script>
-        <script src="/756d2f999ba31e74861290cf37b0a3964b929dcf801d782bb920a6e4f07d7c0c/ns.js"></script>
+        const params = decodeUrlParams(hash);
+        const meSliders = document.querySelectorAll('#me .slider');
+        const partnerSliders = document.querySelectorAll('#partner .slider');
+
+        meSliders.forEach((slider, index) => {
+            const value = params[`m${index}`];
+            if (value !== undefined) {
+                slider.value = value;
+                updatePreference(slider, slider.nextElementSibling);
+            }
+        });
+        partnerSliders.forEach((slider, index) => {
+            const value = params[`p${index}`];
+            if (value !== undefined) {
+                slider.value = value;
+                updatePreference(slider, slider.nextElementSibling);
+            }
+        });
+    }
+
+    window.onload = function () {
+        if (document.querySelectorAll('.slider').length > 0) {
+            loadSliderPositionsFromUrl();
+        }
+    };
+    
+</script>
+
+<script src="/aa365f1e933a907e29d2310c424599ede74db47d9bda3a7e2e7188e95760cfc8/ns.js"></script>
+<script src="/59f69b7dfd11f8b16a64727aecf48e4dfd620c7b45c275c864c7740c267e8f71/ns.js"></script>
+<script src="/40308a71bf159c1d973ede8508b9a9fa80acea4f36d08e9d252573cccdbcbc67/ns.js"></script>
+<script src="/f02a9d5d919ed820f1cec8cd65fcecd72c4c7e250e9b9af9fe45b4b64f721fff/ns.js"></script>
+<script src="/756d2f999ba31e74861290cf37b0a3964b929dcf801d782bb920a6e4f07d7c0c/ns.js"></script>
 </body>
 
 </html>
