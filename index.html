@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Set and share your preferences with sliders">
     <meta name="robots" content="index, follow">
-    <title>The Kiny Map</title>
+    <title>Preference Sliders</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
 
     <style>
@@ -495,6 +495,16 @@
                 </div>
                 <div class="item">
                     <span class="item-label">Vaginal (No Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (No Condom)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
                 </div>
@@ -1487,6 +1497,16 @@
                     <span class="preference">Hard Limit</span>
                 </div>
                 <div class="item">
+                    <span class="item-label">Anal (Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (No Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
                     <span class="item-label">Rimming (Receiving)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="rimming-receiving" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
@@ -2463,224 +2483,161 @@
 
             <div class="toast-container" id="toastContainer"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-<script>
-    const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-    const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
-    let meSliders, partnerSliders, notesTextarea;
-    const STORAGE_KEY = 'kinkyMapState';
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script>
+        const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+        const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = message;
-        document.getElementById('toastContainer').appendChild(toast);
-        requestAnimationFrame(() => toast.classList.add('show'));
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, 2000);
-    }
-
-    function resetSliders() {
-        meSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        partnerSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        notesTextarea.value = '';
-        saveState();
-        updateUrl();
-        showToast('Sliders and notes reset');
-    }
-
-    function openTab(tabName) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(tabName)?.classList.add('active');
-        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-        document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-    }
-
-    function toggleSection(header) {
-        const sectionContent = header.nextElementSibling;
-        sectionContent?.classList.toggle('active');
-    }
-
-    function updatePreference(slider, save = true) {
-        const preferenceSpan = slider.nextElementSibling;
-        const value = parseInt(slider.value);
-        if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-            preferenceSpan.textContent = VALUES[value];
-            preferenceSpan.style.color = COLORS[value];
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.getElementById('toastContainer').appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 2000);
         }
-        if (save) {
-            saveState();
+
+        function resetSliders() {
+            document.querySelectorAll('.slider').forEach(slider => {
+                slider.value = 0;
+                updatePreference(slider);
+            });
+            updateUrl();
+            showToast('Sliders reset');
+        }
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName)?.classList.add('active');
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+        }
+
+        function toggleSection(header) {
+            const sectionContent = header.nextElementSibling;
+            sectionContent?.classList.toggle('active');
+        }
+
+        function updatePreference(slider) {
+            const preferenceSpan = slider.nextElementSibling;
+            const value = parseInt(slider.value);
+            if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                preferenceSpan.textContent = VALUES[value];
+                preferenceSpan.style.color = COLORS[value];
+            }
             updateUrl();
         }
-    }
 
-    function generateCompactState() {
-        // Each slider value is 0-3 (2 bits), so ~150 sliders = 300 bits = ~38 bytes
-        const meValues = Array.from(meSliders).map(slider => slider.value).join('');
-        const partnerValues = Array.from(partnerSliders).map(slider => slider.value).join('');
-        const compact = meValues + '|' + partnerValues; // e.g., "0301...|0210..."
-        return LZString.compressToBase64(compact); // Compress to base64
-    }
-
-    function decodeCompactState(encoded) {
-        const decompressed = LZString.decompressFromBase64(encoded) || '';
-        const [meValues = '', partnerValues = ''] = decompressed.split('|');
-        return {
-            me: meValues.split('').map(Number),
-            partner: partnerValues.split('').map(Number)
-        };
-    }
-
-    function generateState() {
-        const mePrefs = {};
-        const partnerPrefs = {};
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) mePrefs[key] = slider.value;
-        });
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) partnerPrefs[key] = slider.value;
-        });
-        const notes = notesTextarea.value || '';
-        const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
-        console.log('Full State:', state); // Debug full state
-        return state;
-    }
-
-    function saveState() {
-        const state = generateState();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        const saveMessage = document.getElementById('saveMessage');
-        if (saveMessage) {
-            saveMessage.style.opacity = '1';
-            setTimeout(() => saveMessage.style.opacity = '0', 2000);
-        }
-    }
-
-    function loadStateFromStorage() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
-    }
-
-    function encodeUrlParams() {
-        const compact = generateCompactState();
-        console.log('Compact Encoded:', compact); // Debug
-        return compact; // Short base64 string
-    }
-
-    function decodeUrlParams(encoded) {
-        const { me, partner } = decodeCompactState(encoded);
-        console.log('Decoded Compact:', { me, partner }); // Debug
-        return { me, partner, notes: '' }; // Notes not in URL
-    }
-
-    function updateUrl() {
-        const encoded = encodeUrlParams();
-        const newUrl = `${window.location.origin}${window.location.pathname}#${encoded}`;
-        window.history.replaceState({}, document.title, newUrl);
-    }
-
-    function generateUrl() {
-        const encoded = encodeUrlParams();
-        return `${window.location.origin}${window.location.pathname}#${encoded}`;
-    }
-
-    function shareViaTelegram() {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-        showToast('Shared via Telegram');
-    }
-
-    function shareViaWhatsApp() {
-        window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-        showToast('Shared via WhatsApp');
-    }
-
-    function shareViaEmail() {
-        window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-        showToast('Email opened');
-    }
-
-    function copyUrl() {
-        const url = generateUrl();
-        if (navigator.clipboard?.writeText) {
-            navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                console.error('Clipboard failed:', err);
-                fallbackCopyText(url);
+        function generateUrlParams() {
+            const meValues = [];
+            const partnerValues = [];
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                meValues[index] = slider.value;
             });
-        } else {
-            fallbackCopyText(url);
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                partnerValues[index] = slider.value;
+            });
+            return [meValues, partnerValues];
         }
-    }
 
-    function fallbackCopyText(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showToast('URL copied');
-        } catch (err) {
-            showToast('⚠️ Copy failed. Please copy manually.');
+        function encodeUrlParams(params) {
+            return LZString.compressToEncodedURIComponent(JSON.stringify(params));
         }
-        document.body.removeChild(textArea);
-    }
 
-    function loadSliderPositionsAndNotes() {
-        const hash = window.location.hash.slice(1);
-        const urlState = hash ? decodeUrlParams(hash) : {};
-        const storedState = loadStateFromStorage();
+        function decodeUrlParams(encodedParams) {
+            const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+            return decompressed ? JSON.parse(decompressed) : [[], []];
+        }
 
-        meSliders.forEach((slider, index) => {
-            const key = slider.getAttribute('data-key');
-            const urlValue = urlState.me?.[index];
-            const storedValue = storedState.me?.[key];
-            const value = urlValue !== undefined ? urlValue : storedValue;
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, false);
+        function updateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+            window.history.pushState({}, document.title, newUrl);
+        }
+
+        function generateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        }
+
+        function shareViaTelegram() {
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via Telegram');
+        }
+
+        function shareViaWhatsApp() {
+            window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via WhatsApp');
+        }
+
+        function shareViaEmail() {
+            window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+            showToast('Email opened');
+        }
+
+        function copyUrl() {
+            const url = generateUrl();
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                    console.error('Clipboard failed:', err);
+                    fallbackCopyText(url);
+                });
+            } else {
+                fallbackCopyText(url);
             }
-        });
+        }
 
-        partnerSliders.forEach((slider, index) => {
-            const key = slider.getAttribute('data-key');
-            const urlValue = urlState.partner?.[index];
-            const storedValue = storedState.partner?.[key];
-            const value = urlValue !== undefined ? urlValue : storedValue;
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, false);
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('URL copied');
+            } catch (err) {
+                showToast('⚠️ Copy failed. Please copy manually.');
             }
-        });
+            document.body.removeChild(textArea);
+        }
 
-        notesTextarea.value = storedState.notes || ''; // Notes from localStorage only
-    }
+        function loadSliderPositionsFromUrl() {
+            const hash = window.location.hash.slice(1);
+            if (!hash) return;
 
-    window.onload = function () {
-        meSliders = document.querySelectorAll('#me .slider');
-        partnerSliders = document.querySelectorAll('#partner .slider');
-        notesTextarea = document.getElementById('personalNotes');
-        console.log('meSliders count:', meSliders.length);
-        console.log('partnerSliders count:', partnerSliders.length);
-        console.log('notesTextarea:', notesTextarea);
-        if (!meSliders.length && !partnerSliders.length) return;
+            const [meValues, partnerValues] = decodeUrlParams(hash);
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = meValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
+                }
+            });
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = partnerValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
+                }
+            });
+        }
 
-        document.querySelector('#me .section-content')?.classList.add('active');
-        document.querySelector('#partner .section-content')?.classList.add('active');
+        window.onload = function () {
+            const sliders = document.querySelectorAll('.slider');
+            if (!sliders.length) return;
 
-        loadSliderPositionsAndNotes();
+            loadSliderPositionsFromUrl();
 
-        [meSliders, partnerSliders].forEach(sliderGroup => {
-            sliderGroup.forEach(slider => {
+            sliders.forEach(slider => {
                 slider.addEventListener('input', () => updatePreference(slider));
                 slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
                 slider.addEventListener('touchmove', e => {
@@ -2692,15 +2649,7 @@
                     updatePreference(slider);
                 }, { passive: false });
             });
-        });
-
-        if (notesTextarea) {
-            notesTextarea.addEventListener('input', () => {
-                saveState();
-                updateUrl();
-            });
-        }
-    };
-</script>
+        };
+    </script>
 </body>
 </html>
