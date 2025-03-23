@@ -9,15 +9,33 @@
     <title>The Kinky Map</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Set and share your preferences with sliders">
+    <meta name="robots" content="index, follow">
+    <title>The Kinky Map</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
+
     <style>
         :root {
             --primary: #B71C12;
+            /* Vibrant BDSM red */
             --secondary: #6A1B9A;
+            /* Deep purple for highlights */
             --surface: #1A1A1A;
+            /* Dark gray for containers */
             --background: #121212;
+            /* Charcoal black */
             --text-primary: #FAF9F6;
+            /* Off-white for primary text */
             --text-secondary: #B0BEC5;
+            /* Subtle gray for secondary text */
             --elevation-1: 0 4px 10px rgba(0, 0, 0, 0.5);
+            /* Shadow for depth */
         }
 
         * {
@@ -47,43 +65,46 @@
 
         h1 {
             font-family: 'Roboto', sans-serif;
-            font-size: 2.9rem;
+            font-size: 2.5rem;
             text-align: center;
-            color: #FAF9F6;
+            color: var(--primary);
             font-weight: 700;
             margin: 1rem 0;
+            padding: 1rem;
             background-color: rgba(183, 28, 28, 0.2);
             border-radius: 8px;
+            box-shadow: var(--elevation-1);
         }
 
         h2 {
             font-family: 'Roboto', sans-serif;
-            font-size: 1.25rem;
+            font-size: 1.5rem;
             cursor: pointer;
             padding: 10px;
             background-color: rgba(183, 28, 28, 0.2);
             border-radius: 8px;
-            transition: background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
+            box-shadow: var(--elevation-1);
         }
 
         h2:hover {
             background-color: rgba(183, 28, 28, 0.3);
+            transform: translateY(-2px);
         }
 
         h5 {
             font-family: 'Inter', sans-serif;
             font-size: 0.8rem;
             cursor: pointer;
-            padding: 1px;
-            background-color: rgba(0, 0, , 0.2);
+            padding: 5px;
+            background-color: rgba(0, 0, 0, 0.2);
             border-radius: 8px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
-
 
         footer {
             margin-top: 2rem;
@@ -92,12 +113,12 @@
             font-size: 0.9rem;
             font-family: 'Inter', sans-serif;
             color: var(--text-secondary);
-            background: rgba(0, 0, 0, 0.05);
-            border-top: 0px solid rgba(255, 255, 255, 0.1);
+            background: var(--surface);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         footer span {
-            color: #6A1B9A;
+            color: var(--secondary);
             font-weight: 500;
         }
 
@@ -118,7 +139,7 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin: 1rem 0;
+            margin: 2rem 0;
         }
 
         .tab-button {
@@ -135,6 +156,7 @@
         .tab-button.active {
             background: var(--primary);
             color: white;
+            box-shadow: var(--elevation-1);
         }
 
         .tab-content {
@@ -264,10 +286,11 @@
         }
 
         .toast {
-            background-color: #333333;
+            background-color: #AF5350;
             color: white;
-            padding: 10px 15px;
-            border-radius: 5px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            font-size: 1rem;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
             opacity: 0;
             transform: translateY(20px);
@@ -419,7 +442,7 @@
             }
 
             .tabs {
-                flex-wrap: none;
+                flex-wrap: wrap;
                 gap: 0.5rem;
                 padding: 0.5rem;
                 /* Extra space */
@@ -514,7 +537,7 @@
 
 <body>
     <div class="elegant-container">
-
+    <!-- Header -->
         <header class="header">
             <h1 class="logo"> The <span>Kinky</span> Map
         </header>
@@ -522,8 +545,8 @@
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
 
         <ul>
-            <li><strong>Me</strong> Indicates what you enjoy doing</li>
-            <li><strong>Partner:</strong> Indicates what you enjoy receiving</li>
+            <li><strong>Me</strong> Indicates what you enjoy doing to your partner</li>
+            <li><strong>Partner:</strong> Indicates what you enjoy receiving from your partner</li>
         </ul>
 
         <ul>
@@ -569,7 +592,7 @@
         <div class="separator">
         </div>
 
-        <!-- Me and Partner -->
+        <!-- Me and Partner Selections -->
         <div id="me" class="tab-content active">
             <h2 onclick="toggleSection(this)">Oral, Vaginal, Anal</h2>
             <div class="section-content">
@@ -2623,19 +2646,21 @@
     }
 
     function resetSliders() {
-        meSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        partnerSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        notesTextarea.value = '';
-        saveState();
-        updateUrl();
-        showToast('Sliders and notes reset');
-    }
+            if (window.confirm('Are you sure you want to reset all sliders and notes? This cannot be undone.')) {
+            meSliders.forEach(slider => {
+                            slider.value = 0;
+                            updatePreference(slider, false);
+                        });
+                        partnerSliders.forEach(slider => {
+                            slider.value = 0;
+                            updatePreference(slider, false);
+                        });
+                        notesTextarea.value = '';
+                        saveState();
+                        updateUrl();
+                        showToast('Sliders and notes reset');
+                    }
+                }
 
     function openTab(tabName) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
