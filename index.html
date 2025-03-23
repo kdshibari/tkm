@@ -2578,26 +2578,27 @@
     }
 
     function generateCompactState() {
-        const meValues = Array.from(meSliders).map(slider => slider.value || '0').join('');
-        const partnerValues = Array.from(partnerSliders).map(slider => slider.value || '0').join('');
-        if (meValues.length !== partnerValues.length) {
-            console.error('Slider count mismatch:', meValues.length, partnerValues.length);
-        }
-        const compact = meValues + '|' + partnerValues;
-        const encoded = LZString.compressToBase64(compact);
-        console.log('Compact String:', compact);
+        const mePrefs = {};
+        const partnerPrefs = {};
+        meSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            if (key) mePrefs[key] = slider.value;
+        });
+        partnerSliders.forEach(slider => {
+            const key = slider.getAttribute('data-key');
+            if (key) partnerPrefs[key] = slider.value;
+        });
+        const state = { me: mePrefs, partner: partnerPrefs };
+        const encoded = LZString.compressToBase64(JSON.stringify(state));
         console.log('Encoded Hash:', encoded);
         return encoded;
     }
 
     function decodeCompactState(encoded) {
-        const decompressed = LZString.decompressFromBase64(encoded) || '';
-        console.log('Decompressed:', decompressed);
-        const [meValues = '', partnerValues = ''] = decompressed.split('|');
-        return {
-            me: meValues.split('').map(Number),
-            partner: partnerValues.split('').map(Number)
-        };
+        const decompressed = LZString.decompressFromBase64(encoded) || '{}';
+        const state = JSON.parse(decompressed);
+        console.log('Decoded State:', state);
+        return state;
     }
 
     function generateState() {
@@ -2612,7 +2613,9 @@
             if (key) partnerPrefs[key] = slider.value;
         });
         const notes = notesTextarea.value || '';
-        return { me: mePrefs, partner: partnerPrefs, notes: notes };
+        const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
+        console.log('Full State:', state);
+        return state;
     }
 
     function saveState() {
@@ -2623,11 +2626,14 @@
             saveMessage.style.opacity = '1';
             setTimeout(() => saveMessage.style.opacity = '0', 2000);
         }
+        console.log('Saved to localStorage:', state);
     }
 
     function loadStateFromStorage() {
         const stored = localStorage.getItem(STORAGE_KEY);
-        return stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
+        const state = stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
+        console.log('Loaded from localStorage:', state);
+        return state;
     }
 
     function encodeUrlParams() {
@@ -2635,8 +2641,7 @@
     }
 
     function decodeUrlParams(encoded) {
-        const decoded = decodeCompactState(encoded);
-        return { me: decoded.me, partner: decoded.partner, notes: '' };
+        return decodeCompactState(encoded);
     }
 
     function updateUrl() {
@@ -2696,9 +2701,9 @@
         const urlState = hash ? decodeUrlParams(hash) : {};
         const storedState = loadStateFromStorage();
 
-        meSliders.forEach((slider, index) => {
+        meSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
-            const urlValue = urlState.me[index];
+            const urlValue = urlState.me?.[key];
             const storedValue = storedState.me[key];
             const value = urlValue !== undefined ? urlValue : storedValue;
             if (value !== undefined) {
@@ -2707,9 +2712,9 @@
             }
         });
 
-        partnerSliders.forEach((slider, index) => {
+        partnerSliders.forEach(slider => {
             const key = slider.getAttribute('data-key');
-            const urlValue = urlState.partner[index];
+            const urlValue = urlState.partner?.[key];
             const storedValue = storedState.partner[key];
             const value = urlValue !== undefined ? urlValue : storedValue;
             if (value !== undefined) {
@@ -2718,7 +2723,9 @@
             }
         });
 
-        notesTextarea.value = storedState.notes || '';
+        if (storedState.notes !== undefined) {
+            notesTextarea.value = storedState.notes;
+        }
     }
 
     window.onload = function () {
@@ -2753,8 +2760,11 @@
         if (notesTextarea) {
             notesTextarea.addEventListener('input', () => {
                 saveState();
-                updateUrl();
+                updateUrl(); // Updates URL but doesn’t affect notes
             });
+            // Ensure initial load reflects stored notes
+            const storedState = loadStateFromStorage();
+            notesTextarea.value = storedState.notes || '';
         }
     };
 </script>
