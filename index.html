@@ -35,39 +35,6 @@
             overflow-x: hidden;
         }
 
-        .header {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            padding: 1rem;
-            background-color: #121212;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-family: 'Inter', sans-serif;
-            font-weight: bold;
-            color: #e91e63;
-            text-transform: uppercase;
-        }
-
-        .logo span {
-            color: #ff9800;
-        }
-
-        .logo-subtitle {
-            font-size: 0.8rem;
-            font-family: 'Inter', sans-serif;
-            margin-top: 0.2rem;
-            color: none;
-            text-transform: uppercase;
-            letter-spacing: 0.1rem;
-        }
-
-
         .elegant-container {
             max-width: 700px;
             margin: 2rem auto;
@@ -75,16 +42,18 @@
             background: var(--surface);
             border-radius: 20px;
             box-shadow: var(--elevation-1);
-            border: 0px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         h1 {
             font-family: 'Roboto', sans-serif;
-            font-size: 2.5rem;
+            font-size: 2.9rem;
             text-align: center;
-            color: var(--primary);
+            color: var(--text-primary);
             font-weight: 700;
             margin: 1rem 0;
+            background-color: rgba(183, 28, 28, 0.2);
+            border-radius: 8px;
         }
 
         h2 {
@@ -266,22 +235,10 @@
             transform: scale(1.05);
         }
 
-        .telegram {
-            background: #0088CC;
-        }
-
-        .whatsapp {
-            background: #25D366;
-        }
-
-        .email {
-            background: #D32F2F;
-        }
-
-        .copy-link {
-            background: #FFB300;
-            color: var(--background);
-        }
+        .telegram { background: #0088CC; }
+        .whatsapp { background: #25D366; }
+        .email { background: #D32F2F; }
+        .copy-link { background: #FFB300; color: var(--background); }
 
         .toast-container {
             position: fixed;
@@ -385,61 +342,37 @@
             font-weight: 500;
         }
 
-        #google_translate_element {
-            margin: 10px;
-        }
-
-        .goog-te-gadget {
-            font-size: 14px;
-        }
-
-        .goog-te-gadget .goog-te-combo {
-            padding: 5px;
-            border-radius: 4px;
-        }
-
         @media (max-width: 768px) {
             .slider {
                 width: 100px;
             }
-
             .slider::-webkit-slider-thumb {
                 width: 20px;
                 height: 28px;
             }
-
             .slider::-moz-range-thumb {
                 width: 20px;
                 height: 28px;
             }
-
-            .item-label,
-            .preference {
+            .item-label, .preference {
                 font-size: 0.875rem;
             }
-
-            .tabs,
-            .share-container {
+            .tabs, .share-container {
                 flex-wrap: wrap;
             }
-
-            .share-button,
-            .reset-button {
+            .share-button, .reset-button {
                 padding: 0.5rem 1rem;
                 font-size: 0.875rem;
             }
-
             .toast-container {
                 bottom: 0.5rem;
                 right: 0.5rem;
             }
-
             .item {
                 flex-wrap: wrap;
                 gap: 5px;
             }
         }
-
         #saveMessage {
             font-size: 0.875rem;
             color: #26A69A;
@@ -454,15 +387,12 @@
                 margin: 1rem;
                 padding: 1rem;
             }
-
             h1 {
                 font-size: 2rem;
             }
-
             .slider {
                 width: 90px;
             }
-
             .preference {
                 width: 70px;
             }
@@ -472,13 +402,7 @@
 
 <body>
     <div class="elegant-container">
-
-        <header class="header">
-        <h1 class="logo">
-        The <span>Kinky</span> Map
-        </h1>
-        </header>
-  
+        <h1>The Kinky Map</h1>
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
         <ul>
             <li><strong>Me</strong> Indicates what you enjoy doing</li>
@@ -573,16 +497,6 @@
                 </div>
                 <div class="item">
                     <span class="item-label">Vaginal (No Condom)</span>
-                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
-                    <span class="preference">Hard Limit</span>
-                </div>
-                <div class="item">
-                    <span class="item-label">Anal (Condom)</span>
-                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
-                    <span class="preference">Hard Limit</span>
-                </div>
-                <div class="item">
-                    <span class="item-label">Anal (No Condom)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
                 </div>
@@ -1575,16 +1489,6 @@
                     <span class="preference">Hard Limit</span>
                 </div>
                 <div class="item">
-                    <span class="item-label">Anal (Condom)</span>
-                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
-                    <span class="preference">Hard Limit</span>
-                </div>
-                <div class="item">
-                    <span class="item-label">Anal (No Condom)</span>
-                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
-                    <span class="preference">Hard Limit</span>
-                </div>
-                <div class="item">
                     <span class="item-label">Rimming (Receiving)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="rimming-receiving" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
@@ -2556,214 +2460,178 @@
             <!-- Footer -->
             <footer>
                 <h5> Created with care and love for consensual and safe play
-                    <p>&copy; 2025 <span>The Kinky Map</span> All rights reserved.</p>
+                    <p>&copy; 2025 <span>The Kinky Map</span>. All rights reserved.</p>
             </footer>
 
             <div class="toast-container" id="toastContainer"></div>
 
-            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-            <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-            <script>
-                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+    <script>
+        const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+        const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
 
-                const LANGUAGES = {
-                    'en': 'English',
-                    'es': 'Spanish',
-                    'fr': 'French',
-                    'de': 'German',
-                    'it': 'Italian',
-                    'zh-CN': 'Chinese (Simplified)',
-                    'ja': 'Japanese',
-                    'vi': 'Vietnamese',
-                    'ru': 'Russian',
-                    'ko': 'Korean',
-                    'pt': 'Portuguese',
-                    'ar': 'Arabic',
-                    'hi': 'Hindi',
-                    'th': 'Thai',
-                    'tr': 'Turkish'
-                };
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.textContent = message;
+            document.getElementById('toastContainer').appendChild(toast);
+            requestAnimationFrame(() => toast.classList.add('show'));
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.addEventListener('transitionend', () => toast.remove());
+            }, 2000);
+        }
 
-                function googleTranslateElementInit() {
-                    new google.translate.TranslateElement({
-                        pageLanguage: 'en',
-                        includedLanguages: Object.keys(LANGUAGES).join(','),
-                        layout: google.translate.TranslateElement.InlineLayout.SIMPLE,
-                        autoDisplay: false
-                    }, 'google_translate_element');
+        function resetSliders() {
+            document.querySelectorAll('.slider').forEach(slider => {
+                slider.value = 0;
+                updatePreference(slider);
+            });
+            updateUrl();
+            showToast('Sliders reset');
+        }
+
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+            document.getElementById(tabName)?.classList.add('active');
+            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+            document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+        }
+
+        function toggleSection(header) {
+            const sectionContent = header.nextElementSibling;
+            sectionContent?.classList.toggle('active');
+        }
+
+        function updatePreference(slider) {
+            const preferenceSpan = slider.nextElementSibling;
+            const value = parseInt(slider.value);
+            if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                preferenceSpan.textContent = VALUES[value];
+                preferenceSpan.style.color = COLORS[value];
+            }
+            updateUrl();
+        }
+
+        function generateUrlParams() {
+            const meValues = [];
+            const partnerValues = [];
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                meValues[index] = slider.value;
+            });
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                partnerValues[index] = slider.value;
+            });
+            return [meValues, partnerValues];
+        }
+
+        function encodeUrlParams(params) {
+            return LZString.compressToEncodedURIComponent(JSON.stringify(params));
+        }
+
+        function decodeUrlParams(encodedParams) {
+            const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
+            return decompressed ? JSON.parse(decompressed) : [[], []];
+        }
+
+        function updateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+            window.history.pushState({}, document.title, newUrl);
+        }
+
+        function generateUrl() {
+            const params = generateUrlParams();
+            const encodedParams = encodeUrlParams(params);
+            return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
+        }
+
+        function shareViaTelegram() {
+            window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via Telegram');
+        }
+
+        function shareViaWhatsApp() {
+            window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+            showToast('Shared via WhatsApp');
+        }
+
+        function shareViaEmail() {
+            window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+            showToast('Email opened');
+        }
+
+        function copyUrl() {
+            const url = generateUrl();
+            if (navigator.clipboard?.writeText) {
+                navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                    console.error('Clipboard failed:', err);
+                    fallbackCopyText(url);
+                });
+            } else {
+                fallbackCopyText(url);
+            }
+        }
+
+        function fallbackCopyText(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast('URL copied');
+            } catch (err) {
+                showToast('⚠️ Copy failed. Please copy manually.');
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function loadSliderPositionsFromUrl() {
+            const hash = window.location.hash.slice(1);
+            if (!hash) return;
+
+            const [meValues, partnerValues] = decodeUrlParams(hash);
+            document.querySelectorAll('#me .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = meValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
                 }
-
-                function showToast(message) {
-                    const toast = document.createElement('div');
-                    toast.className = 'toast';
-                    toast.textContent = message;
-                    document.getElementById('toastContainer').appendChild(toast);
-                    requestAnimationFrame(() => toast.classList.add('show'));
-                    setTimeout(() => {
-                        toast.classList.remove('show');
-                        toast.addEventListener('transitionend', () => toast.remove());
-                    }, 2000);
+            });
+            document.querySelectorAll('#partner .slider').forEach(slider => {
+                const index = parseInt(slider.getAttribute('data-index'));
+                const value = partnerValues[index];
+                if (value !== undefined) {
+                    slider.value = value;
+                    updatePreference(slider);
                 }
+            });
+        }
 
-                function resetSliders() {
-                    document.querySelectorAll('.slider').forEach(slider => {
-                        slider.value = 0;
-                        updatePreference(slider);
-                    });
-                    updateUrl();
-                    showToast('Sliders reset');
-                }
+        window.onload = function () {
+            const sliders = document.querySelectorAll('.slider');
+            if (!sliders.length) return;
 
-                function openTab(tabName) {
-                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-                    document.getElementById(tabName)?.classList.add('active');
-                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-                }
+            loadSliderPositionsFromUrl();
 
-                function toggleSection(header) {
-                    const sectionContent = header.nextElementSibling;
-                    sectionContent?.classList.toggle('active');
-                }
-
-                function updatePreference(slider) {
-                    const preferenceSpan = slider.nextElementSibling;
-                    const value = parseInt(slider.value);
-                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-                        preferenceSpan.textContent = VALUES[value];
-                        preferenceSpan.style.color = COLORS[value];
-                    }
-                    updateUrl();
-                }
-
-                function generateUrlParams() {
-                    const meValues = [];
-                    const partnerValues = [];
-                    document.querySelectorAll('#me .slider').forEach(slider => {
-                        const index = parseInt(slider.getAttribute('data-index'));
-                        meValues[index] = slider.value;
-                    });
-                    document.querySelectorAll('#partner .slider').forEach(slider => {
-                        const index = parseInt(slider.getAttribute('data-index'));
-                        partnerValues[index] = slider.value;
-                    });
-                    return [meValues, partnerValues];
-                }
-
-                function encodeUrlParams(params) {
-                    return LZString.compressToEncodedURIComponent(JSON.stringify(params));
-                }
-
-                function decodeUrlParams(encodedParams) {
-                    const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-                    return decompressed ? JSON.parse(decompressed) : [
-                        [],
-                        []
-                    ];
-                }
-
-                function updateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                    window.history.pushState({}, document.title, newUrl);
-                }
-
-                function generateUrl() {
-                    const params = generateUrlParams();
-                    const encodedParams = encodeUrlParams(params);
-                    return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-                }
-
-                function shareViaTelegram() {
-                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via Telegram');
-                }
-
-                function shareViaWhatsApp() {
-                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-                    showToast('Shared via WhatsApp');
-                }
-
-                function shareViaEmail() {
-                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-                    showToast('Email opened');
-                }
-
-                function copyUrl() {
-                    const url = generateUrl();
-                    if (navigator.clipboard?.writeText) {
-                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                            console.error('Clipboard failed:', err);
-                            fallbackCopyText(url);
-                        });
-                    } else {
-                        fallbackCopyText(url);
-                    }
-                }
-
-                function fallbackCopyText(text) {
-                    const textArea = document.createElement('textarea');
-                    textArea.value = text;
-                    document.body.appendChild(textArea);
-                    textArea.select();
-                    try {
-                        document.execCommand('copy');
-                        showToast('URL copied');
-                    } catch (err) {
-                        showToast('⚠️ Copy failed. Please copy manually.');
-                    }
-                    document.body.removeChild(textArea);
-                }
-
-                function loadSliderPositionsFromUrl() {
-                    const hash = window.location.hash.slice(1);
-                    if (!hash) return;
-
-                    const [meValues, partnerValues] = decodeUrlParams(hash);
-                    document.querySelectorAll('#me .slider').forEach(slider => {
-                        const index = parseInt(slider.getAttribute('data-index'));
-                        const value = meValues[index];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                    document.querySelectorAll('#partner .slider').forEach(slider => {
-                        const index = parseInt(slider.getAttribute('data-index'));
-                        const value = partnerValues[index];
-                        if (value !== undefined) {
-                            slider.value = value;
-                            updatePreference(slider);
-                        }
-                    });
-                }
-
-                window.onload = function() {
-                    const sliders = document.querySelectorAll('.slider');
-                    if (!sliders.length) return;
-
-                    loadSliderPositionsFromUrl();
-
-                    sliders.forEach(slider => {
-                        slider.addEventListener('input', () => updatePreference(slider));
-                        slider.addEventListener('touchstart', e => e.preventDefault(), {
-                            passive: false
-                        });
-                        slider.addEventListener('touchmove', e => {
-                            e.preventDefault();
-                            const touch = e.touches[0];
-                            const rect = slider.getBoundingClientRect();
-                            const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
-                            slider.value = Math.min(slider.max, Math.max(slider.min, value));
-                            updatePreference(slider);
-                        }, {
-                            passive: false
-                        });
-                    });
-                };
-            </script>
+            sliders.forEach(slider => {
+                slider.addEventListener('input', () => updatePreference(slider));
+                slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
+                slider.addEventListener('touchmove', e => {
+                    e.preventDefault();
+                    const touch = e.touches[0];
+                    const rect = slider.getBoundingClientRect();
+                    const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                    slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                    updatePreference(slider);
+                }, { passive: false });
+            });
+        };
+    </script>
 </body>
-
 </html>
