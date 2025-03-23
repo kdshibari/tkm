@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Set and share your preferences with sliders">
     <meta name="robots" content="index, follow">
-    <title>Preference Sliders</title>
+    <title>The Kinky Map</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
 
     <style>
@@ -355,9 +355,43 @@
             font-weight: 500;
         }
 
+        #saveMessage {
+            font-size: 0.875rem;
+            color: #26A69A;
+            margin-top: 0.5rem;
+            text-align: right;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
         @media (max-width: 768px) {
+
+            /* Full-screen adjustments */
+            .elegant-container {
+                margin: 0;
+                /* Remove side margins for full width */
+                padding: 1rem;
+                /* Consistent padding */
+                width: 100vw;
+                /* Full viewport width */
+                min-height: 100vh;
+                /* Full viewport height */
+                border-radius: 0;
+                /* No rounded corners on small screens */
+            }
+
+            h1 {
+                font-size: 2rem;
+                /* Slightly smaller but still prominent */
+                margin: 0.5rem 0;
+                /* Reduced margin */
+            }
+
             .slider {
-                width: 100px;
+                width: 30vw;
+                /* Relative to viewport width, scales better */
+                min-width: 100px;
+                /* Minimum for usability */
             }
 
             .slider::-webkit-slider-thumb {
@@ -373,55 +407,106 @@
             .item-label,
             .preference {
                 font-size: 0.875rem;
+                /* 14px, readable */
             }
 
-            .tabs,
+            .item {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                /* Consistent spacing */
+                padding: 0.5rem 0;
+                /* Vertical padding for touch */
+            }
+
+            .tabs {
+                flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.5rem;
+                /* Extra space */
+            }
+
+            .tab-button {
+                flex: 1 1 45%;
+                /* Two buttons per row */
+                padding: 0.75rem;
+                font-size: 1rem;
+            }
+
             .share-container {
                 flex-wrap: wrap;
+                gap: 0.5rem;
+                padding: 0.5rem;
             }
 
             .share-button,
             .reset-button {
-                padding: 0.5rem 1rem;
+                padding: 0.75rem 1rem;
+                /* Larger tap area */
                 font-size: 0.875rem;
+                flex: 1 1 45%;
+                /* Two per row */
             }
 
             .toast-container {
                 bottom: 0.5rem;
                 right: 0.5rem;
+                left: 0.5rem;
+                /* Ensure it spans width */
+                align-items: center;
+                /* Center toasts */
             }
 
-            .item {
-                flex-wrap: wrap;
-                gap: 5px;
+            .section-content {
+                padding: 0.5rem;
+                /* Reduced padding */
             }
-        }
 
-        #saveMessage {
-            font-size: 0.875rem;
-            color: #26A69A;
-            margin-top: 0.5rem;
-            text-align: right;
-            opacity: 0;
-            transition: opacity 0.3s ease;
+            .search-bar {
+                width: 100%;
+                /* Full width */
+                margin: 0.5rem 0;
+            }
         }
 
         @media (max-width: 480px) {
             .elegant-container {
-                margin: 1rem;
-                padding: 1rem;
+                padding: 0.5rem;
+                /* Tighter padding */
             }
 
             h1 {
-                font-size: 2rem;
+                font-size: 1.75rem;
+                /* Smaller for narrow screens */
             }
 
             .slider {
-                width: 90px;
+                width: 25vw;
+                /* Even more relative */
+                min-width: 90px;
             }
 
             .preference {
-                width: 70px;
+                width: 60px;
+                /* Adjusted for narrower screens */
+                font-size: 0.75rem;
+                /* 12px */
+            }
+
+            .item-label {
+                font-size: 0.75rem;
+            }
+
+            .tab-button,
+            .share-button,
+            .reset-button {
+                flex: 1 1 100%;
+                /* Stack buttons vertically */
+                padding: 0.5rem;
+                font-size: 0.875rem;
+            }
+
+            .item {
+                gap: 0.25rem;
             }
         }
     </style>
@@ -431,7 +516,7 @@
     <div class="elegant-container">
 
         <header class="header">
-        <h1 class="logo"> The <span>Kinky</span> Map
+            <h1 class="logo"> The <span>Kinky</span> Map
         </header>
 
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
@@ -2518,256 +2603,271 @@
 
             <div class="toast-container" id="toastContainer"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-<script>
-    const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-    const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
-    let meSliders, partnerSliders, notesTextarea;
-    const STORAGE_KEY = 'kinkyMapState';
+            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+            <script>
+                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+                let meSliders, partnerSliders, notesTextarea;
+                const STORAGE_KEY = 'kinkyMapState';
 
-    function showToast(message) {
-        const toast = document.createElement('div');
-        toast.className = 'toast';
-        toast.textContent = message;
-        document.getElementById('toastContainer').appendChild(toast);
-        requestAnimationFrame(() => toast.classList.add('show'));
-        setTimeout(() => {
-            toast.classList.remove('show');
-            toast.addEventListener('transitionend', () => toast.remove());
-        }, 2000);
-    }
+                function showToast(message) {
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    toast.textContent = message;
+                    document.getElementById('toastContainer').appendChild(toast);
+                    requestAnimationFrame(() => toast.classList.add('show'));
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        toast.addEventListener('transitionend', () => toast.remove());
+                    }, 2000);
+                }
 
-    function resetSliders() {
-        meSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        partnerSliders.forEach(slider => {
-            slider.value = 0;
-            updatePreference(slider, false);
-        });
-        notesTextarea.value = '';
-        saveState();
-        updateUrl();
-        showToast('Sliders and notes reset');
-    }
+                function resetSliders() {
+                    meSliders.forEach(slider => {
+                        slider.value = 0;
+                        updatePreference(slider, false);
+                    });
+                    partnerSliders.forEach(slider => {
+                        slider.value = 0;
+                        updatePreference(slider, false);
+                    });
+                    notesTextarea.value = '';
+                    saveState();
+                    updateUrl();
+                    showToast('Sliders and notes reset');
+                }
 
-    function openTab(tabName) {
-        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-        document.getElementById(tabName)?.classList.add('active');
-        document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-        document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-    }
+                function openTab(tabName) {
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                    document.getElementById(tabName)?.classList.add('active');
+                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+                }
 
-    function toggleSection(header) {
-        const sectionContent = header.nextElementSibling;
-        sectionContent?.classList.toggle('active');
-    }
+                function toggleSection(header) {
+                    const sectionContent = header.nextElementSibling;
+                    sectionContent?.classList.toggle('active');
+                }
 
-    function updatePreference(slider, save = true) {
-        const preferenceSpan = slider.nextElementSibling;
-        const value = parseInt(slider.value);
-        if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-            preferenceSpan.textContent = VALUES[value];
-            preferenceSpan.style.color = COLORS[value];
-        }
-        if (save) {
-            saveState();
-            updateUrl();
-        }
-    }
+                function updatePreference(slider, save = true) {
+                    const preferenceSpan = slider.nextElementSibling;
+                    const value = parseInt(slider.value);
+                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                        preferenceSpan.textContent = VALUES[value];
+                        preferenceSpan.style.color = COLORS[value];
+                    }
+                    if (save) {
+                        saveState();
+                        updateUrl();
+                    }
+                }
 
-    function generateCompactState() {
-        const mePrefs = {};
-        const partnerPrefs = {};
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) mePrefs[key] = slider.value;
-        });
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) partnerPrefs[key] = slider.value;
-        });
-        const state = { me: mePrefs, partner: partnerPrefs };
-        const encoded = LZString.compressToBase64(JSON.stringify(state));
-        console.log('Encoded Hash:', encoded);
-        return encoded;
-    }
+                function generateCompactState() {
+                    const mePrefs = {};
+                    const partnerPrefs = {};
+                    meSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) mePrefs[key] = slider.value;
+                    });
+                    partnerSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) partnerPrefs[key] = slider.value;
+                    });
+                    const state = {
+                        me: mePrefs,
+                        partner: partnerPrefs
+                    };
+                    const encoded = LZString.compressToBase64(JSON.stringify(state));
+                    console.log('Encoded Hash:', encoded);
+                    return encoded;
+                }
 
-    function decodeCompactState(encoded) {
-        const decompressed = LZString.decompressFromBase64(encoded) || '{}';
-        const state = JSON.parse(decompressed);
-        console.log('Decoded State:', state);
-        return state;
-    }
+                function decodeCompactState(encoded) {
+                    const decompressed = LZString.decompressFromBase64(encoded) || '{}';
+                    const state = JSON.parse(decompressed);
+                    console.log('Decoded State:', state);
+                    return state;
+                }
 
-    function generateState() {
-        const mePrefs = {};
-        const partnerPrefs = {};
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) mePrefs[key] = slider.value;
-        });
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            if (key) partnerPrefs[key] = slider.value;
-        });
-        const notes = notesTextarea.value || '';
-        const state = { me: mePrefs, partner: partnerPrefs, notes: notes };
-        console.log('Full State:', state);
-        return state;
-    }
+                function generateState() {
+                    const mePrefs = {};
+                    const partnerPrefs = {};
+                    meSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) mePrefs[key] = slider.value;
+                    });
+                    partnerSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) partnerPrefs[key] = slider.value;
+                    });
+                    const notes = notesTextarea.value || '';
+                    const state = {
+                        me: mePrefs,
+                        partner: partnerPrefs,
+                        notes: notes
+                    };
+                    console.log('Full State:', state);
+                    return state;
+                }
 
-    function saveState() {
-        const state = generateState();
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        const saveMessage = document.getElementById('saveMessage');
-        if (saveMessage) {
-            saveMessage.style.opacity = '1';
-            setTimeout(() => saveMessage.style.opacity = '0', 2000);
-        }
-        console.log('Saved to localStorage:', state);
-    }
+                function saveState() {
+                    const state = generateState();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                    const saveMessage = document.getElementById('saveMessage');
+                    if (saveMessage) {
+                        saveMessage.style.opacity = '1';
+                        setTimeout(() => saveMessage.style.opacity = '0', 2000);
+                    }
+                    console.log('Saved to localStorage:', state);
+                }
 
-    function loadStateFromStorage() {
-        const stored = localStorage.getItem(STORAGE_KEY);
-        const state = stored ? JSON.parse(stored) : { me: {}, partner: {}, notes: '' };
-        console.log('Loaded from localStorage:', state);
-        return state;
-    }
+                function loadStateFromStorage() {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    const state = stored ? JSON.parse(stored) : {
+                        me: {},
+                        partner: {},
+                        notes: ''
+                    };
+                    console.log('Loaded from localStorage:', state);
+                    return state;
+                }
 
-    function encodeUrlParams() {
-        return generateCompactState();
-    }
+                function encodeUrlParams() {
+                    return generateCompactState();
+                }
 
-    function decodeUrlParams(encoded) {
-        return decodeCompactState(encoded);
-    }
+                function decodeUrlParams(encoded) {
+                    return decodeCompactState(encoded);
+                }
 
-    function updateUrl() {
-        const encoded = encodeUrlParams();
-        const newUrl = `${window.location.origin}${window.location.pathname}#${encoded}`;
-        window.history.replaceState({}, document.title, newUrl);
-    }
+                function updateUrl() {
+                    const encoded = encodeUrlParams();
+                    const newUrl = `${window.location.origin}${window.location.pathname}#${encoded}`;
+                    window.history.replaceState({}, document.title, newUrl);
+                }
 
-    function generateUrl() {
-        const encoded = encodeUrlParams();
-        return `${window.location.origin}${window.location.pathname}#${encoded}`;
-    }
+                function generateUrl() {
+                    const encoded = encodeUrlParams();
+                    return `${window.location.origin}${window.location.pathname}#${encoded}`;
+                }
 
-    function shareViaTelegram() {
-        window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-        showToast('Shared via Telegram');
-    }
+                function shareViaTelegram() {
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via Telegram');
+                }
 
-    function shareViaWhatsApp() {
-        window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-        showToast('Shared via WhatsApp');
-    }
+                function shareViaWhatsApp() {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via WhatsApp');
+                }
 
-    function shareViaEmail() {
-        window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-        showToast('Email opened');
-    }
+                function shareViaEmail() {
+                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+                    showToast('Email opened');
+                }
 
-    function copyUrl() {
-        const url = generateUrl();
-        if (navigator.clipboard?.writeText) {
-            navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                console.error('Clipboard failed:', err);
-                fallbackCopyText(url);
-            });
-        } else {
-            fallbackCopyText(url);
-        }
-    }
+                function copyUrl() {
+                    const url = generateUrl();
+                    if (navigator.clipboard?.writeText) {
+                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                            console.error('Clipboard failed:', err);
+                            fallbackCopyText(url);
+                        });
+                    } else {
+                        fallbackCopyText(url);
+                    }
+                }
 
-    function fallbackCopyText(text) {
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        document.body.appendChild(textArea);
-        textArea.select();
-        try {
-            document.execCommand('copy');
-            showToast('URL copied');
-        } catch (err) {
-            showToast('⚠️ Copy failed. Please copy manually.');
-        }
-        document.body.removeChild(textArea);
-    }
+                function fallbackCopyText(text) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('URL copied');
+                    } catch (err) {
+                        showToast('⚠️ Copy failed. Please copy manually.');
+                    }
+                    document.body.removeChild(textArea);
+                }
 
-    function loadSliderPositionsAndNotes() {
-        const hash = window.location.hash.slice(1);
-        const urlState = hash ? decodeUrlParams(hash) : {};
-        const storedState = loadStateFromStorage();
+                function loadSliderPositionsAndNotes() {
+                    const hash = window.location.hash.slice(1);
+                    const urlState = hash ? decodeUrlParams(hash) : {};
+                    const storedState = loadStateFromStorage();
 
-        meSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const urlValue = urlState.me?.[key];
-            const storedValue = storedState.me[key];
-            const value = urlValue !== undefined ? urlValue : storedValue;
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, false);
-            }
-        });
+                    meSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        const urlValue = urlState.me?.[key];
+                        const storedValue = storedState.me[key];
+                        const value = urlValue !== undefined ? urlValue : storedValue;
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider, false);
+                        }
+                    });
 
-        partnerSliders.forEach(slider => {
-            const key = slider.getAttribute('data-key');
-            const urlValue = urlState.partner?.[key];
-            const storedValue = storedState.partner[key];
-            const value = urlValue !== undefined ? urlValue : storedValue;
-            if (value !== undefined) {
-                slider.value = value;
-                updatePreference(slider, false);
-            }
-        });
+                    partnerSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        const urlValue = urlState.partner?.[key];
+                        const storedValue = storedState.partner[key];
+                        const value = urlValue !== undefined ? urlValue : storedValue;
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider, false);
+                        }
+                    });
 
-        if (storedState.notes !== undefined) {
-            notesTextarea.value = storedState.notes;
-        }
-    }
+                    if (storedState.notes !== undefined) {
+                        notesTextarea.value = storedState.notes;
+                    }
+                }
 
-    window.onload = function () {
-        meSliders = document.querySelectorAll('#me .slider');
-        partnerSliders = document.querySelectorAll('#partner .slider');
-        notesTextarea = document.getElementById('personalNotes');
-        console.log('meSliders count:', meSliders.length);
-        console.log('partnerSliders count:', partnerSliders.length);
-        console.log('notesTextarea:', notesTextarea);
-        if (!meSliders.length && !partnerSliders.length) return;
+                window.onload = function() {
+                    meSliders = document.querySelectorAll('#me .slider');
+                    partnerSliders = document.querySelectorAll('#partner .slider');
+                    notesTextarea = document.getElementById('personalNotes');
+                    console.log('meSliders count:', meSliders.length);
+                    console.log('partnerSliders count:', partnerSliders.length);
+                    console.log('notesTextarea:', notesTextarea);
+                    if (!meSliders.length && !partnerSliders.length) return;
 
-        document.querySelector('#me .section-content')?.classList.add('active');
-        document.querySelector('#partner .section-content')?.classList.add('active');
+                    document.querySelector('#me .section-content')?.classList.add('active');
+                    document.querySelector('#partner .section-content')?.classList.add('active');
 
-        loadSliderPositionsAndNotes();
+                    loadSliderPositionsAndNotes();
 
-        [meSliders, partnerSliders].forEach(sliderGroup => {
-            sliderGroup.forEach(slider => {
-                slider.addEventListener('input', () => updatePreference(slider));
-                slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
-                slider.addEventListener('touchmove', e => {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    const rect = slider.getBoundingClientRect();
-                    const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
-                    slider.value = Math.min(slider.max, Math.max(slider.min, value));
-                    updatePreference(slider);
-                }, { passive: false });
-            });
-        });
+                    [meSliders, partnerSliders].forEach(sliderGroup => {
+                        sliderGroup.forEach(slider => {
+                            slider.addEventListener('input', () => updatePreference(slider));
+                            slider.addEventListener('touchstart', e => e.preventDefault(), {
+                                passive: false
+                            });
+                            slider.addEventListener('touchmove', e => {
+                                e.preventDefault();
+                                const touch = e.touches[0];
+                                const rect = slider.getBoundingClientRect();
+                                const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                                slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                                updatePreference(slider);
+                            }, {
+                                passive: false
+                            });
+                        });
+                    });
 
-        if (notesTextarea) {
-            notesTextarea.addEventListener('input', () => {
-                saveState();
-                updateUrl(); // Updates URL but doesn’t affect notes
-            });
-            // Ensure initial load reflects stored notes
-            const storedState = loadStateFromStorage();
-            notesTextarea.value = storedState.notes || '';
-        }
-    };
-</script>
+                    if (notesTextarea) {
+                        notesTextarea.addEventListener('input', () => {
+                            saveState();
+                            updateUrl(); // Updates URL but doesn’t affect notes
+                        });
+                        // Ensure initial load reflects stored notes
+                        const storedState = loadStateFromStorage();
+                        notesTextarea.value = storedState.notes || '';
+                    }
+                };
+            </script>
 </body>
 
 </html>
