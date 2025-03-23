@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Set and share your preferences with sliders">
     <meta name="robots" content="index, follow">
-    <title>The Kinky Map</title>
+    <title>Preference Sliders</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Roboto:wght@700&display=swap">
 
     <style>
@@ -49,7 +49,7 @@
             font-family: 'Roboto', sans-serif;
             font-size: 2.9rem;
             text-align: center;
-            color: var(--text-primary);
+            color: #FAF9F6;
             font-weight: 700;
             margin: 1rem 0;
             background-color: rgba(183, 28, 28, 0.2);
@@ -84,6 +84,7 @@
             margin-bottom: 0.5rem;
         }
 
+
         footer {
             margin-top: 2rem;
             padding: 1rem 0;
@@ -99,6 +100,8 @@
             color: #6A1B9A;
             font-weight: 500;
         }
+
+
 
         .section-content {
             display: none;
@@ -181,8 +184,8 @@
 
         .slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            width: 16px;
-            height: 24px;
+            width: 12px;
+            height: 20px;
             background: rgba(255, 255, 255, 0.9);
             border-radius: 3px;
             margin-top: -9px;
@@ -235,10 +238,22 @@
             transform: scale(1.05);
         }
 
-        .telegram { background: #0088CC; }
-        .whatsapp { background: #25D366; }
-        .email { background: #D32F2F; }
-        .copy-link { background: #FFB300; color: var(--background); }
+        .telegram {
+            background: #0088CC;
+        }
+
+        .whatsapp {
+            background: #25D366;
+        }
+
+        .email {
+            background: #D32F2F;
+        }
+
+        .copy-link {
+            background: #FFB300;
+            color: var(--background);
+        }
 
         .toast-container {
             position: fixed;
@@ -346,33 +361,44 @@
             .slider {
                 width: 100px;
             }
+
             .slider::-webkit-slider-thumb {
                 width: 20px;
                 height: 28px;
             }
+
             .slider::-moz-range-thumb {
                 width: 20px;
                 height: 28px;
             }
-            .item-label, .preference {
+
+            .item-label,
+            .preference {
                 font-size: 0.875rem;
             }
-            .tabs, .share-container {
+
+            .tabs,
+            .share-container {
                 flex-wrap: wrap;
             }
-            .share-button, .reset-button {
+
+            .share-button,
+            .reset-button {
                 padding: 0.5rem 1rem;
                 font-size: 0.875rem;
             }
+
             .toast-container {
                 bottom: 0.5rem;
                 right: 0.5rem;
             }
+
             .item {
                 flex-wrap: wrap;
                 gap: 5px;
             }
         }
+
         #saveMessage {
             font-size: 0.875rem;
             color: #26A69A;
@@ -387,12 +413,15 @@
                 margin: 1rem;
                 padding: 1rem;
             }
+
             h1 {
                 font-size: 2rem;
             }
+
             .slider {
                 width: 90px;
             }
+
             .preference {
                 width: 70px;
             }
@@ -402,12 +431,18 @@
 
 <body>
     <div class="elegant-container">
-        <h1>The Kinky Map</h1>
+
+        <header class="header">
+            <h1 class="logo"> The <span>Kinky</span> Map</h1>
+        </header>
+
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
+
         <ul>
             <li><strong>Me</strong> Indicates what you enjoy doing</li>
             <li><strong>Partner:</strong> Indicates what you enjoy receiving</li>
         </ul>
+
         <ul>
             <li><span style="color: #EF5350;">Hard Limit</span> - Absolutely not</li>
             <li><span style="color: #FF914D;">Curious</span> - Willing to explore</li>
@@ -497,6 +532,16 @@
                 </div>
                 <div class="item">
                     <span class="item-label">Vaginal (No Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (No Condom)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
                 </div>
@@ -1489,6 +1534,16 @@
                     <span class="preference">Hard Limit</span>
                 </div>
                 <div class="item">
+                    <span class="item-label">Anal (Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
+                    <span class="item-label">Anal (No Condom)</span>
+                    <input type="range" min="0" max="3" value="0" class="slider" data-key="vaginal-no-condom" onchange="updatePreference(this, this.nextElementSibling)">
+                    <span class="preference">Hard Limit</span>
+                </div>
+                <div class="item">
                     <span class="item-label">Rimming (Receiving)</span>
                     <input type="range" min="0" max="3" value="0" class="slider" data-key="rimming-receiving" onchange="updatePreference(this, this.nextElementSibling)">
                     <span class="preference">Hard Limit</span>
@@ -2465,173 +2520,261 @@
 
             <div class="toast-container" id="toastContainer"></div>
 
-    <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
-    <script>
-        const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
-        const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+            <script src="https://cdn.jsdelivr.net/npm/lz-string@1.5.0/libs/lz-string.min.js"></script>
+            <script>
+                const VALUES = ['Hard Limit', 'Curious', 'Moderate', 'Oh Yes'];
+                const COLORS = ['#EF5350', '#FF914D', '#FFCA28', '#26A69A'];
+                let meSliders, partnerSliders, notesTextarea;
+                const STORAGE_KEY = 'kinkyMapState';
 
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.className = 'toast';
-            toast.textContent = message;
-            document.getElementById('toastContainer').appendChild(toast);
-            requestAnimationFrame(() => toast.classList.add('show'));
-            setTimeout(() => {
-                toast.classList.remove('show');
-                toast.addEventListener('transitionend', () => toast.remove());
-            }, 2000);
-        }
-
-        function resetSliders() {
-            document.querySelectorAll('.slider').forEach(slider => {
-                slider.value = 0;
-                updatePreference(slider);
-            });
-            updateUrl();
-            showToast('Sliders reset');
-        }
-
-        function openTab(tabName) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.getElementById(tabName)?.classList.add('active');
-            document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
-            document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
-        }
-
-        function toggleSection(header) {
-            const sectionContent = header.nextElementSibling;
-            sectionContent?.classList.toggle('active');
-        }
-
-        function updatePreference(slider) {
-            const preferenceSpan = slider.nextElementSibling;
-            const value = parseInt(slider.value);
-            if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
-                preferenceSpan.textContent = VALUES[value];
-                preferenceSpan.style.color = COLORS[value];
-            }
-            updateUrl();
-        }
-
-        function generateUrlParams() {
-            const meValues = [];
-            const partnerValues = [];
-            document.querySelectorAll('#me .slider').forEach(slider => {
-                const index = parseInt(slider.getAttribute('data-index'));
-                meValues[index] = slider.value;
-            });
-            document.querySelectorAll('#partner .slider').forEach(slider => {
-                const index = parseInt(slider.getAttribute('data-index'));
-                partnerValues[index] = slider.value;
-            });
-            return [meValues, partnerValues];
-        }
-
-        function encodeUrlParams(params) {
-            return LZString.compressToEncodedURIComponent(JSON.stringify(params));
-        }
-
-        function decodeUrlParams(encodedParams) {
-            const decompressed = LZString.decompressFromEncodedURIComponent(encodedParams);
-            return decompressed ? JSON.parse(decompressed) : [[], []];
-        }
-
-        function updateUrl() {
-            const params = generateUrlParams();
-            const encodedParams = encodeUrlParams(params);
-            const newUrl = `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-            window.history.pushState({}, document.title, newUrl);
-        }
-
-        function generateUrl() {
-            const params = generateUrlParams();
-            const encodedParams = encodeUrlParams(params);
-            return `${window.location.origin}${window.location.pathname}#${encodedParams}`;
-        }
-
-        function shareViaTelegram() {
-            window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
-            showToast('Shared via Telegram');
-        }
-
-        function shareViaWhatsApp() {
-            window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
-            showToast('Shared via WhatsApp');
-        }
-
-        function shareViaEmail() {
-            window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
-            showToast('Email opened');
-        }
-
-        function copyUrl() {
-            const url = generateUrl();
-            if (navigator.clipboard?.writeText) {
-                navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
-                    console.error('Clipboard failed:', err);
-                    fallbackCopyText(url);
-                });
-            } else {
-                fallbackCopyText(url);
-            }
-        }
-
-        function fallbackCopyText(text) {
-            const textArea = document.createElement('textarea');
-            textArea.value = text;
-            document.body.appendChild(textArea);
-            textArea.select();
-            try {
-                document.execCommand('copy');
-                showToast('URL copied');
-            } catch (err) {
-                showToast('⚠️ Copy failed. Please copy manually.');
-            }
-            document.body.removeChild(textArea);
-        }
-
-        function loadSliderPositionsFromUrl() {
-            const hash = window.location.hash.slice(1);
-            if (!hash) return;
-
-            const [meValues, partnerValues] = decodeUrlParams(hash);
-            document.querySelectorAll('#me .slider').forEach(slider => {
-                const index = parseInt(slider.getAttribute('data-index'));
-                const value = meValues[index];
-                if (value !== undefined) {
-                    slider.value = value;
-                    updatePreference(slider);
+                function showToast(message) {
+                    const toast = document.createElement('div');
+                    toast.className = 'toast';
+                    toast.textContent = message;
+                    document.getElementById('toastContainer').appendChild(toast);
+                    requestAnimationFrame(() => toast.classList.add('show'));
+                    setTimeout(() => {
+                        toast.classList.remove('show');
+                        toast.addEventListener('transitionend', () => toast.remove());
+                    }, 2000);
                 }
-            });
-            document.querySelectorAll('#partner .slider').forEach(slider => {
-                const index = parseInt(slider.getAttribute('data-index'));
-                const value = partnerValues[index];
-                if (value !== undefined) {
-                    slider.value = value;
-                    updatePreference(slider);
+
+                function resetSliders() {
+                    meSliders.forEach(slider => {
+                        slider.value = 0;
+                        updatePreference(slider, false);
+                    });
+                    partnerSliders.forEach(slider => {
+                        slider.value = 0;
+                        updatePreference(slider, false);
+                    });
+                    notesTextarea.value = '';
+                    saveState();
+                    updateUrl();
+                    showToast('Sliders and notes reset');
                 }
-            });
-        }
 
-        window.onload = function () {
-            const sliders = document.querySelectorAll('.slider');
-            if (!sliders.length) return;
+                function openTab(tabName) {
+                    document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+                    document.getElementById(tabName)?.classList.add('active');
+                    document.querySelectorAll('.tab-button').forEach(button => button.classList.remove('active'));
+                    document.querySelector(`button[onclick="openTab('${tabName}')"]`)?.classList.add('active');
+                }
 
-            loadSliderPositionsFromUrl();
+                function toggleSection(header) {
+                    const sectionContent = header.nextElementSibling;
+                    sectionContent?.classList.toggle('active');
+                }
 
-            sliders.forEach(slider => {
-                slider.addEventListener('input', () => updatePreference(slider));
-                slider.addEventListener('touchstart', e => e.preventDefault(), { passive: false });
-                slider.addEventListener('touchmove', e => {
-                    e.preventDefault();
-                    const touch = e.touches[0];
-                    const rect = slider.getBoundingClientRect();
-                    const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
-                    slider.value = Math.min(slider.max, Math.max(slider.min, value));
-                    updatePreference(slider);
-                }, { passive: false });
-            });
-        };
-    </script>
+                function updatePreference(slider, save = true) {
+                    const preferenceSpan = slider.nextElementSibling;
+                    const value = parseInt(slider.value);
+                    if (preferenceSpan && preferenceSpan.classList.contains('preference')) {
+                        preferenceSpan.textContent = VALUES[value];
+                        preferenceSpan.style.color = COLORS[value];
+                    }
+                    if (save) {
+                        saveState();
+                        updateUrl();
+                    }
+                }
+
+                function generateCompactState() {
+                    const meValues = Array.from(meSliders).map(slider => slider.value || '0').join('');
+                    const partnerValues = Array.from(partnerSliders).map(slider => slider.value || '0').join('');
+                    if (meValues.length !== partnerValues.length) {
+                        console.error('Slider count mismatch:', meValues.length, partnerValues.length);
+                    }
+                    const compact = meValues + '|' + partnerValues;
+                    return LZString.compressToBase64(compact);
+                }
+
+                function decodeCompactState(encoded) {
+                    const decompressed = LZString.decompressFromBase64(encoded) || '';
+                    const [meValues = '', partnerValues = ''] = decompressed.split('|');
+                    return {
+                        me: meValues.split('').map(Number),
+                        partner: partnerValues.split('').map(Number)
+                    };
+                }
+
+                function generateState() {
+                    const mePrefs = {};
+                    const partnerPrefs = {};
+                    meSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) mePrefs[key] = slider.value;
+                    });
+                    partnerSliders.forEach(slider => {
+                        const key = slider.getAttribute('data-key');
+                        if (key) partnerPrefs[key] = slider.value;
+                    });
+                    const notes = notesTextarea.value || '';
+                    return {
+                        me: mePrefs,
+                        partner: partnerPrefs,
+                        notes: notes
+                    };
+                }
+
+                function saveState() {
+                    const state = generateState();
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+                    const saveMessage = document.getElementById('saveMessage');
+                    if (saveMessage) {
+                        saveMessage.style.opacity = '1';
+                        setTimeout(() => saveMessage.style.opacity = '0', 2000);
+                    }
+                }
+
+                function loadStateFromStorage() {
+                    const stored = localStorage.getItem(STORAGE_KEY);
+                    return stored ? JSON.parse(stored) : {
+                        me: {},
+                        partner: {},
+                        notes: ''
+                    };
+                }
+
+                function encodeUrlParams() {
+                    const compact = generateCompactState();
+                    console.log('Compact Encoded:', compact);
+                    return compact;
+                }
+
+                function decodeUrlParams(encoded) {
+                    const decoded = decodeCompactState(encoded);
+                    console.log('Decoded Compact:', decoded);
+                    return {
+                        me: decoded.me,
+                        partner: decoded.partner,
+                        notes: ''
+                    };
+                }
+
+                function updateUrl() {
+                    const encoded = encodeUrlParams();
+                    const newUrl = `${window.location.origin}${window.location.pathname}#${encoded}`;
+                    window.history.replaceState({}, document.title, newUrl);
+                }
+
+                function generateUrl() {
+                    const encoded = encodeUrlParams();
+                    return `${window.location.origin}${window.location.pathname}#${encoded}`;
+                }
+
+                function shareViaTelegram() {
+                    window.open(`https://t.me/share/url?url=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via Telegram');
+                }
+
+                function shareViaWhatsApp() {
+                    window.open(`https://wa.me/?text=${encodeURIComponent(generateUrl())}`, '_blank');
+                    showToast('Shared via WhatsApp');
+                }
+
+                function shareViaEmail() {
+                    window.location.href = `mailto:?body=${encodeURIComponent(generateUrl())}`;
+                    showToast('Email opened');
+                }
+
+                function copyUrl() {
+                    const url = generateUrl();
+                    if (navigator.clipboard?.writeText) {
+                        navigator.clipboard.writeText(url).then(() => showToast('URL copied to clipboard')).catch(err => {
+                            console.error('Clipboard failed:', err);
+                            fallbackCopyText(url);
+                        });
+                    } else {
+                        fallbackCopyText(url);
+                    }
+                }
+
+                function fallbackCopyText(text) {
+                    const textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    try {
+                        document.execCommand('copy');
+                        showToast('URL copied');
+                    } catch (err) {
+                        showToast('⚠️ Copy failed. Please copy manually.');
+                    }
+                    document.body.removeChild(textArea);
+                }
+
+                function loadSliderPositionsAndNotes() {
+                    const hash = window.location.hash.slice(1);
+                    const urlState = hash ? decodeUrlParams(hash) : {};
+                    const storedState = loadStateFromStorage();
+
+                    meSliders.forEach((slider, index) => {
+                        const key = slider.getAttribute('data-key');
+                        const urlValue = urlState.me[index];
+                        const storedValue = storedState.me[key];
+                        const value = urlValue !== undefined ? urlValue : storedValue;
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider, false);
+                        }
+                    });
+
+                    partnerSliders.forEach((slider, index) => {
+                        const key = slider.getAttribute('data-key');
+                        const urlValue = urlState.partner[index];
+                        const storedValue = storedState.partner[key];
+                        const value = urlValue !== undefined ? urlValue : storedValue;
+                        if (value !== undefined) {
+                            slider.value = value;
+                            updatePreference(slider, false);
+                        }
+                    });
+
+                    notesTextarea.value = storedState.notes || '';
+                }
+
+                window.onload = function() {
+                    meSliders = document.querySelectorAll('#me .slider');
+                    partnerSliders = document.querySelectorAll('#partner .slider');
+                    notesTextarea = document.getElementById('personalNotes');
+                    console.log('meSliders count:', meSliders.length);
+                    console.log('partnerSliders count:', partnerSliders.length);
+                    console.log('notesTextarea:', notesTextarea);
+                    if (!meSliders.length && !partnerSliders.length) return;
+
+                    document.querySelector('#me .section-content')?.classList.add('active');
+                    document.querySelector('#partner .section-content')?.classList.add('active');
+
+                    loadSliderPositionsAndNotes();
+
+                    [meSliders, partnerSliders].forEach(sliderGroup => {
+                        sliderGroup.forEach(slider => {
+                            slider.addEventListener('input', () => updatePreference(slider));
+                            slider.addEventListener('touchstart', e => e.preventDefault(), {
+                                passive: false
+                            });
+                            slider.addEventListener('touchmove', e => {
+                                e.preventDefault();
+                                const touch = e.touches[0];
+                                const rect = slider.getBoundingClientRect();
+                                const value = Math.round((touch.clientX - rect.left) / rect.width * (slider.max - slider.min));
+                                slider.value = Math.min(slider.max, Math.max(slider.min, value));
+                                updatePreference(slider);
+                            }, {
+                                passive: false
+                            });
+                        });
+                    });
+
+                    if (notesTextarea) {
+                        notesTextarea.addEventListener('input', () => {
+                            saveState();
+                            updateUrl();
+                        });
+                    }
+                };
+            </script>
 </body>
+
 </html>
