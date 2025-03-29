@@ -12,14 +12,15 @@
     <style>
         :root {
             --primary: #B71C12;
+            ;
             /* Vibrant BDSM red */
-            --secondary: #6A1B9A;
+            --secondary: #610000;
             /* Deep purple for highlights */
             --surface: #1A1A1A;
             /* Dark gray for containers */
             --background: #121212;
             /* Charcoal black */
-            --text-primary: #FAF9F6;
+            --text-primary: #B0BEC5;
             /* Off-white for primary text */
             --text-secondary: #B0BEC5;
             /* Subtle gray for secondary text */
@@ -56,11 +57,11 @@
             font-family: 'Roboto', sans-serif;
             font-size: 2.5rem;
             text-align: center;
-            color: var(--primary);
+            color: var(--text- primary);
             font-weight: 700;
             margin: 1.5rem auto;
             padding: 1.5rem 2rem;
-            background-color: rgba(183, 28, 28, 0.1);
+            background-color: none;
             border-radius: 12px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
             max-width: 800px;
@@ -72,8 +73,7 @@
             font-size: 1.5rem;
             cursor: pointer;
             padding: 10px;
-            background-color: rgba(183, 28, 28, 0.2);
-            border-radius: 8px;
+            background-color: none: border-radius: 8px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
@@ -81,7 +81,7 @@
         }
 
         h2:hover {
-            background-color: rgba(183, 28, 28, 0.3);
+            background-color: #610000;
             transform: translateY(-2px);
         }
 
@@ -114,12 +114,12 @@
         }
 
         .logo {
-            font-size: 2.5rem;
-            color: var(--text-primary);
+            font-size: 3.5rem;
+            color: #;
             font-weight: 700;
             margin: 0;
             padding: 1rem;
-            background-color: rgba(183, 28, 28, 0.2);
+            background-color: none;
             border-radius: 12px;
             box-shadow: var(--elevation-1);
 
@@ -157,7 +157,7 @@
             outline: none;
             border-color: #B0BEC5;
             ;
-            box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
+            box-shadow: 0 0 6px
         }
 
         .section-content {
@@ -165,8 +165,7 @@
             padding: 10px;
             border-left: 4px solid var(--primary);
             margin: 10px 0;
-            background-color: rgba(183, 28, 28, 0.1);
-            border-radius: 8px;
+            background-color: none: border-radius: 8px;
         }
 
         .section-content.active {
@@ -191,17 +190,6 @@
             font-weight: 500;
         }
 
-        .tab-button1 {
-            padding: 0.75rem 1.5rem;
-            border: 2px solid var(--primary);
-            border-radius: 8px;
-            background: transparent;
-            color: #FAF9F6;
-            cursor: pointer;
-            transition: all 0.5s ease;
-            font-weight: 500;
-        }
-
         .tab-button.active {
             background: var(--primary);
             color: white;
@@ -214,6 +202,24 @@
 
         .tab-content.active {
             display: block;
+        }
+
+
+
+        .tab-button1 {
+            padding: 0.5rem 1rem;
+            border: 1px solid #B0BEC5;
+            border-radius: 8px;
+            background: transparent;
+            color: #B0BEC5;
+            cursor: pointer;
+            transition: all 0.8s ease;
+            font-weight: 400;
+        }
+
+        .tab-button1:hover {
+            background-color: #610000;
+            transform: translateY(-1px);
         }
 
         .slider {
@@ -241,7 +247,6 @@
             color: var(--text-secondary);
             text-align: left;
         }
-
 
         .slider {
             -webkit-appearance: none;
@@ -328,7 +333,7 @@
         }
 
         .email {
-            background: #D32F2F;
+            background: #e34000;
         }
 
         .copy-link {
@@ -347,12 +352,12 @@
         }
 
         .toast {
-            background-color: #AF5350;
+            background-color: #610000;
             color: white;
             padding: 0.75rem 1.5rem;
             border-radius: 8px;
             font-size: 1rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 6px #121212;
             opacity: 0;
             transform: translateY(20px);
             transition: opacity 0.3s ease, transform 0.3s ease;
@@ -370,7 +375,7 @@
         }
 
         .reset-button {
-            background-color: #EF5350;
+            background-color: #D21500;
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
@@ -416,7 +421,7 @@
         textarea:focus {
             outline: none;
             border-color: #FFCA28;
-            box-shadow: 0 0 6px rgba(255, 202, 40, 0.5);
+            box-shadow: 0 0 6px #610000;
         }
 
         .separator {
@@ -604,9 +609,13 @@
         </header>
         <ul></ul>
 
-        <button class="tab-button1">Copy the URL from your browser and share it with your play partner. You can save the page by bookmarking it.
-            You can also share the link to your online profiles if you want!
-            </button>
+        <button class="tab-button1">
+            Copy the URL from your browser and share it with your play partner. You can save the page by bookmarking it. You can also share the link to your online profiles if you want!
+            <p>Fill in your name and the Me and Partner tap will show the names.</p>
+            <p>If you change your slider positions, you must share the new updated URL.</p>
+            <p>So take your time to adjust your sliders before sharing.</p>
+            <p>None of your preferences or data is stored. It is completely anonymous.</p>
+        </button>
 
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
 
@@ -651,17 +660,17 @@
 
         <!-- Me and Partner Tabs -->
         <div class="tabs">
-            <button class="tab-button active" onclick="openTab('me')">Me</button>
-            <button class="tab-button" onclick="openTab('partner')">Partner</button>
+            <button class="tab-button active" onclick="openTab('me')" id="meTab">Me</button>
+            <button class="tab-button" onclick="openTab('partner')" id="partnerTab">Partner</button>
         </div>
 
         <!-- Sending To -->
         <div class="name-container">
             <div class="input-group">
-                <input type="text" id="yourName" value="I am: " oninput="ensurePrefix(this, 'I am: ')" class="fixed-input" />
+                <input type="text" id="yourName" value="I am: " oninput="ensurePrefix(this, 'I am: '); updateTabNames();" class="fixed-input" />
             </div>
             <div class="input-group">
-                <input type="text" id="recipientName" value="I am sending this to: " oninput="ensurePrefix(this, 'I am sending this to: ')" class="fixed-input" />
+                <input type="text" id="recipientName" value="I am sending this to: " oninput="ensurePrefix(this, 'I am sending this to: '); updateTabNames();" class="fixed-input" />
             </div>
 
             <div class="separator">
@@ -2683,9 +2692,9 @@
                 </div>
 
                 <div class="share-container">
-                    <button class="share-button telegram" onclick="shareViaTelegram()">Share via Telegram</button>
-                    <button class="share-button whatsapp" onclick="shareViaWhatsApp()">Share via WhatsApp</button>
-                    <button class="share-button email" onclick="shareViaEmail()">Share via Email</button>
+                    <button class="share-button telegram" onclick="shareViaTelegram()">Telegram</button>
+                    <button class="share-button whatsapp" onclick="shareViaWhatsApp()">WhatsApp</button>
+                    <button class="share-button email" onclick="shareViaEmail()">Email</button>
                     <button class="share-button copy-link" onclick="copyUrl()">Copy URL</button>
                 </div>
 
@@ -2693,8 +2702,7 @@
                 <!-- Consent -->
                 <footer>
                     <div class="card">
-                        <h5>When diving into BDSM, always keep these in mind:</p>
-                            <br>
+                        <h5>When diving into BDSM, always keep these in mind:
                             <p>SSC: Safe, Sane, and Consensual.
                             <p> RACK: Risk-Aware Consensual Kink.</p>
                             <p>PRICK: Personal Responsibility Informed Consensual Kink.</p>
@@ -2707,7 +2715,7 @@
                         <!-- Footer -->
                         <footer>
                             <h5> Created with care and love for consensual and safe play</p>
-                                None of your preferences are stored. There are no data stored on a server. It is completley anoymous. Only with the people you share and care.
+
 
                                 <p>&copy; 2025 <span>The Kinky Map</span> All rights reserved.</p>
                         </footer>
@@ -2750,6 +2758,7 @@
                                     notesTextarea.value = '';
                                     yourNameInput.value = 'I am: ';
                                     recipientNameInput.value = 'I am sending this to: ';
+                                    updateTabNames(); // Reset tab names to "Me" and "Partner"
                                     saveState();
                                     updateUrl();
                                     showToast('Sliders, notes, and names reset');
@@ -2790,15 +2799,11 @@
                                 const yourName = LZString.compressToBase64(yourNameInput.value.replace('I am: ', '') || '');
                                 const recipientName = LZString.compressToBase64(recipientNameInput.value.replace('I am sending this to: ', '') || '');
                                 const compact = `${meValues}|${partnerValues}|${notes}|${yourName}|${recipientName}`;
-                                const encoded = LZString.compressToBase64(compact);
-                                console.log('Compact String:', compact);
-                                console.log('Encoded Hash:', encoded);
-                                return encoded;
+                                return LZString.compressToBase64(compact);
                             }
 
                             function decodeCompactState(encoded) {
                                 const decompressed = LZString.decompressFromBase64(encoded) || '';
-                                console.log('Decompressed:', decompressed);
                                 const [meValues = '', partnerValues = '', notesCompressed = '', yourNameCompressed = '', recipientNameCompressed = ''] = decompressed.split('|');
                                 const meArray = meValues.split('').map(Number);
                                 const partnerArray = partnerValues.split('').map(Number);
@@ -2853,20 +2858,17 @@
                                     saveMessage.style.opacity = '1';
                                     setTimeout(() => saveMessage.style.opacity = '0', 2000);
                                 }
-                                console.log('Saved to localStorage:', state);
                             }
 
                             function loadStateFromStorage() {
                                 const stored = localStorage.getItem(STORAGE_KEY);
-                                const state = stored ? JSON.parse(stored) : {
+                                return stored ? JSON.parse(stored) : {
                                     me: {},
                                     partner: {},
                                     notes: '',
                                     yourName: '',
                                     recipientName: ''
                                 };
-                                console.log('Loaded from localStorage:', state);
-                                return state;
                             }
 
                             function encodeUrlParams() {
@@ -2968,6 +2970,7 @@
                                     if (recipientNameInput) {
                                         recipientNameInput.value = 'I am sending this to: ' + (urlState.recipientName || storedState.recipientName || '');
                                     }
+                                    updateTabNames(); // Ensure tab names are updated on load
                                 } catch (error) {
                                     console.error('Error loading state:', error);
                                     showToast('Error loading saved state');
@@ -2980,6 +2983,14 @@
                                 }
                                 saveState();
                                 updateUrl();
+                                updateTabNames(); // Update tab names when prefix is ensured
+                            }
+
+                            function updateTabNames() {
+                                const yourName = document.getElementById('yourName').value.replace('I am: ', '').trim();
+                                const partnerName = document.getElementById('recipientName').value.replace('I am sending this to: ', '').trim();
+                                document.getElementById('meTab').textContent = yourName || 'Me';
+                                document.getElementById('partnerTab').textContent = partnerName || 'Partner';
                             }
 
                             window.onload = function() {
