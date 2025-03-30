@@ -48,7 +48,7 @@
             margin: 2rem auto;
             padding: 1.5rem;
             background: var(--surface);
-            border-radius: 20px;
+            border-radius: 4px;
             box-shadow: var(--elevation-1);
             border: 1px solid rgba(255, 255, 255, 0.1);
         }
@@ -73,7 +73,7 @@
             font-size: 1.5rem;
             cursor: pointer;
             padding: 10px;
-            background-color: none: border-radius: 8px;
+            background-color: none: border-radius: 4px;
             transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
@@ -95,6 +95,18 @@
             transition: background-color 0.3s ease, transform 0.2s ease;
             color: var(--text-primary);
             margin-bottom: 0.5rem;
+        }
+
+        h6 {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 1px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            color: var(--text-primary);
+            margin-bottom: 0rem;
+            box-shadow: var(--elevation-1);
         }
 
         footer {
@@ -120,7 +132,7 @@
             margin: 0;
             padding: 1rem;
             background-color: none;
-            border-radius: 12px;
+            border-radius: 4px;
             box-shadow: var(--elevation-1);
 
         }
@@ -148,7 +160,7 @@
             border: 0px solid #B0BEC5;
             background: #333333;
             color: var(--text-primary);
-            border-radius: 8px;
+            border-radius: 4px;
             font-size: 1rem;
             box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
         }
@@ -165,7 +177,7 @@
             padding: 10px;
             border-left: 4px solid var(--primary);
             margin: 10px 0;
-            background-color: none: border-radius: 8px;
+            background-color: none: border-radius: 4px;
         }
 
         .section-content.active {
@@ -182,7 +194,7 @@
         .tab-button {
             padding: 0.75rem 1.5rem;
             border: 1px solid var(--primary);
-            border-radius: 8px;
+            border-radius: 4px;
             background: transparent;
             color: var(--primary);
             cursor: pointer;
@@ -204,16 +216,14 @@
             display: block;
         }
 
-
-
         .tab-button1 {
-            padding: 0.5rem 1rem;
+            padding: 0.5rem 0.5rem;
             border: 1px solid #B0BEC5;
-            border-radius: 8px;
+            border-radius: 4px;
             background: transparent;
             color: #B0BEC5;
             cursor: pointer;
-            transition: all 0.8s ease;
+            transition: all 0.3s ease;
             font-weight: 400;
         }
 
@@ -444,6 +454,25 @@
             font-weight: 500;
         }
 
+        .email-button {
+            display: inline-block;
+            padding: 10px 20px;
+            /* Adjust as needed */
+            background-color: #610000;
+            /* Your preferred color */
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            /* Optional: for rounded corners */
+            cursor: pointer;
+            transition: background-color 0.3s;
+            /* Optional: for hover effect */
+        }
+
+        .email-button:hover {
+            background-color: #8c0000
+        }
+
         #saveMessage {
             font-size: 0.875rem;
             color: #26A69A;
@@ -603,18 +632,18 @@
 
 <body>
     <div class="elegant-container">
-        <!-- Header -->
+        <!-- Logo -->
         <header class="header">
             <h1 class="logo"> The <span>Kinky</span> Map
         </header>
-        <ul></ul>
+        <br>
 
         <button class="tab-button1">
             Copy the URL from your browser and share it with your play partner. You can save the page by bookmarking it. You can also share the link to your online profiles if you want!
             <p>Fill in your name and the Me and Partner tap will show the names.</p>
             <p>If you change your slider positions, you must share the new updated URL.</p>
             <p>So take your time to adjust your sliders before sharing.</p>
-            <p>None of your preferences or data is stored. It is completely anonymous.</p>
+            <p>None of your preferences or data is stored. It is completely anonymous.
         </button>
 
         <p>Use the sliders to express your preferences and consent for each kinky activity:</p>
@@ -633,26 +662,26 @@
 
         <!-- Safe Word and Aftercare -->
         <div class="card">
-            <h2>Safe Words</h2>
-            <p>Safe words are essential for maintaining consent and communication during BDSM activities. Below are some expamples of safe words:</p>
-            <ul>
-                <li><span style="color: #26A69A;">Green</span> - Everything is okay, continue.</li>
-                <li><span style="color: #FFCA28;">Yellow</span> - Slow down or check-in.</li>
-                <li><span style="color: #EF5350;">Red</span> - Stop immediately.</li>
-            </ul>
-            <p>Make sure both partners agree on safe words before starting.</p>
+            <h6>Safe Words</h2>
+                <p>Safe words are essential for maintaining consent and communication during BDSM activities. Below are some expamples of safe words:</p>
+                <ul>
+                    <li><span style="color: #26A69A;">Green</span> - Everything is okay, continue.</li>
+                    <li><span style="color: #FFCA28;">Yellow</span> - Slow down or check-in.</li>
+                    <li><span style="color: #EF5350;">Red</span> - Stop immediately.</li>
+                </ul>
+                <p>Make sure both partners agree on safe words before starting.</p>
         </div>
 
         <div class="card">
-            <h2>Aftercare</h2>
-            <p>Aftercare ensures both partners feel supported post-scene. Below are some expamples of how aftercare may include: </p>
-            <ul>
-                <li>Water, snacks, or a blanket.</li>
-                <li>Cuddling or holding each other.</li>
-                <li>Discussing the scene and feelings.</li>
-                <li>Taking care of marks or injuries.</li>
-            </ul>
-            <p>Plan aftercare with your partner beforehand.</p>
+            <h6>Aftercare</h2>
+                <p>Aftercare ensures both partners feel supported post-scene. Below are some expamples of how aftercare may include: </p>
+                <ul>
+                    <li>Water, snacks, or a blanket.</li>
+                    <li>Cuddling or holding each other.</li>
+                    <li>Discussing the scene and feelings.</li>
+                    <li>Taking care of marks or injuries.</li>
+                </ul>
+                <p>Plan aftercare with your partner beforehand.</p>
         </div>
 
         <div class="separator">
@@ -2720,6 +2749,7 @@
                                 <p>&copy; 2025 <span>The Kinky Map</span> All rights reserved.</p>
                         </footer>
 
+<a href="mailto:thekinkymap@gmail.com?subject=Feedback" class="email-button">Feedback</a>
 
                         <!-- Toast Notification -->
                         <div class="toast-container" id="toastContainer"></div>
@@ -3050,3 +3080,4 @@
 </body>
 
 </html>
+
