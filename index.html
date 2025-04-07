@@ -159,8 +159,6 @@
             -webkit-text-fill-color: transparent;
         }
 
-
-
         .name-container {
             margin: 20px 0;
             text-align: center;
@@ -244,9 +242,10 @@
             font-weight: 400;
         }
 
-        .tab-button1:hover {
-            background-color: #610000;
-            transform: translateY(-1px);
+        .tab-button1.lit {
+            background: #B71C12;
+            color: #B0BEC5;
+            box-shadow: 0 0 10px rgba(176, 190, 197, 0.7);
         }
 
         .slider {
@@ -3099,6 +3098,18 @@
                                     document.getElementById('meTab').textContent = yourName || 'Me';
                                     document.getElementById('partnerTab').textContent = partnerName || 'Partner';
                                 }
+
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const button = document.querySelector('.tab-button1');
+
+                                    // Add the 'lit' class immediately when page loads
+                                    button.classList.add('lit');
+
+                                    // Remove the 'lit' class after 2 seconds
+                                    setTimeout(() => {
+                                        button.classList.remove('lit');
+                                    }, 2000); // 2000 milliseconds = 2 seconds
+                                });
 
                                 window.onload = function() {
                                     console.log('Window loaded');
